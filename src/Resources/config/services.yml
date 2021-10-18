@@ -1,3 +1,6 @@
+parameters:
+  pim_enrich.view_element.category.tab.property.template: 'FlagbitCategoryBundle:CategoryTree:Tab/property.html.twig'
+
 services:
   flagbit.category.repository.category_property:
     class: 'Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository'

@@ -1,0 +1,25 @@
+<div class="tab-pane tab-property {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    {% set generalProperties %}
+        {{ form_row(form.code) }}
+    {% endset %}
+
+    {% set nodeValues %}
+        {{ form_row(form.label) }}
+    {% endset %}
+
+    {% set flagbitCategoryProperties %}
+        <div id="flagbit_category_properties"></div>
+        <script type="text/javascript" nonce="{{ js_nonce() }}">
+            require(['flagbit-category/property/property-forms-renderer'], function (propertyFormsRenderer) {
+                var domContainer = document.querySelector('#flagbit_category_properties');
+                propertyFormsRenderer(domContainer);
+            });
+        </script>
+    {% endset %}
+
+    {{ elements.tabSections({
+        'pane.accordion.general_properties': elements.form_container(generalProperties),
+        'pane.accordion.node_values': elements.form_container(nodeValues),
+        'flagbit.accordion.flagbit_category_properties': elements.form_container(flagbitCategoryProperties)
+    }) }}
+</div>

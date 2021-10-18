@@ -1,0 +1,3 @@
+config:
+  paths:
+    flagbit-category/property/property-forms-renderer: flagbitcategory/js/property/property-forms-renderer
