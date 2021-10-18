@@ -1,1 +1,10 @@
-services: ~
+services:
+  flagbit.category.repository.category_property:
+    class: 'Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository'
+    factory: 'doctrine.orm.entity_manager:getRepository'
+    arguments: [ 'Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty' ]
+
+  flagbit.category.repository.category_config:
+    class: 'Flagbit\Bundle\CategoryBundle\Repository\CategoryConfigRepository'
+    factory: 'doctrine.orm.entity_manager:getRepository'
+    arguments: [ 'Flagbit\Bundle\CategoryBundle\Entity\CategoryConfig' ]

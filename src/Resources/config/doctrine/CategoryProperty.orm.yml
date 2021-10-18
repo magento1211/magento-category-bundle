@@ -1,0 +1,22 @@
+Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty:
+  type: entity
+  table: flagbit_category_property
+  repositoryClass: Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository
+  changeTrackingPolicy: DEFERRED_EXPLICIT
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    properties:
+      column: properties
+      type: json
+
+  oneToOne:
+    category:
+      targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+      joinColumn:
+        name: category_id
+        referencedColumnName: id
+        onDelete: 'SET NULL'

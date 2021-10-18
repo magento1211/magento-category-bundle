@@ -1,0 +1,14 @@
+Flagbit\Bundle\CategoryBundle\Entity\CategoryConfig:
+  type: entity
+  table: flagbit_category_config
+  repositoryClass: Flagbit\Bundle\CategoryBundle\Repository\CategoryConfigRepository
+  changeTrackingPolicy: DEFERRED_EXPLICIT
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    config:
+      column: config
+      type: json
