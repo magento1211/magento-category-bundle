@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+        backupGlobals="false"
+        backupStaticAttributes="false"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        processIsolation="false"
+        stopOnFailure="false"
+        bootstrap="./vendor/autoload.php">
+
+    <testsuites>
+        <testsuite name="FlagbitCategoryBundle_Test">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <env name="KERNEL_CLASS" value="Flagbit\Bundle\CategoryBundle\Tests\TestKernel"/>
+        <env name="APP_ENV" value="test"/>
+        <env name="APP_INDEX_HOSTS" value="elasticsearch:9200"/>
+        <env name="APP_DATABASE_HOST" value="mysql"/>
+        <env name="APP_DATABASE_PORT" value=""/>
+        <env name="APP_DATABASE_NAME" value="akeneo_pim"/>
+        <env name="APP_DATABASE_USER" value="akeneo_pim"/>
+        <env name="APP_DATABASE_PASSWORD" value="akeneo_pim"/>
+        <env name="APP_DEFAULT_LOCALE" value="en"/>
+
+        <env name="APP_PRODUCT_PROPOSAL_INDEX_NAME" value="akeneo_pim_product_proposal"/>
+        <env name="APP_PUBLISHED_PRODUCT_INDEX_NAME" value="akeneo_pim_published_product"/>
+        <env name="APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME" value="akeneo_pim_product_and_product_model"/>
+        <env name="APP_RECORD_INDEX_NAME" value="akeneo_referenceentity_record"/>
+        <env name="APP_ASSET_INDEX_NAME" value="akeneo_assetmanager_asset"/>
+        <env name="ASPELL_BINARY_PATH" value="aspell"/>
+    </php>
+
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+            <exclude>
+                <directory>src/Resources</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

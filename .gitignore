@@ -1,0 +1,23 @@
+# Assets and user uploads
+/web/bundles/
+/web/uploads/
+
+# PHPUnit
+/phpunit.xml
+/tests/var
+/public
+/config
+/.phpunit.result.cache
+
+# Build data
+/build/
+
+# Composer
+/composer.phar
+/composer.lock
+/vendor/
+
+# Yarn
+/yarn-error.log
+/node_modules
+/yarn.lock

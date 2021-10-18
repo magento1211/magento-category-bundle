@@ -1,0 +1,36 @@
+name: "PHP Code Analysis + Style"
+
+on:
+  - "push"
+  - "pull_request"
+
+jobs:
+  backend:
+    runs-on: "ubuntu-20.04"
+    strategy:
+      matrix:
+        php-versions: ['7.4']
+
+    steps:
+      - uses: "actions/checkout@v2.0.0"
+
+      - name: "Setup PHP Action"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-versions }}"
+          extensions: "intl, xdebug, imagick, apcu"
+
+      - name: "Install dependencies with Composer"
+        uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: "--prefer-dist --no-interaction --optimize-autoloader --no-suggest --no-progress"
+
+      # CI
+      - name: "Linting"
+        run: "vendor/bin/phplint ./src"
+
+      - name: "Code Sniffer"
+        run: "vendor/bin/phpcs -d memory_limit=-1 --standard=PSR12 --extensions=php ./src"
+
+      - name: "PHPStan"
+        run: "vendor/bin/phpstan analyse"
