@@ -12,7 +12,7 @@ class PropertyForm extends React.Component<CategoryInfo> {
     render() {
         return (
             <React.Fragment>
-                <input id={'flagbit_category_properties_json'} hidden={true} />
+                <input id={'flagbit_category_properties_json'} name={'pim_category[flagbit_category_properties_json]'} hidden={true} />
             </React.Fragment>
         );
     }
