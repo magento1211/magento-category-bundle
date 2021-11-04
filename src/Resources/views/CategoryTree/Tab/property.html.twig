@@ -12,7 +12,7 @@
         <script type="text/javascript" nonce="{{ js_nonce() }}">
             require(['flagbit-category/property/property-forms-renderer'], function (propertyFormsRenderer) {
                 var domContainer = document.querySelector('#flagbit_category_properties');
-                propertyFormsRenderer(domContainer, 'master');
+                propertyFormsRenderer(domContainer, '{{ form.code.vars.value }}');
             });
         </script>
     {% endset %}
