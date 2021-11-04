@@ -6,13 +6,16 @@ class Text implements Property {
     render(propertyDto: PropertyDto): React.ReactNode {
         return (
             <React.Fragment>
-                <input id={propertyDto.createId()}
-                    type={'text'}
-                    value={propertyDto.value}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
-                        propertyDto.updateValue(event.target.value);
-                    }}
-                />
+                <div key={propertyDto.code+propertyDto.locale}>
+                    <input id={propertyDto.createId()}
+                           type={'text'}
+                           value={propertyDto.value}
+                           className={'AknTextField'}
+                           onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+                               propertyDto.updateValue(event.target.value);
+                           }}
+                    />
+                </div>
             </React.Fragment>
         );
     }
