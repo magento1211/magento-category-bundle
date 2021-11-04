@@ -1,0 +1,5 @@
+flagbit_category.entity.category_config:
+  path: /flagbit/category/config
+  defaults:
+    _controller: FrameworkBundle:Template:template
+    template: FlagbitCategoryBundle:CategoryConfig:index.html.twig

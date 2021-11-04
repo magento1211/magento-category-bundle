@@ -1,0 +1,9 @@
+extensions:
+  flagbit-menu-settings-product-category-config:
+    module: pim/menu/item
+    parent: pim-menu-settings-navigation-block
+    aclResourceId: pim_enrich_product_category_list
+    position: 121
+    config:
+      title: flagbit_category.entity.category_config.plural_label
+      to: flagbit_category.entity.category_config
