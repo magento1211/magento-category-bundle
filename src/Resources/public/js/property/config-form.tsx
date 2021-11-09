@@ -2,10 +2,10 @@ import * as React from 'react';
 import ConfigRenderer from "./type-config/config-renderer";
 
 export type ChangeState = (code: string, is_localizable: boolean, labels: SingleLabel[], config: any) => void;
-type SingleLabel = {locale: string|null, value: string};
-type SingleConfig = {
+export type SingleLabel = {locale: string|null, value: string};
+export type SingleConfig = {
     is_localizable: boolean,
-    label: SingleLabel[],
+    labels: SingleLabel[],
     config: any,
 };
 export type ConfigValuesType = {
@@ -26,12 +26,12 @@ class ConfigForm extends React.Component {
 
             const configData: SingleConfig = state.configValues[code] || {
                 is_localizable: false,
-                label: [{locale: null, value: ''}],
+                labels: [{locale: null, value: ''}],
                 config: {},
             };
 
             configData.is_localizable = is_localizable;
-            configData.label = labels;
+            configData.labels = labels;
             configData.config = config;
 
             state.configValues[code] = configData;
@@ -40,11 +40,11 @@ class ConfigForm extends React.Component {
         };
         onChange.bind(this);
 
-        const propertyRenderer = new ConfigRenderer(onChange, this.state.configValues);
+        const configRenderer = new ConfigRenderer(onChange, this.state.configValues);
 
         return (
             <React.Fragment>
-                {propertyRenderer.render()}
+                {configRenderer.render()}
                 <input id={'flagbit_category_config_json'}
                        name={'flagbit_category_config_json'}
                        hidden={true}
