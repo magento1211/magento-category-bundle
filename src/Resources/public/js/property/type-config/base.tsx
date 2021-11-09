@@ -27,15 +27,18 @@ class Base implements Config {
                 </div>
 
                 <div className={'AknFieldContainer'} key={baseId+'_labels_container'}>
-                    {config.labels.map((label) => {
-                        return (<React.Fragment key={baseId+'_label_'+label.locale+'_container'}>
-                            <label htmlFor={baseId+'_label_'+label.locale}>Label {label.locale}</label>
-                            <input id={baseId+'_label_'+label.locale}
+                    {Object.entries(config.labels).map((labelConfig) => {
+                        const locale = labelConfig[0];
+                        const label = labelConfig[1];
+
+                        return (<React.Fragment key={baseId+'_label_'+locale+'_container'}>
+                            <label htmlFor={baseId+'_label_'+locale}>Label {locale}</label>
+                            <input id={baseId+'_label_'+locale}
                                    type={'text'}
-                                   value={label.value}
+                                   value={label}
                                    className={'AknTextField'}
                                    onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
-                                       config.updateLabel(label.locale, event.target.value);
+                                       config.updateLabel(locale, event.target.value);
                                    }}
                             />
                         </React.Fragment>);

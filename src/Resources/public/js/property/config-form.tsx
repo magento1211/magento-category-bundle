@@ -1,11 +1,13 @@
 import * as React from 'react';
 import ConfigRenderer from "./type-config/config-renderer";
 
-export type ChangeState = (code: string, is_localizable: boolean, labels: SingleLabel[], config: any) => void;
-export type SingleLabel = {locale: string|null, value: string};
+export type ChangeState = (code: string, is_localizable: boolean, labels: Labels, config: any) => void;
+export type Labels = {
+    [index: string|null]: string;
+};
 export type SingleConfig = {
     is_localizable: boolean,
-    labels: SingleLabel[],
+    labels: Labels,
     config: any,
 };
 export type ConfigValuesType = {
@@ -21,12 +23,12 @@ class ConfigForm extends React.Component {
     }
 
     render(): React.ReactNode {
-        const onChange: ChangeState = (code: string, is_localizable: boolean, labels: SingleLabel[], config: any) => {
+        const onChange: ChangeState = (code: string, is_localizable: boolean, labels: Labels, config: any) => {
             const state = this.state;
 
             const configData: SingleConfig = state.configValues[code] || {
                 is_localizable: false,
-                labels: [{locale: null, value: ''}],
+                labels: {null: ''},
                 config: {},
             };
 

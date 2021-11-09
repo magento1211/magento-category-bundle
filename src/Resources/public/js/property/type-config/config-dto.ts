@@ -1,9 +1,9 @@
-import {ChangeState, SingleLabel, SingleConfig} from "../config-form";
+import {ChangeState, Labels, SingleConfig} from "../config-form";
 
 class ConfigDto {
     readonly config: any;
     readonly is_localizable: boolean;
-    readonly labels: SingleLabel[];
+    readonly labels: Labels;
 
     constructor(
         private readonly configs: SingleConfig,
@@ -25,13 +25,6 @@ class ConfigDto {
 
     updateLabel(locale: string|null, label: string): void {
         this.labels[locale] = label;
-
-        this.labels.forEach((element, key) => {
-            if (element.locale === locale) {
-                element.value = label;
-                this.labels[key] = element;
-            }
-        });
 
         this.onChange(this.code, this.is_localizable, this.labels, this.config);
     }
