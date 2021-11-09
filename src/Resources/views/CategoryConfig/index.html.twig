@@ -1,24 +1,33 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% block content %}
-<div class="AknDefault-mainContent">
-    {% set title = ('flagbit_category.entity.category_config.plural_label')|trans %}
-    {{ elements.page_header({ title: title }) }}
+    {% set buttons %}
+        {{ elements.submitBtn('', '', '') }}
+    {% endset %}
 
-    <div id="category-config" style="display:flex; height:100%">
-        <div id="category-form" style="flex-grow:1" class="AknDefault-mainContent">
-            <div>
-                {% if resource_granted('pim_enrich_product_category_edit') %}
-                    <div id="flagbit_category_config"></div>
-                    <script type="text/javascript" nonce="{{ js_nonce() }}">
-                        require(['flagbit-category/property/config-forms-renderer'], function (configFormsRenderer) {
-                            var domContainer = document.querySelector('#flagbit_category_config');
-                            configFormsRenderer(domContainer);
-                        });
-                    </script>
-                {% endif %}
+    {% set title = ('flagbit_category.entity.category_config.plural_label')|trans %}
+
+    <div class="AknDefault-mainContent">
+        {{ elements.page_header(
+            {
+                title: title,
+                buttons: buttons
+            }
+        ) }}
+        <div id="category-config" style="display:flex; height:100%">
+            <div id="category-form" style="flex-grow:1" class="AknDefault-mainContent">
+                <div>
+                    {% if resource_granted('pim_enrich_product_category_edit') %}
+                        <div id="flagbit_category_config"></div>
+                        <script type="text/javascript" nonce="{{ js_nonce() }}">
+                            require(['flagbit-category/property/config-forms-renderer'], function (configFormsRenderer) {
+                                var domContainer = document.querySelector('#flagbit_category_config');
+                                configFormsRenderer(domContainer);
+                            });
+                        </script>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

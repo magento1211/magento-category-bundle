@@ -2,6 +2,15 @@ parameters:
   pim_enrich.view_element.category.tab.property.template: 'FlagbitCategoryBundle:CategoryTree:Tab/property.html.twig'
 
 services:
+  Flagbit\Bundle\CategoryBundle\Controller\:
+    resource: '../../../src/Controller/'
+    bind:
+      Flagbit\Bundle\CategoryBundle\Repository\CategoryConfigRepository: '@flagbit.category.repository.category_config'
+      Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository: '@flagbit.category.repository.category_property'
+      Symfony\Component\Serializer\Normalizer\NormalizerInterface: '@pim_internal_api_serializer'
+    autowire: true
+    tags: [ 'controller.service_arguments' ]
+
   flagbit.category.repository.category_property:
     class: 'Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository'
     factory: 'doctrine.orm.entity_manager:getRepository'
@@ -11,3 +20,10 @@ services:
     class: 'Flagbit\Bundle\CategoryBundle\Repository\CategoryConfigRepository'
     factory: 'doctrine.orm.entity_manager:getRepository'
     arguments: [ 'Flagbit\Bundle\CategoryBundle\Entity\CategoryConfig' ]
+
+  flagbit.category.normalizer.object:
+    class: 'Flagbit\Bundle\CategoryBundle\Serializer\Normalizer\ObjectNormalizer'
+    arguments:
+      - '@serializer.normalizer.object'
+    tags:
+      - { name: 'pim_internal_api_serializer.normalizer' }

@@ -2,3 +2,18 @@ config:
   paths:
     flagbit-category/property/property-forms-renderer: flagbitcategory/js/property/property-forms-renderer
     flagbit-category/property/config-forms-renderer: flagbitcategory/js/property/config-forms-renderer
+
+  config:
+    pim/fetcher-registry:
+      fetchers:
+        default: pim/base-fetcher
+        flagbit-category-property:
+          module: pim/base-fetcher
+          options:
+            urls:
+              get: flagbit_category.internal_api.category_property_get
+        flagbit-category-config:
+          module: pim/base-fetcher
+          options:
+            urls:
+              get: flagbit_category.internal_api.category_config_get

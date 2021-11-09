@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Config from './config';
 import ConfigDto from './config-dto';
+import {FlagbitLocales} from '../locales';
 
 class Base implements Config {
     render(config: ConfigDto): React.ReactNode {
@@ -27,12 +28,11 @@ class Base implements Config {
                 </div>
 
                 <div className={'AknFieldContainer'} key={baseId+'_labels_container'}>
-                    {Object.entries(config.labels).map((labelConfig) => {
-                        const locale = labelConfig[0];
-                        const label = labelConfig[1];
+                    {FlagbitLocales.locales.getEnabledLocales(config.is_localizable).map((locale) => {
+                        const label = config.labels[locale] || '';
 
                         return (<React.Fragment key={baseId+'_label_'+locale+'_container'}>
-                            <label htmlFor={baseId+'_label_'+locale}>Label ({locale})</label>
+                            <label htmlFor={baseId+'_label_'+locale}>Label {locale !== 'null' ? locale : ''}</label>
                             <input id={baseId+'_label_'+locale}
                                    type={'text'}
                                    value={label}

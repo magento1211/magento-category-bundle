@@ -3,3 +3,27 @@ flagbit_category.entity.category_config:
   defaults:
     _controller: FrameworkBundle:Template:template
     template: FlagbitCategoryBundle:CategoryConfig:index.html.twig
+
+flagbit_category.internal_api.category_config_get:
+  path: /flagbit/category/api/config/{identifier}
+  methods: [GET]
+  requirements:
+    identifier: '[0-9]+'
+  defaults:
+    _controller: Flagbit\Bundle\CategoryBundle\Controller\InternalApi\CategoryConfigController:get
+
+flagbit_category.internal_api.category_config_post:
+  path: /flagbit/category/api/config/{identifier}
+  methods: [POST]
+  requirements:
+    identifier: '[0-9]+'
+  defaults:
+    _controller: Flagbit\Bundle\CategoryBundle\Controller\InternalApi\CategoryConfigController:post
+
+flagbit_category.internal_api.category_property_get:
+  path: /flagbit/category/api/property/{identifier}
+  methods: [GET]
+  requirements:
+    identifier: '[0-9]+'
+  defaults:
+    _controller: Flagbit\Bundle\CategoryBundle\Controller\InternalApi\CategoryPropertyController:get

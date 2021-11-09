@@ -1,9 +1,10 @@
-import * as React from 'react';
+import * as React from "react";
 import ConfigRenderer from "./type-config/config-renderer";
+import postConfig from "./api/post-config";
 
 export type ChangeState = (code: string, is_localizable: boolean, labels: Labels, config: any) => void;
 export type Labels = {
-    [index: string|null]: string;
+    [index: string]: string;
 };
 export type SingleConfig = {
     is_localizable: boolean,
@@ -16,10 +17,22 @@ export type ConfigValuesType = {
 type StateType = {
     configValues: ConfigValuesType
 };
+type Response = { config: ConfigValuesType };
+
+const FetcherRegistry = require('pim/fetcher-registry');
+const __ = require('oro/translator');
 
 class ConfigForm extends React.Component {
     state: StateType = {
         configValues: {}
+    }
+
+    componentDidMount?(): void {
+        FetcherRegistry.getFetcher('flagbit-category-config').fetch(1).then((response: Response) => {
+            this.setState({
+                configValues: Array.isArray(response.config) ? {} : response.config
+            });
+        });
     }
 
     render(): React.ReactNode {
@@ -42,6 +55,11 @@ class ConfigForm extends React.Component {
         };
         onChange.bind(this);
 
+        const onClick = () => {
+            const config = this.state.configValues;
+            postConfig.post(config);
+        };
+
         const configRenderer = new ConfigRenderer(onChange, this.state.configValues);
 
         return (
@@ -53,6 +71,7 @@ class ConfigForm extends React.Component {
                        readOnly={true}
                        value={JSON.stringify(this.state.configValues)}
                 />
+                <button onClick={onClick}>{__('pim_common.save')}</button>
             </React.Fragment>
         );
     }

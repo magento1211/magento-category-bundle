@@ -11,6 +11,11 @@
                 <source>flagbit_category.entity.category_config.plural_label</source>
                 <target>Kategorie Eigenschaften</target>
             </trans-unit>
+
+            <trans-unit id="pim_title.flagbit_category.entity.category_config">
+                <source>pim_title.flagbit_category.entity.category_config</source>
+                <target>Flagbit Kategorie Eigenschaften</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
