@@ -21,7 +21,7 @@ class Base implements Config {
                            checked={config.is_localizable}
                            className={'AknTextField'}
                            onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
-                               config.updateLocalizable(event.target.value === '1');
+                               config.updateLocalizable(event.target.checked);
                            }}
                     />
                 </div>
@@ -32,7 +32,7 @@ class Base implements Config {
                         const label = labelConfig[1];
 
                         return (<React.Fragment key={baseId+'_label_'+locale+'_container'}>
-                            <label htmlFor={baseId+'_label_'+locale}>Label {locale}</label>
+                            <label htmlFor={baseId+'_label_'+locale}>Label ({locale})</label>
                             <input id={baseId+'_label_'+locale}
                                    type={'text'}
                                    value={label}
