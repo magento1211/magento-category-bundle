@@ -3,6 +3,7 @@ import ConfigRenderer from "./type-config/config-renderer";
 import postConfig from "./api/post-config";
 
 export type ChangeState = (code: string, is_localizable: boolean, labels: Labels, config: any) => void;
+export type AddNewConfigToState = (code: string, type: string) => void;
 export type Labels = {
     [index: string]: string;
 };
@@ -10,6 +11,7 @@ export type SingleConfig = {
     is_localizable: boolean,
     labels: Labels,
     config: any,
+    type: string,
 };
 export type ConfigValuesType = {
     [index: string]: SingleConfig;
@@ -39,11 +41,8 @@ class ConfigForm extends React.Component {
         const onChange: ChangeState = (code: string, is_localizable: boolean, labels: Labels, config: any) => {
             const state = this.state;
 
-            const configData: SingleConfig = state.configValues[code] || {
-                is_localizable: false,
-                labels: {null: ''},
-                config: {},
-            };
+            // TODO Add error handling for unknown code
+            const configData: SingleConfig = state.configValues[code];
 
             configData.is_localizable = is_localizable;
             configData.labels = labels;
@@ -55,12 +54,30 @@ class ConfigForm extends React.Component {
         };
         onChange.bind(this);
 
+        const addNewConfig: AddNewConfigToState = (code: string, type: string) => {
+            const state = this.state;
+
+            if (code in state.configValues) {
+                return;
+            }
+
+            state.configValues[code] = {
+                is_localizable: false,
+                labels: {null: ''},
+                config: {},
+                type: type
+            };
+
+            this.setState(state);
+        };
+        addNewConfig.bind(this);
+
         const onClick = () => {
             const config = this.state.configValues;
             postConfig.post(config);
         };
 
-        const configRenderer = new ConfigRenderer(onChange, this.state.configValues);
+        const configRenderer = new ConfigRenderer(onChange, this.state.configValues, addNewConfig);
 
         return (
             <React.Fragment>
