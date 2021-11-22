@@ -4,6 +4,7 @@ import postConfig from "./api/post-config";
 
 export type ChangeState = (code: string, is_localizable: boolean, labels: Labels, config: any) => void;
 export type AddNewConfigToState = (code: string, type: string) => void;
+export type RemoveConfigFromState = (code: string) => void;
 export type Labels = {
     [index: string]: string;
 };
@@ -72,12 +73,21 @@ class ConfigForm extends React.Component {
         };
         addNewConfig.bind(this);
 
+        const deleteConfig: RemoveConfigFromState = (code: string) => {
+            const state = this.state;
+
+            delete state.configValues[code];
+
+            this.setState(state);
+        };
+        deleteConfig.bind(this);
+
         const onClick = () => {
             const config = this.state.configValues;
             postConfig.post(config);
         };
 
-        const configRenderer = new ConfigRenderer(onChange, this.state.configValues, addNewConfig);
+        const configRenderer = new ConfigRenderer(onChange, this.state.configValues, addNewConfig, deleteConfig);
 
         return (
             <React.Fragment>
