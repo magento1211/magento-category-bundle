@@ -2,12 +2,13 @@
 
 namespace Flagbit\Bundle\CategoryBundle\Controller\InternalApi;
 
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -18,34 +19,39 @@ class CategoryPropertyController
     private EntityManagerInterface $entityManager;
     private CategoryPropertyRepository $repository;
     private NormalizerInterface $normalizer;
+    private CategoryRepositoryInterface $categoryRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         CategoryPropertyRepository $repository,
+        CategoryRepositoryInterface $categoryRepository,
         NormalizerInterface $normalizer
     ) {
         $this->entityManager = $entityManager;
         $this->repository = $repository;
+        $this->categoryRepository = $categoryRepository;
         $this->normalizer = $normalizer;
     }
 
-    public function get(int $identifier): Response
+    public function get(string $identifier): Response
     {
-        $categoryConfig = $this->findProperty($identifier);
+        $categoryProperty = $this->findProperty($identifier);
 
         return new JsonResponse(
-            $this->normalizer->normalize($categoryConfig, 'internal_api')
+            $this->normalizer->normalize($categoryProperty, 'internal_api', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['category']])
         );
     }
 
-    private function findProperty(int $identifier): CategoryProperty
+    private function findProperty(string $identifier): CategoryProperty
     {
-        /** @phpstan-var CategoryProperty|null $categoryConfig */
-        $categoryConfig = $this->repository->find($identifier);
-        if (null === $categoryConfig) {
-            throw new NotFoundHttpException('Property not found');
+        $category = $this->categoryRepository->findOneByIdentifier($identifier);
+
+        /** @phpstan-var CategoryProperty|null $categoryProperty */
+        $categoryProperty = $this->repository->findOneBy(['category' => $category]);
+        if (null === $categoryProperty) {
+            $categoryProperty = new CategoryProperty($category);
         }
 
-        return $categoryConfig;
+        return $categoryProperty;
     }
 }

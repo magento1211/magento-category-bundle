@@ -1,4 +1,5 @@
 const FetcherRegistry = require('pim/fetcher-registry');
+const userContext = require('pim/user-context');
 
 class Locale {
     private locales: string[];
@@ -19,4 +20,5 @@ export namespace FlagbitLocales {
     locale.initialize();
 
     export const locales = locale;
+    export const catalogLocale = userContext.get('catalogLocale');
 }

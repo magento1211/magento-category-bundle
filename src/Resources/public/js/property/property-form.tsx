@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropertyRenderer from "./type/property-renderer";
+import {ConfigValuesType} from "./config-form";
 
 type CategoryInfo = {
     categoryCode: string
@@ -13,12 +14,34 @@ export type PropertyValuesType = {
     }[];
 };
 type StateType = {
-    propertyValues: PropertyValuesType
+    propertyValues: PropertyValuesType,
+    configValues: ConfigValuesType
 };
+type ConfigResponse = { config: ConfigValuesType };
+type PropertyResponse = { properties: PropertyValuesType };
+
+const FetcherRegistry = require('pim/fetcher-registry');
 
 class PropertyForm extends React.Component<CategoryInfo> {
     state: StateType = {
-        propertyValues: {}
+        propertyValues: {},
+        configValues: {}
+    }
+
+    componentDidMount?(): void {
+        FetcherRegistry.getFetcher('flagbit-category-config').fetch(1).then((response: ConfigResponse) => {
+            this.setState({
+                propertyValues: this.state.propertyValues,
+                configValues: Array.isArray(response.config) ? {} : response.config
+            });
+        });
+
+        FetcherRegistry.getFetcher('flagbit-category-property').fetch(this.props.categoryCode).then((response: PropertyResponse) => {
+            this.setState({
+                propertyValues: Array.isArray(response.properties) ? {} : response.properties,
+                configValues: this.state.configValues,
+            });
+        });
     }
 
     render(): React.ReactNode {
@@ -39,7 +62,7 @@ class PropertyForm extends React.Component<CategoryInfo> {
         };
         onChange.bind(this);
 
-        const propertyRenderer = new PropertyRenderer(onChange, this.state.propertyValues);
+        const propertyRenderer = new PropertyRenderer(onChange, this.state.propertyValues, this.state.configValues);
 
         return (
             <React.Fragment>

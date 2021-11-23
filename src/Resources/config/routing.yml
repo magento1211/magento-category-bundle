@@ -24,6 +24,6 @@ flagbit_category.internal_api.category_property_get:
   path: /flagbit/category/api/property/{identifier}
   methods: [GET]
   requirements:
-    identifier: '[0-9]+'
+    identifier: '[a-z_0-9]+'
   defaults:
     _controller: Flagbit\Bundle\CategoryBundle\Controller\InternalApi\CategoryPropertyController:get
