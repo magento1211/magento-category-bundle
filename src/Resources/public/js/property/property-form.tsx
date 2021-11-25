@@ -1,17 +1,21 @@
 import * as React from 'react';
 import PropertyRenderer from "./type/property-renderer";
 import {ConfigValuesType} from "./config-form";
+import {FlagbitLocales} from './locales';
 
 type CategoryInfo = {
     categoryCode: string
 };
 
 export type ChangeState = (code: string, locale: string, value: any) => void;
-export type PropertyValuesType = {
-    [index: string]: {
-        locale: string|null,
+type PropertyValueType = {
+    [locale: string]: {
+        locale: string | null,
         data: any,
-    }[];
+    }
+};
+export type PropertyValuesType = {
+    [code: string]: PropertyValueType;
 };
 type StateType = {
     propertyValues: PropertyValuesType,
@@ -48,11 +52,15 @@ class PropertyForm extends React.Component<CategoryInfo> {
         const onChange: ChangeState = (code: string, locale: string, value: any) => {
             const state = this.state;
 
-            const propertyData = state.propertyValues[code] || [{locale: locale, data: value}];
+            const propertyData = state.propertyValues[code] || {[locale]: {locale: locale, data: value}};
+            const isLocalizable = state.configValues[code].is_localizable;
 
-            propertyData.forEach(function(element, key) {
-                if (element['locale'] === locale) {
-                    propertyData[key]['data'] = value;
+            propertyData[locale] = {locale: locale, data: value};
+
+            // Fill default value for newly enabled locales
+            FlagbitLocales.locales.getEnabledLocales(isLocalizable).forEach(function(currentLocale) {
+                if (! (currentLocale in propertyData)) {
+                    propertyData[currentLocale] = {locale: currentLocale, data: ''};
                 }
             });
 
