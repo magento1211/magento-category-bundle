@@ -29,12 +29,12 @@ class Base implements Config {
                 </div>
 
                 <div className={'AknFieldContainer'} key={baseId + '_labels_container'}>
-                    {FlagbitLocales.locales.getEnabledLocales(config.isLocalizable).map((locale) => {
+                    {FlagbitLocales.locales.getEnabledLocales(true).map((locale) => {
                         const label = config.labels[locale] || '';
 
                         return (
                             <React.Fragment key={baseId + '_label_' + locale + '_container'}>
-                                <label htmlFor={baseId + '_label_' + locale}>Label {locale !== 'null' ? locale : ''}</label>
+                                <label htmlFor={baseId + '_label_' + locale}>Label {locale}</label>
                                 <input
                                     id={baseId + '_label_' + locale}
                                     type={'text'}
