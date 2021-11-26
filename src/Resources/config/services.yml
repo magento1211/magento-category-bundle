@@ -28,3 +28,21 @@ services:
       - '@serializer.normalizer.object'
     tags:
       - { name: 'pim_internal_api_serializer.normalizer' }
+
+  flagbit.category.property_values_bag:
+    class: 'Symfony\Component\HttpFoundation\ParameterBag'
+
+  flagbit.category.event_listener.collect_property_values:
+    class: 'Flagbit\Bundle\CategoryBundle\EventListener\CollectPropertyValuesListener'
+    arguments: [ '@flagbit.category.property_values_bag' ]
+    tags:
+      - { name: 'kernel.event_listener', event: 'kernel.controller_arguments' }
+
+  flagbit.category.event_listener.save_property:
+    class: 'Flagbit\Bundle\CategoryBundle\EventListener\SavePropertyListener'
+    arguments:
+      - '@flagbit.category.property_values_bag'
+      - '@flagbit.category.repository.category_property'
+      - '@doctrine.orm.entity_manager'
+    tags:
+      - { name: 'kernel.event_listener', event: 'akeneo.storage.post_save', method: 'onCategoryPostSave' }
