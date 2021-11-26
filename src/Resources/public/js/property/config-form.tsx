@@ -1,6 +1,6 @@
-import * as React from "react";
-import ConfigRenderer from "./type-config/config-renderer";
-import postConfig from "./api/post-config";
+import * as React from 'react';
+import ConfigRenderer from './type-config/config-renderer';
+import postConfig from './api/post-config';
 
 export type ChangeState = (code: string, isLocalizable: boolean, labels: Labels, config: any) => void;
 export type AddNewConfigToState = (code: string, type: string) => void;
@@ -9,16 +9,16 @@ export type Labels = {
     [index: string]: string;
 };
 export type SingleConfig = {
-    isLocalizable: boolean,
-    labels: Labels,
-    config: any,
-    type: string,
+    isLocalizable: boolean;
+    labels: Labels;
+    config: any;
+    type: string;
 };
 export type ConfigValuesType = {
     [index: string]: SingleConfig;
 };
 type StateType = {
-    configValues: ConfigValuesType
+    configValues: ConfigValuesType;
 };
 type Response = { config: ConfigValuesType };
 
@@ -27,15 +27,18 @@ const __ = require('oro/translator');
 
 class ConfigForm extends React.Component {
     state: StateType = {
-        configValues: {}
-    }
+        configValues: {},
+    };
 
     componentDidMount?(): void {
-        fetcherRegistry.getFetcher('flagbit-category-config').fetch(1).then((response: Response) => {
-            this.setState({
-                configValues: Array.isArray(response.config) ? {} : response.config
+        fetcherRegistry
+            .getFetcher('flagbit-category-config')
+            .fetch(1)
+            .then((response: Response) => {
+                this.setState({
+                    configValues: Array.isArray(response.config) ? {} : response.config,
+                });
             });
-        });
     }
 
     render(): React.ReactNode {
@@ -64,9 +67,9 @@ class ConfigForm extends React.Component {
 
             state.configValues[code] = {
                 isLocalizable: false,
-                labels: {null: ''},
+                labels: { null: '' },
                 config: {},
-                type: type
+                type: type,
             };
 
             this.setState(state);
@@ -92,11 +95,12 @@ class ConfigForm extends React.Component {
         return (
             <React.Fragment>
                 {configRenderer.render()}
-                <input id={'flagbit_category_config_json'}
-                       name={'flagbit_category_config_json'}
-                       hidden={true}
-                       readOnly={true}
-                       value={JSON.stringify(this.state.configValues)}
+                <input
+                    id={'flagbit_category_config_json'}
+                    name={'flagbit_category_config_json'}
+                    hidden={true}
+                    readOnly={true}
+                    value={JSON.stringify(this.state.configValues)}
                 />
                 <button onClick={onClick}>{__('pim_common.save')}</button>
             </React.Fragment>

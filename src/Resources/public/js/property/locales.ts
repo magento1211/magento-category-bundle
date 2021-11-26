@@ -5,13 +5,15 @@ class Locale {
     private locales: string[];
 
     initialize(): void {
-        FetcherRegistry.getFetcher('locale').fetchActivated({}).then((availableLocales: { code: string }[]) => {
-            this.locales = availableLocales.map((locale) => locale.code);
-        });
+        FetcherRegistry.getFetcher('locale')
+            .fetchActivated({})
+            .then((availableLocales: { code: string }[]) => {
+                this.locales = availableLocales.map((locale) => locale.code);
+            });
     }
 
     getEnabledLocales(isLocalizable: boolean): string[] {
-        return isLocalizable ? this.locales : ['null']
+        return isLocalizable ? this.locales : ['null'];
     }
 }
 

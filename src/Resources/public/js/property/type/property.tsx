@@ -1,8 +1,8 @@
 import * as React from 'react';
-import PropertyDto from "./property-dto";
+import PropertyDto from './property-dto';
 
 interface Property {
-    render(propertyDto: PropertyDto): React.ReactNode
+    render(propertyDto: PropertyDto): React.ReactNode;
 }
 
 export default Property;
