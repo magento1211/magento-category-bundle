@@ -37,8 +37,9 @@ class CategoryPropertyController
     {
         $categoryProperty = $this->findProperty($identifier);
 
+        $context = [AbstractNormalizer::IGNORED_ATTRIBUTES => ['category']];
         return new JsonResponse(
-            $this->normalizer->normalize($categoryProperty, 'internal_api', [AbstractNormalizer::IGNORED_ATTRIBUTES => ['category']])
+            $this->normalizer->normalize($categoryProperty, 'internal_api', $context)
         );
     }
 
