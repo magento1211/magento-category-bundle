@@ -1,8 +1,8 @@
 import ConfigForm from './config-form';
 
-define(['react', 'react-dom'], function (
+define(['react', 'react-dom'], (
     React, ReactDOM
-) {
+) => {
     return (domContainer) => {
         ReactDOM.render(<ConfigForm />, domContainer);
     };

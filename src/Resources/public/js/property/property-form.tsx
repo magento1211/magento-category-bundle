@@ -53,12 +53,12 @@ class PropertyForm extends React.Component<CategoryInfo> {
             const state = this.state;
 
             const propertyData = state.propertyValues[code] || {[locale]: {locale: locale, data: value}};
-            const isLocalizable = state.configValues[code].is_localizable;
+            const isLocalizable = state.configValues[code].isLocalizable;
 
             propertyData[locale] = {locale: locale, data: value};
 
             // Fill default value for newly enabled locales
-            FlagbitLocales.locales.getEnabledLocales(isLocalizable).forEach(function(currentLocale) {
+            FlagbitLocales.locales.getEnabledLocales(isLocalizable).forEach((currentLocale) => {
                 if (! (currentLocale in propertyData)) {
                     propertyData[currentLocale] = {locale: currentLocale, data: ''};
                 }

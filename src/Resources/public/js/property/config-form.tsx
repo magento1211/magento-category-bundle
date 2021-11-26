@@ -2,14 +2,14 @@ import * as React from "react";
 import ConfigRenderer from "./type-config/config-renderer";
 import postConfig from "./api/post-config";
 
-export type ChangeState = (code: string, is_localizable: boolean, labels: Labels, config: any) => void;
+export type ChangeState = (code: string, isLocalizable: boolean, labels: Labels, config: any) => void;
 export type AddNewConfigToState = (code: string, type: string) => void;
 export type RemoveConfigFromState = (code: string) => void;
 export type Labels = {
     [index: string]: string;
 };
 export type SingleConfig = {
-    is_localizable: boolean,
+    isLocalizable: boolean,
     labels: Labels,
     config: any,
     type: string,
@@ -22,7 +22,7 @@ type StateType = {
 };
 type Response = { config: ConfigValuesType };
 
-const FetcherRegistry = require('pim/fetcher-registry');
+const fetcherRegistry = require('pim/fetcher-registry');
 const __ = require('oro/translator');
 
 class ConfigForm extends React.Component {
@@ -31,7 +31,7 @@ class ConfigForm extends React.Component {
     }
 
     componentDidMount?(): void {
-        FetcherRegistry.getFetcher('flagbit-category-config').fetch(1).then((response: Response) => {
+        fetcherRegistry.getFetcher('flagbit-category-config').fetch(1).then((response: Response) => {
             this.setState({
                 configValues: Array.isArray(response.config) ? {} : response.config
             });
@@ -39,13 +39,13 @@ class ConfigForm extends React.Component {
     }
 
     render(): React.ReactNode {
-        const onChange: ChangeState = (code: string, is_localizable: boolean, labels: Labels, config: any) => {
+        const onChange: ChangeState = (code: string, isLocalizable: boolean, labels: Labels, config: any) => {
             const state = this.state;
 
             // TODO Add error handling for unknown code
             const configData: SingleConfig = state.configValues[code];
 
-            configData.is_localizable = is_localizable;
+            configData.isLocalizable = isLocalizable;
             configData.labels = labels;
             configData.config = config;
 
@@ -63,7 +63,7 @@ class ConfigForm extends React.Component {
             }
 
             state.configValues[code] = {
-                is_localizable: false,
+                isLocalizable: false,
                 labels: {null: ''},
                 config: {},
                 type: type

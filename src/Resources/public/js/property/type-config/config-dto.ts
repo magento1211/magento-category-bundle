@@ -2,7 +2,7 @@ import {ChangeState, Labels, SingleConfig} from "../config-form";
 
 class ConfigDto {
     readonly config: any;
-    readonly is_localizable: boolean;
+    readonly isLocalizable: boolean;
     readonly labels: Labels;
 
     constructor(
@@ -11,7 +11,7 @@ class ConfigDto {
         private readonly onChange: ChangeState
     ) {
         this.labels = configs.labels;
-        this.is_localizable = configs.is_localizable;
+        this.isLocalizable = configs.isLocalizable;
         this.config = configs.config;
     }
 
@@ -20,17 +20,17 @@ class ConfigDto {
     }
 
     updateConfig(config: any): void {
-        this.onChange(this.code, this.is_localizable, this.labels, config);
+        this.onChange(this.code, this.isLocalizable, this.labels, config);
     }
 
     updateLabel(locale: string|null, label: string): void {
         this.labels[locale] = label;
 
-        this.onChange(this.code, this.is_localizable, this.labels, this.config);
+        this.onChange(this.code, this.isLocalizable, this.labels, this.config);
     }
 
-    updateLocalizable(is_localizable: boolean): void {
-        this.onChange(this.code, is_localizable, this.labels, this.config);
+    updateLocalizable(isLocalizable: boolean): void {
+        this.onChange(this.code, isLocalizable, this.labels, this.config);
     }
 }
 

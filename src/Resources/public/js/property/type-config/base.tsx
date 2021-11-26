@@ -19,7 +19,7 @@ class Base implements Config {
                     <input id={baseId+'_localizable'}
                            type={'checkbox'}
                            value={1}
-                           checked={config.is_localizable}
+                           checked={config.isLocalizable}
                            className={'AknTextField'}
                            onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
                                config.updateLocalizable(event.target.checked);
@@ -28,7 +28,7 @@ class Base implements Config {
                 </div>
 
                 <div className={'AknFieldContainer'} key={baseId+'_labels_container'}>
-                    {FlagbitLocales.locales.getEnabledLocales(config.is_localizable).map((locale) => {
+                    {FlagbitLocales.locales.getEnabledLocales(config.isLocalizable).map((locale) => {
                         const label = config.labels[locale] || '';
 
                         return (<React.Fragment key={baseId+'_label_'+locale+'_container'}>

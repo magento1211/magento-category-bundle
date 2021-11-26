@@ -20,12 +20,12 @@ class PropertyRenderer {
                     const code = config[0];
                     const configValues = config[1];
                     const propertyValue = this.values[code];
-                    const locales = FlagbitLocales.locales.getEnabledLocales(configValues.is_localizable);
+                    const locales = FlagbitLocales.locales.getEnabledLocales(configValues.isLocalizable);
 
                     const label = <label style={{display: 'block', fontWeight: 900}}>{configValues.labels[FlagbitLocales.catalogLocale] || '['+code+']'}</label>;
                     const hr = <hr />;
                     const property = locales.map((locale) => {
-                        const langLabel = configValues.is_localizable ? <label>{locale}</label> : '';
+                        const langLabel = configValues.isLocalizable ? <label>{locale}</label> : '';
                         const data = propertyValue ? propertyValue[locale].data : '';
                         return [
                             langLabel,
