@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { AddNewConfigToState } from '../config-form';
+import registry from '../property-registry';
+const __ = require('oro/translator');
 
 const codeRegex = /^[a-z0-1_]+$/;
 const initState = {
@@ -45,8 +47,16 @@ class ConfigSubjoin extends React.Component<ConfigCreate> {
                             this.setState(state);
                         }}
                     >
-                        <option value={''}>Select property type</option>
-                        <option value={'text'}>Text</option>
+                        <option key={'config_option_default'} value={''}>
+                            Select property type
+                        </option>
+                        {registry.getOptions().map((option) => {
+                            return (
+                                <option key={'config_option_' + option} value={option}>
+                                    {__('flagbit_category.property_registry.option.' + option)}
+                                </option>
+                            );
+                        })}
                     </select>
                 </div>
 

@@ -6,14 +6,19 @@ config:
   config:
     pim/fetcher-registry:
       fetchers:
-        default: pim/base-fetcher
+        default: 'pim/base-fetcher'
         flagbit-category-property:
-          module: pim/base-fetcher
+          module: 'pim/base-fetcher'
           options:
             urls:
-              get: flagbit_category.internal_api.category_property_get
+              get: 'flagbit_category.internal_api.category_property_get'
         flagbit-category-config:
           module: pim/base-fetcher
           options:
             urls:
-              get: flagbit_category.internal_api.category_config_get
+              get: 'flagbit_category.internal_api.category_config_get'
+
+    flagbitcategory/js/property/property-registry:
+      text:
+        type: '@flagbitcategory/js/property/type/text.tsx'
+        config: '@flagbitcategory/js/property/type-config/base.tsx'
