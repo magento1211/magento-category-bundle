@@ -95,13 +95,6 @@ class ConfigForm extends React.Component {
         return (
             <React.Fragment>
                 {configRenderer.render()}
-                <input
-                    id={'flagbit_category_config_json'}
-                    name={'flagbit_category_config_json'}
-                    hidden={true}
-                    readOnly={true}
-                    value={JSON.stringify(this.state.configValues)}
-                />
                 <button onClick={onClick}>{__('pim_common.save')}</button>
             </React.Fragment>
         );
