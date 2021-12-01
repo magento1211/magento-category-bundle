@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Property from './property';
+import { Property, PropertyFactory } from './property';
 import PropertyDto from './property-dto';
 
 class Text implements Property {
@@ -22,4 +22,6 @@ class Text implements Property {
     }
 }
 
-export default Text;
+const factory: PropertyFactory = (): Property => new Text();
+
+export default factory;

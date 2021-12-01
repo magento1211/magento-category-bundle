@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ChangeState, PropertyValuesType } from '../property-form';
-import Text from './text';
 import PropertyDto from './property-dto';
 import { ConfigValuesType } from '../config-form';
 import { FlagbitLocales } from '../locales';
+import registry from '../property-registry';
 
 class PropertyRenderer {
     constructor(
@@ -30,7 +30,12 @@ class PropertyRenderer {
                     const property = locales.map((locale) => {
                         const langLabel = configValues.isLocalizable ? <label>{locale}</label> : '';
                         const data = propertyValue ? propertyValue[locale].data : '';
-                        return [langLabel, new Text().render(new PropertyDto(data, code, locale, configValues, this.onChange))];
+                        return [
+                            langLabel,
+                            registry
+                                .createProperty(configValues.type)
+                                .render(new PropertyDto(data, code, locale, configValues, this.onChange)),
+                        ];
                     });
 
                     return [label, property, hr];
