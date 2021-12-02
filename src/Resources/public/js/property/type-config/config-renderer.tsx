@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ChangeState, ConfigValuesType, AddNewConfigToState, RemoveConfigFromState } from '../config-form';
 import ConfigDto from './config-dto';
-import Base from './base';
 import ConfigSubjoin from './config-subjoin';
+import render from '../property-registry';
 
 const Close = ({ color, ...props }: { color: string } & any = { color: '#67768A' }) => (
     <svg viewBox="0 0 24 24" width="24" height="24" {...props}>
@@ -32,7 +32,7 @@ class ConfigRenderer {
                     return (
                         <div style={{ borderBottom: '1px solid #E8EBEE' }} key={'div_' + code + '_container'}>
                             <Close onClick={() => this.deleteConfig(code)} color="#67768A" className="AknOptionEditor-remove" />
-                            {new Base().render(configDto)}
+                            {render.createConfig(configs.type).render(configDto)}
                         </div>
                     );
                 })}

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Config from './config';
+import { Config, ConfigFactory } from './config';
 import ConfigDto from './config-dto';
 import { FlagbitLocales } from '../locales';
 
-class Base implements Config {
+export class Base implements Config {
     render(config: ConfigDto): React.ReactNode {
         const baseId = config.createId();
 
@@ -53,4 +53,6 @@ class Base implements Config {
     }
 }
 
-export default Base;
+const factory: ConfigFactory = (): Config => new Base();
+
+export default factory;

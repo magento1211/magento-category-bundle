@@ -1,9 +1,10 @@
 import { Property, PropertyFactory } from './type/property';
+import { Config, ConfigFactory } from './type-config/config';
 
 type RegisteredProperty = {
     [code: string]: {
         type: { default: PropertyFactory };
-        config: string;
+        config: { default: ConfigFactory };
     };
 };
 
@@ -16,6 +17,10 @@ class PropertyRegistry {
 
     createProperty(type: string): Property {
         return this.moduleConfig[type].type.default();
+    }
+
+    createConfig(type: string): Config {
+        return this.moduleConfig[type].config.default();
     }
 }
 

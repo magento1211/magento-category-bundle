@@ -1,8 +1,8 @@
 import * as React from 'react';
 import ConfigDto from './config-dto';
 
-interface Config {
+export interface Config {
     render(config: ConfigDto): React.ReactNode;
 }
 
-export default Config;
+export type ConfigFactory = () => Config;
