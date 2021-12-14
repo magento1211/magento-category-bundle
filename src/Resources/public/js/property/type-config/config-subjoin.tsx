@@ -43,7 +43,7 @@ class ConfigSubjoin extends React.Component<ConfigCreate> {
                         value={this.state.type}
                         onChange={(event: React.ChangeEvent<HTMLSelectElement>): void => {
                             const state = this.state;
-                            state.type = event.currentTarget.value;
+                            state.type = event.target.value;
                             this.setState(state);
                         }}
                     >
