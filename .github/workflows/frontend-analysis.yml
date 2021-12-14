@@ -38,4 +38,4 @@ jobs:
 
       - name: "Coding Style"
         #  jest/**/*{.ts,.tsx}
-        run: "yarn prettier --config .prettierrc.json --check src/Resources/public/**/*{.ts,.tsx}"
+        run: "yarn prettier --config .prettierrc.json --check src/Resources/public/**/*{.ts,.tsx} jest/**/*.ts jest/**/*{.ts,.tsx}"
