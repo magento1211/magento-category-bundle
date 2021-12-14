@@ -24,4 +24,5 @@ class Text implements Property {
 
 const factory: PropertyFactory = (): Property => new Text();
 
+// ts-unused-exports:disable-next-line
 export default factory;

@@ -3,6 +3,7 @@ import { Config, ConfigFactory } from './config';
 import ConfigDto from './config-dto';
 import { FlagbitLocales } from '../locales';
 
+// ts-unused-exports:disable-next-line
 export class Base implements Config {
     render(config: ConfigDto): React.ReactNode {
         const baseId = config.createId();
@@ -55,4 +56,5 @@ export class Base implements Config {
 
 const factory: ConfigFactory = (): Config => new Base();
 
+// ts-unused-exports:disable-next-line
 export default factory;
