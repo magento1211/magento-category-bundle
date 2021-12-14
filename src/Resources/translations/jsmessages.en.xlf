@@ -6,6 +6,26 @@
                 <source>flagbit_category.entity.category_config.plural_label</source>
                 <target>Category Properties</target>
             </trans-unit>
+
+            <trans-unit id="flagbit_category.config.subjoin.code">
+                <source>flagbit_category.config.subjoin.code</source>
+                <target>Code</target>
+            </trans-unit>
+
+            <trans-unit id="flagbit_category.config.subjoin.property_type">
+                <source>flagbit_category.config.subjoin.property_type</source>
+                <target>Type</target>
+            </trans-unit>
+
+            <trans-unit id="flagbit_category.config.subjoin.property_type.default">
+                <source>flagbit_category.config.subjoin.property_type.default</source>
+                <target>Select property type</target>
+            </trans-unit>
+
+            <trans-unit id="flagbit_category.config.subjoin.button">
+                <source>flagbit_category.config.subjoin.button</source>
+                <target>Append</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

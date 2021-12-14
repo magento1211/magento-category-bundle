@@ -22,7 +22,7 @@ class ConfigSubjoin extends React.Component<ConfigCreate> {
         return (
             <React.Fragment>
                 <div className={'AknFieldContainer'} key={baseId + '_code_container'}>
-                    <label htmlFor={baseId + '_code'}>Code</label>
+                    <label htmlFor={baseId + '_code'}>{__('flagbit_category.config.subjoin.code')}</label>
                     <input
                         id={baseId + '_code'}
                         type={'text'}
@@ -37,7 +37,7 @@ class ConfigSubjoin extends React.Component<ConfigCreate> {
                 </div>
 
                 <div className={'AknFieldContainer'} key={baseId + '_type_container'}>
-                    <label htmlFor={baseId + '_type'}>Type</label>
+                    <label htmlFor={baseId + '_type'}>{__('flagbit_category.config.subjoin.property_type')}</label>
                     <select
                         id={baseId + '_type'}
                         value={this.state.type}
@@ -48,7 +48,7 @@ class ConfigSubjoin extends React.Component<ConfigCreate> {
                         }}
                     >
                         <option key={'config_option_default'} value={''}>
-                            Select property type
+                            {__('flagbit_category.config.subjoin.property_type.default')}
                         </option>
                         {registry.getOptions().map((option) => {
                             return (
@@ -62,6 +62,7 @@ class ConfigSubjoin extends React.Component<ConfigCreate> {
 
                 <div className={'AknFieldContainer'} key={baseId + '_button_container'}>
                     <button
+                        id={'append_property_button'}
                         className={'AknButton'}
                         onClick={(): void => {
                             if (!codeRegex.test(this.state.code) || this.state.type === '') {
@@ -72,7 +73,7 @@ class ConfigSubjoin extends React.Component<ConfigCreate> {
                             this.setState(initState);
                         }}
                     >
-                        Append
+                        {__('flagbit_category.config.subjoin.button')}
                     </button>
                 </div>
             </React.Fragment>
