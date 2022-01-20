@@ -5,8 +5,8 @@ import PropertyDto from './property-dto';
 class Text implements Property {
     render(propertyDto: PropertyDto): React.ReactNode {
         return (
-            <React.Fragment>
-                <div key={propertyDto.code + propertyDto.locale}>
+            <React.Fragment key={propertyDto.code + propertyDto.locale}>
+                <div>
                     <input
                         id={propertyDto.createId()}
                         type={'text'}

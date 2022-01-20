@@ -22,13 +22,13 @@ class PropertyRenderer {
                     const locales = FlagbitLocales.locales.getEnabledLocales(configValues.isLocalizable);
 
                     const label = (
-                        <label style={{ display: 'block', fontWeight: 900 }}>
+                        <label style={{ display: 'block', fontWeight: 900 }} key={'label_' + code}>
                             {configValues.labels[FlagbitLocales.catalogLocale] || '[' + code + ']'}
                         </label>
                     );
-                    const hr = <hr />;
+                    const hr = <hr key={'hr_' + code} />;
                     const property = locales.map((locale) => {
-                        const langLabel = configValues.isLocalizable ? <label>{locale}</label> : '';
+                        const langLabel = configValues.isLocalizable ? <label key={'label_' + code + '_' + locale}>{locale}</label> : '';
                         const data = propertyValue ? propertyValue[locale].data : '';
                         return [
                             langLabel,
