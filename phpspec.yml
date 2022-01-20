@@ -12,4 +12,5 @@ extensions:
       - tests/
       - spec/
       - src/Resources
+      - src/Entity
       - src/DependencyInjection/FlagbitCategoryExtension.php

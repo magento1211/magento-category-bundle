@@ -16,18 +16,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CategoryPropertyController
 {
-    private EntityManagerInterface $entityManager;
     private CategoryPropertyRepository $repository;
     private NormalizerInterface $normalizer;
     private CategoryRepositoryInterface $categoryRepository;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
         CategoryPropertyRepository $repository,
         CategoryRepositoryInterface $categoryRepository,
         NormalizerInterface $normalizer
     ) {
-        $this->entityManager = $entityManager;
         $this->repository = $repository;
         $this->categoryRepository = $categoryRepository;
         $this->normalizer = $normalizer;

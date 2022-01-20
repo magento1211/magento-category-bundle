@@ -32,7 +32,7 @@ class CategoryConfigController
 
     public function get(int $identifier): Response
     {
-        $categoryConfig = $this->getConfig($identifier);
+        $categoryConfig = $this->findConfig($identifier);
 
         return new JsonResponse(
             $this->normalizer->normalize($categoryConfig, 'internal_api')
@@ -45,7 +45,7 @@ class CategoryConfigController
             return new RedirectResponse('/');
         }
 
-        $categoryConfig = $this->getConfig($identifier);
+        $categoryConfig = $this->findConfig($identifier);
 
         $config = json_decode($request->request->get('config'), true);
         // TODO Do validation of the config
@@ -57,7 +57,7 @@ class CategoryConfigController
         return new JsonResponse([]);
     }
 
-    private function getConfig(int $identifier): CategoryConfig
+    private function findConfig(int $identifier): CategoryConfig
     {
         /** @phpstan-var CategoryConfig|null $categoryConfig */
         $categoryConfig = $this->repository->find($identifier);
