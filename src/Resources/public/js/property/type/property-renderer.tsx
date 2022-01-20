@@ -23,7 +23,7 @@ class PropertyRenderer {
 
                     const label = (
                         <label style={{ display: 'block', fontWeight: 900 }} key={'label_' + code}>
-                            {configValues.labels[FlagbitLocales.catalogLocale] || '[' + code + ']'}
+                            {configValues.labels[configValues.isLocalizable ? FlagbitLocales.catalogLocale : 'null'] || '[' + code + ']'}
                         </label>
                     );
                     const hr = <hr key={'hr_' + code} />;
