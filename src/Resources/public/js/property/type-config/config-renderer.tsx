@@ -31,8 +31,12 @@ class ConfigRenderer {
 
                     return (
                         <div style={{ borderBottom: '1px solid #E8EBEE' }} key={'div_' + code + '_container'}>
-                            <Close onClick={() => this.deleteConfig(code)} color="#67768A" className="AknOptionEditor-remove" />
-                            {render.createConfig(configs.type).render(configDto)}
+                            <div style={{ float: 'right' }}>
+                                <Close onClick={() => this.deleteConfig(code)} color="#67768A" className="AknOptionEditor-remove" />
+                            </div>
+                            <div className="AknFormContainer AknFormContainer--withPadding">
+                                {render.createConfig(configs.type).render(configDto)}
+                            </div>
                         </div>
                     );
                 })}

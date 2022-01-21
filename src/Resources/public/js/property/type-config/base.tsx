@@ -11,22 +11,30 @@ export class Base implements Config {
         return (
             <React.Fragment>
                 <div className={'AknFieldContainer'} key={baseId + '_code_container'}>
-                    <label htmlFor={baseId + '_code'}>Code</label>
-                    <div id={baseId + '_code'}>{config.code}</div>
+                    <div className="AknFieldContainer-header">
+                        <label htmlFor={baseId + '_code'}>Code</label>
+                    </div>
+                    <div className="AknFieldContainer-inputContainer field-input">
+                        <div id={baseId + '_code'}>{config.code}</div>
+                    </div>
                 </div>
 
                 <div className={'AknFieldContainer'} key={baseId + '_localizable_container'}>
-                    <label htmlFor={baseId + '_localizable'}>Localizable</label>
-                    <input
-                        id={baseId + '_localizable'}
-                        type={'checkbox'}
-                        value={1}
-                        checked={config.isLocalizable}
-                        className={'AknTextField'}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
-                            config.updateLocalizable(event.target.checked);
-                        }}
-                    />
+                    <div className="AknFieldContainer-header">
+                        <label htmlFor={baseId + '_localizable'}>Localizable</label>
+                    </div>
+                    <div className="AknFieldContainer-inputContainer field-input">
+                        <input
+                            id={baseId + '_localizable'}
+                            type={'checkbox'}
+                            value={1}
+                            checked={config.isLocalizable}
+                            className={'AknTextField'}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+                                config.updateLocalizable(event.target.checked);
+                            }}
+                        />
+                    </div>
                 </div>
 
                 <div className={'AknFieldContainer'} key={baseId + '_labels_container'}>
@@ -35,16 +43,22 @@ export class Base implements Config {
 
                         return (
                             <React.Fragment key={baseId + '_label_' + locale + '_container'}>
-                                <label htmlFor={baseId + '_label_' + locale}>Label {locale}</label>
-                                <input
-                                    id={baseId + '_label_' + locale}
-                                    type={'text'}
-                                    value={label}
-                                    className={'AknTextField'}
-                                    onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
-                                        config.updateLabel(locale, event.target.value);
-                                    }}
-                                />
+                                <div className="AknFieldContainer-header">
+                                    <label className="AknFieldContainer-label" htmlFor={baseId + '_label_' + locale}>
+                                        Label {locale}
+                                    </label>
+                                </div>
+                                <div className="AknFieldContainer-inputContainer field-input">
+                                    <input
+                                        id={baseId + '_label_' + locale}
+                                        type={'text'}
+                                        value={label}
+                                        className={'AknTextField'}
+                                        onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
+                                            config.updateLabel(locale, event.target.value);
+                                        }}
+                                    />
+                                </div>
                             </React.Fragment>
                         );
                     })}
