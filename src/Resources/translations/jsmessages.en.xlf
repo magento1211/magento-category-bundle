@@ -26,6 +26,11 @@
                 <source>flagbit_category.config.subjoin.button</source>
                 <target>Append</target>
             </trans-unit>
+
+            <trans-unit id="flagbit_category.property_registry.option.text">
+                <source>flagbit_category.property_registry.option.text</source>
+                <target>Text</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
