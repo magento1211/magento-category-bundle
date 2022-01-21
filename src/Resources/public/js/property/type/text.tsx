@@ -6,7 +6,7 @@ class Text implements Property {
     render(propertyDto: PropertyDto): React.ReactNode {
         return (
             <React.Fragment key={propertyDto.code + propertyDto.locale}>
-                <div>
+                <div className="AknFieldContainer-inputContainer field-input">
                     <input
                         id={propertyDto.createId()}
                         type={'text'}

@@ -22,23 +22,33 @@ class PropertyRenderer {
                     const locales = FlagbitLocales.locales.getEnabledLocales(configValues.isLocalizable);
 
                     const label = (
-                        <label style={{ display: 'block', fontWeight: 900 }} key={'label_' + code}>
-                            {configValues.labels[FlagbitLocales.catalogLocale] || '[' + code + ']'}
-                        </label>
+                        <div className="AknFieldContainer-header">
+                            <label className="AknFieldContainer-label" style={{ fontWeight: 900 }} key={'label_' + code}>
+                                {configValues.labels[FlagbitLocales.catalogLocale] || '[' + code + ']'}
+                            </label>
+                        </div>
                     );
                     const hr = <hr key={'hr_' + code} />;
                     const property = locales.map((locale) => {
-                        const langLabel = configValues.isLocalizable ? <label key={'label_' + code + '_' + locale}>{locale}</label> : '';
+                        const langLabel = configValues.isLocalizable ? (
+                            <label className="AknFieldContainer-label" key={'label_' + code + '_' + locale}>
+                                {locale}
+                            </label>
+                        ) : (
+                            ''
+                        );
                         const data = propertyValue ? propertyValue[locale].data : '';
                         return [
-                            langLabel,
+                            <div className="AknFieldContainer-header" style={{ marginTop: '10px' }}>
+                                {langLabel}
+                            </div>,
                             registry
                                 .createProperty(configValues.type)
                                 .render(new PropertyDto(data, code, locale, configValues, this.onChange)),
                         ];
                     });
 
-                    return [label, property, hr];
+                    return <div className="AknFieldContainer">{[label, property, hr]}</div>;
                 })}
             </React.Fragment>
         );
