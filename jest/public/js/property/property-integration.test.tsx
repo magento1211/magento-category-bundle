@@ -19,7 +19,8 @@ const promiseConfig = new Promise((resolve) => {
             bar: {
                 isLocalizable: false,
                 labels: {
-                    null: 'label bar',
+                    de_DE: 'label bar de',
+                    en_US: 'label bar us',
                 },
                 config: {},
                 type: 'text',
@@ -143,7 +144,7 @@ describe('Integration of complete Property form', function () {
             expect(labels.at(1).text()).toBe('de_DE');
             expect(labels.at(2).text()).toBe('en_US');
 
-            expect(labels.at(3).text()).toBe('label bar');
+            expect(labels.at(3).text()).toBe('label bar us');
 
             expect(labels.length).toBe(4);
         });
