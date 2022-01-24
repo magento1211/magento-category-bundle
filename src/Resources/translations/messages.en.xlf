@@ -11,11 +11,6 @@
                 <source>flagbit_category.entity.category_config.plural_label</source>
                 <target>Category Properties</target>
             </trans-unit>
-
-            <trans-unit id="pim_title.flagbit_category.entity.category_config">
-                <source>pim_title.flagbit_category.entity.category_config</source>
-                <target>Flagbit Category Properties</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>
