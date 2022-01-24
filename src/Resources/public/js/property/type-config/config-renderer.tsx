@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ChangeState, ConfigValuesType, AddNewConfigToState, RemoveConfigFromState } from '../config-form';
 import ConfigDto from './config-dto';
-import ConfigSubjoin from './config-subjoin';
+import NewConfig from './new-config';
 import render from '../property-registry';
 
 const Close = ({ color, ...props }: { color: string } & any = { color: '#67768A' }) => (
@@ -41,7 +41,7 @@ class ConfigRenderer {
                     );
                 })}
                 <div key={'div_config_subjoin_container'}>
-                    <ConfigSubjoin addNewConfig={this.addNewConfig} />
+                    <NewConfig addNewConfig={this.addNewConfig} />
                 </div>
             </React.Fragment>
         );

@@ -13,7 +13,7 @@ type ConfigCreate = {
     addNewConfig: AddNewConfigToState;
 };
 
-class ConfigSubjoin extends React.Component<ConfigCreate> {
+class NewConfig extends React.Component<ConfigCreate> {
     state = initState;
 
     render(): React.ReactNode {
@@ -91,4 +91,4 @@ class ConfigSubjoin extends React.Component<ConfigCreate> {
     }
 }
 
-export default ConfigSubjoin;
+export default NewConfig;
