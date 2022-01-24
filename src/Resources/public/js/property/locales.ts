@@ -4,8 +4,8 @@ const userContext = require('pim/user-context');
 class Locale {
     private locales: string[];
 
-    initialize(): void {
-        FetcherRegistry.getFetcher('locale')
+    async initialize() {
+        await FetcherRegistry.getFetcher('locale')
             .fetchActivated({})
             .then((availableLocales: { code: string }[]) => {
                 this.locales = availableLocales.map((locale) => locale.code);
