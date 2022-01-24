@@ -43,7 +43,7 @@ class PropertyForm extends React.Component<CategoryInfo> {
             });
 
         FetcherRegistry.getFetcher('flagbit-category-property')
-            .fetch(this.props.categoryCode)
+            .fetch(this.props.categoryCode, { cached: false })
             .then((response: PropertyResponse) => {
                 this.setState({
                     propertyValues: Array.isArray(response.properties) ? {} : response.properties,
