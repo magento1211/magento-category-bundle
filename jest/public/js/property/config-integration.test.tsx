@@ -30,14 +30,13 @@ jest.mock(
     '../../../../src/Resources/public/js/property/locales',
     () => {
         const locales = {
-            getEnabledLocales: jest.fn().mockImplementation(() => ['de_DE', 'en_US']),
+            getEnabledLocales: jest.fn().mockImplementation((isLocalizable: boolean) => (isLocalizable ? ['de_DE', 'en_US'] : ['null'])),
         };
-        const catalogLocale = jest.fn().mockImplementation();
 
         return {
             FlagbitLocales: {
                 locales: locales,
-                catalogLocale: catalogLocale,
+                catalogLocale: 'en_US',
             },
         };
     },
