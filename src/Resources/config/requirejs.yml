@@ -4,6 +4,13 @@ config:
     flagbit-category/property/config-forms-renderer: flagbitcategory/js/property/config-forms-renderer
 
   config:
+    pim/controller-registry:
+      controllers:
+        flagbit_category.entity.category_config:
+          module: flagbit-category/property/config-forms-renderer
+          aclResourceId: pim_enrich_product_category_list
+          config:
+            form_builder_name: "flagbit-config-index"
     pim/fetcher-registry:
       fetchers:
         default: 'pim/base-fetcher'

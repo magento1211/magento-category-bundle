@@ -7,3 +7,17 @@ extensions:
     config:
       title: flagbit_category.entity.category_config.plural_label
       to: flagbit_category.entity.category_config
+
+  flagbit-config-index-breadcrumbs:
+    module: pim/common/breadcrumbs
+    parent: flagbit-config-index
+    targetZone: breadcrumbs
+    config:
+      tab: pim-menu-settings
+      item: flagbit-menu-settings-product-category-config
+
+  # form builder used in controller
+  flagbit-config-index:
+    module: pim/common/simple-view
+    config:
+      template: pim/template/common/default-template
