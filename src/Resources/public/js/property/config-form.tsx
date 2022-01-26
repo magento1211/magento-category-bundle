@@ -106,7 +106,7 @@ class ConfigForm extends React.Component {
                             <header className="AknTitleContainer navigation">
                                 <div className="AknTitleContainer-line">
                                     <div className="AknTitleContainer-imageContainer" data-drop-zone="main-image">
-                                        <img alt="neu" className="AknTitleContainer-image" src="/bundles/pimui/images/info-user.png" />
+                                        <img alt="neu" className="AknTitleContainer-image" src="/bundles/flagbitcategory/images/logo.png" />
                                     </div>
                                     <div className="AknTitleContainer-mainContainer">
                                         <div>
