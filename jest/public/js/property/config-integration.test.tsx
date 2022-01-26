@@ -102,6 +102,25 @@ describe('Integration of complete Config form', function () {
         expect(localizable.props().type).toBe('checkbox');
         expect(localizable.name()).toBe('input');
     });
+
+    test('Remove property config', function () {
+        const renderedView = renderView();
+
+        const newCodeField = renderedView.find('#new_config_code');
+        const newTypeField = renderedView.find('#new_config_type');
+        const appendButton = renderedView.find('#append_property_button');
+
+        newCodeField.simulate('change', { target: { value: 'foo' } });
+        newTypeField.simulate('change', { target: { value: 'text' } });
+        appendButton.simulate('click');
+
+        const closeButton = renderedView.find('svg').first();
+        closeButton.simulate('click');
+
+        // No other properties should currently be there after the added ones were removed
+        const otherInputs = renderedView.find('input');
+        expect(otherInputs.length).toBe(1);
+    });
 });
 
 function renderView() {
