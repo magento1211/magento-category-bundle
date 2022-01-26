@@ -41,6 +41,26 @@
                 <source>pim_title.flagbit_category.entity.category_config</source>
                 <target>Flagbit Kategorie Eigenschaften</target>
             </trans-unit>
+
+            <trans-unit id="flagbit_category.config.code">
+                <source>flagbit_category.config.code</source>
+                <target>Code</target>
+            </trans-unit>
+
+            <trans-unit id="flagbit_category.config.type">
+                <source>flagbit_category.config.type</source>
+                <target>Typ</target>
+            </trans-unit>
+
+            <trans-unit id="flagbit_category.config.localizable">
+                <source>flagbit_category.config.localizable</source>
+                <target>Mehrsprachig</target>
+            </trans-unit>
+
+            <trans-unit id="flagbit_category.config.label">
+                <source>flagbit_category.config.label</source>
+                <target>Label</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

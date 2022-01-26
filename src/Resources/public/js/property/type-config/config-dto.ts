@@ -4,11 +4,13 @@ class ConfigDto {
     readonly config: any;
     readonly isLocalizable: boolean;
     readonly labels: Labels;
+    readonly type: string;
 
     constructor(private readonly configs: SingleConfig, readonly code: string, private readonly onChange: ChangeState) {
         this.labels = configs.labels;
         this.isLocalizable = configs.isLocalizable;
         this.config = configs.config;
+        this.type = configs.type;
     }
 
     createId(): string {

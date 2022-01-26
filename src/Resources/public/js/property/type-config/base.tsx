@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Config, ConfigFactory } from './config';
 import ConfigDto from './config-dto';
 import { FlagbitLocales } from '../locales';
+const __ = require('oro/translator');
 
 // ts-unused-exports:disable-next-line
 export class Base implements Config {
@@ -12,16 +13,25 @@ export class Base implements Config {
             <React.Fragment>
                 <div className={'AknFieldContainer'} key={baseId + '_code_container'}>
                     <div className="AknFieldContainer-header">
-                        <label htmlFor={baseId + '_code'}>Code</label>
+                        <label htmlFor={baseId + '_code'}>{__('flagbit_category.config.code')}</label>
                     </div>
                     <div className="AknFieldContainer-inputContainer field-input">
                         <div id={baseId + '_code'}>{config.code}</div>
                     </div>
                 </div>
 
+                <div className={'AknFieldContainer'} key={baseId + '_type_container'}>
+                    <div className="AknFieldContainer-header">
+                        <label htmlFor={baseId + '_type'}>{__('flagbit_category.config.type')}</label>
+                    </div>
+                    <div className="AknFieldContainer-inputContainer field-input">
+                        <div id={baseId + '_type'}>{__('flagbit_category.property_registry.option.' + config.type)}</div>
+                    </div>
+                </div>
+
                 <div className={'AknFieldContainer'} key={baseId + '_localizable_container'}>
                     <div className="AknFieldContainer-header">
-                        <label htmlFor={baseId + '_localizable'}>Localizable</label>
+                        <label htmlFor={baseId + '_localizable'}>{__('flagbit_category.config.localizable')}</label>
                     </div>
                     <div className="AknFieldContainer-inputContainer field-input">
                         <input
@@ -45,7 +55,7 @@ export class Base implements Config {
                             <React.Fragment key={baseId + '_label_' + locale + '_container'}>
                                 <div className="AknFieldContainer-header">
                                     <label className="AknFieldContainer-label" htmlFor={baseId + '_label_' + locale}>
-                                        Label {locale}
+                                        {__('flagbit_category.config.label')} {locale}
                                     </label>
                                 </div>
                                 <div className="AknFieldContainer-inputContainer field-input">
