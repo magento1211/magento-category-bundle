@@ -22,6 +22,7 @@ class NewConfig extends React.Component<ConfigCreate> {
         return (
             <React.Fragment>
                 <div className="AknFormContainer AknFormContainer--withPadding">
+                    <h3>{__('flagbit_category.config.subjoin.title')}</h3>
                     <div className={'AknFieldContainer'} key={baseId + '_code_container'}>
                         <div className="AknFieldContainer-header">
                             <label htmlFor={baseId + '_code'}>{__('flagbit_category.config.subjoin.code')}</label>

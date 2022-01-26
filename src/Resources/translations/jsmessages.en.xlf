@@ -27,6 +27,11 @@
                 <target>Append</target>
             </trans-unit>
 
+            <trans-unit id="flagbit_category.config.subjoin.title">
+                <source>flagbit_category.config.subjoin.title</source>
+                <target>Add new Category Property</target>
+            </trans-unit>
+
             <trans-unit id="flagbit_category.property_registry.option.text">
                 <source>flagbit_category.property_registry.option.text</source>
                 <target>Text</target>

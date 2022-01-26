@@ -27,6 +27,11 @@
                 <target>Hinzufügen</target>
             </trans-unit>
 
+            <trans-unit id="flagbit_category.config.subjoin.title">
+                <source>flagbit_category.config.subjoin.title</source>
+                <target>Neue Kategorie Eigenschaft hinzufügen</target>
+            </trans-unit>
+
             <trans-unit id="flagbit_category.property_registry.option.text">
                 <source>flagbit_category.property_registry.option.text</source>
                 <target>Text</target>
