@@ -46,7 +46,7 @@ describe('Text property type', function () {
         const renderedView = shallow(<Text />);
 
         const contentInputField = renderedView.find('input').first();
-        contentInputField.simulate('change', { target: { value: 'value2' }});
+        contentInputField.simulate('change', { target: { value: 'value2' } });
 
         expect(onChange.mock.calls.length).toBe(1);
         expect(onChange.mock.calls[0][0]).toBe('code');

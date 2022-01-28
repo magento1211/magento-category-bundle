@@ -4,7 +4,7 @@ const createConfig = () => ({
     isLocalizable: true,
     labels: { de_DE: 'label de', en_US: 'label us' },
     config: {},
-    type: 'text'
+    type: 'text',
 });
 
 describe('Property data transfer object', function () {
@@ -35,13 +35,13 @@ describe('Property data transfer object', function () {
 
         const dto = new ConfigDto(config, 'code', onChange);
 
-        dto.updateConfig({foo: 'test'});
+        dto.updateConfig({ foo: 'test' });
 
         expect(onChange.mock.calls.length).toBe(1);
         expect(onChange.mock.calls[0][0]).toBe('code');
         expect(onChange.mock.calls[0][1]).toBe(true);
         expect(onChange.mock.calls[0][2]).toEqual({ de_DE: 'label de', en_US: 'label us' });
-        expect(onChange.mock.calls[0][3]).toEqual({foo: 'test'});
+        expect(onChange.mock.calls[0][3]).toEqual({ foo: 'test' });
     });
 
     test('Update Label', function () {

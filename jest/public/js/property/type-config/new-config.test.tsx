@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import NewConfig from '../../../../../src/Resources/public/js/property/type-config/new-config';
-import base from "../../../../../src/Resources/public/js/property/type-config/base";
-import text from "../../../../../src/Resources/public/js/property/type/text";
+import base from '../../../../../src/Resources/public/js/property/type-config/base';
+import text from '../../../../../src/Resources/public/js/property/type/text';
 
 jest.mock(
     '../../../../../src/Resources/public/js/property/locales',
@@ -68,7 +68,7 @@ describe('New Config', function () {
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
 
         const codeField = renderedView.find('input#new_config_code');
-        codeField.simulate('change', { target: { value: 'my_code' }});
+        codeField.simulate('change', { target: { value: 'my_code' } });
 
         const addButton = renderedView.find('button');
         addButton.simulate('click');
@@ -84,10 +84,10 @@ describe('New Config', function () {
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
 
         const codeField = renderedView.find('input#new_config_code');
-        codeField.simulate('change', { target: { value: '' }});
+        codeField.simulate('change', { target: { value: '' } });
 
         const typeSelect = renderedView.find('select#new_config_type');
-        typeSelect.simulate('change', { target: { value: 'text' }});
+        typeSelect.simulate('change', { target: { value: 'text' } });
 
         const addButton = renderedView.find('button');
         addButton.simulate('click');
@@ -102,10 +102,10 @@ describe('New Config', function () {
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
 
         const codeField = renderedView.find('input#new_config_code');
-        codeField.simulate('change', { target: { value: 'my-code' }});
+        codeField.simulate('change', { target: { value: 'my-code' } });
 
         const typeSelect = renderedView.find('select#new_config_type');
-        typeSelect.simulate('change', { target: { value: 'text' }});
+        typeSelect.simulate('change', { target: { value: 'text' } });
 
         const addButton = renderedView.find('button');
         addButton.simulate('click');
@@ -120,10 +120,10 @@ describe('New Config', function () {
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
 
         const codeField = renderedView.find('input#new_config_code');
-        codeField.simulate('change', { target: { value: 'my_code' }});
+        codeField.simulate('change', { target: { value: 'my_code' } });
 
         const typeSelect = renderedView.find('select#new_config_type');
-        typeSelect.simulate('change', { target: { value: 'text' }});
+        typeSelect.simulate('change', { target: { value: 'text' } });
 
         const addButton = renderedView.find('button');
         addButton.simulate('click');

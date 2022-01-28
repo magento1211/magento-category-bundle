@@ -4,7 +4,7 @@ const createConfig = () => ({
     isLocalizable: false,
     labels: { null: 'label' },
     config: {},
-    type: 'text'
+    type: 'text',
 });
 
 describe('Property data transfer object', function () {

@@ -65,7 +65,7 @@ describe('Base config', function () {
         const renderedView = shallow(<Base />);
 
         const localizableCheckbox = renderedView.find('input#flagbit_id_code_localizable');
-        localizableCheckbox.simulate('change', { target: { checked: false }});
+        localizableCheckbox.simulate('change', { target: { checked: false } });
 
         expect(onChange.mock.calls.length).toBe(1);
         expect(onChange.mock.calls[0][0]).toBe('code');
@@ -86,14 +86,14 @@ describe('Base config', function () {
         const renderedView = shallow(<Base />);
 
         const labelFields = renderedView.find('input');
-        labelFields.at(1).simulate('change', { target: { value: 'de' }});
+        labelFields.at(1).simulate('change', { target: { value: 'de' } });
 
         expect(onChange.mock.calls[0][0]).toBe('code');
         expect(onChange.mock.calls[0][1]).toBe(true);
         expect(onChange.mock.calls[0][2]).toEqual({ de_DE: 'de', en_US: 'label us' });
         expect(onChange.mock.calls[0][3]).toEqual({});
 
-        labelFields.at(2).simulate('change', { target: { value: 'us' }});
+        labelFields.at(2).simulate('change', { target: { value: 'us' } });
 
         expect(onChange.mock.calls[0][0]).toBe('code');
         expect(onChange.mock.calls[0][1]).toBe(true);
