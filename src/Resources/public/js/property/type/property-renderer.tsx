@@ -37,7 +37,7 @@ class PropertyRenderer {
                         ) : (
                             ''
                         );
-                        const data = propertyValue ? propertyValue[locale].data : '';
+                        const data = propertyValue ? (propertyValue[locale] ? propertyValue[locale].data : '') : '';
                         return [
                             <div className="AknFieldContainer-header" style={{ marginTop: '10px' }}>
                                 {langLabel}

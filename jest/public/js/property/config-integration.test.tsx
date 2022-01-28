@@ -18,39 +18,46 @@ const promise = new Promise((resolve) => {
 const configFetcher = {
     fetch: () => promise,
 };
-jest.mock(
-    'pim/fetcher-registry',
-    () => ({
-        getFetcher: jest.fn().mockImplementation(() => configFetcher),
-    }),
-    { virtual: true }
-);
+jest.mock('pim/fetcher-registry', () => ({
+    getFetcher: jest.fn().mockImplementation(() => configFetcher),
+}));
 
-jest.mock(
-    '../../../../src/Resources/public/js/property/locales',
-    () => {
-        const locales = {
-            getEnabledLocales: jest.fn().mockImplementation((isLocalizable: boolean) => (isLocalizable ? ['de_DE', 'en_US'] : ['null'])),
-        };
+jest.mock('../../../../src/Resources/public/js/property/locales', () => {
+    const locales = {
+        getEnabledLocales: jest.fn().mockImplementation((isLocalizable: boolean) => (isLocalizable ? ['de_DE', 'en_US'] : ['null'])),
+    };
 
-        return {
-            FlagbitLocales: {
-                locales: locales,
-                catalogLocale: 'en_US',
+    return {
+        FlagbitLocales: {
+            locales: locales,
+            catalogLocale: 'en_US',
+        },
+    };
+});
+jest.mock('../../../../src/Resources/public/js/property/property-registry', () => ({
+    getOptions: jest.fn().mockImplementation(() => ['text']),
+    createConfig: jest.fn().mockImplementation(() => base()),
+    createProperty: jest.fn().mockImplementation(() => text()),
+}));
+
+jest.mock('../../../../src/Resources/public/js/property/api/post-config', () => ({
+    post: (object) => {
+        const expected = {
+            foo: {
+                config: {},
+                isLocalizable: true,
+                labels: {
+                    de_DE: 'new label de',
+                    en_US: 'new label us',
+                    null: '',
+                },
+                type: 'text',
             },
         };
+
+        expect(object).toEqual(expected);
     },
-    { virtual: true }
-);
-jest.mock(
-    '../../../../src/Resources/public/js/property/property-registry',
-    () => ({
-        getOptions: jest.fn().mockImplementation(() => ['text']),
-        createConfig: jest.fn().mockImplementation(() => base()),
-        createProperty: jest.fn().mockImplementation(() => text()),
-    }),
-    { virtual: true }
-);
+}));
 
 describe('Integration of complete Config form', function () {
     test('Default empty rendering', function () {
@@ -76,13 +83,7 @@ describe('Integration of complete Config form', function () {
     test('Add new property config', function () {
         const renderedView = renderView();
 
-        const newCodeField = renderedView.find('#new_config_code');
-        const newTypeField = renderedView.find('#new_config_type');
-        const appendButton = renderedView.find('#append_property_button');
-
-        newCodeField.simulate('change', { target: { value: 'foo' } });
-        newTypeField.simulate('change', { target: { value: 'text' } });
-        appendButton.simulate('click');
+        addNewConfig(renderedView);
 
         const code = renderedView.find('#flagbit_id_foo_code');
         expect(code.text()).toBe('foo');
@@ -99,6 +100,7 @@ describe('Integration of complete Config form', function () {
 
         const localizable = renderedView.find('#flagbit_id_foo_localizable');
         expect(localizable.props().value).toBe(1);
+        expect(localizable.props().checked).toBe(false);
         expect(localizable.props().type).toBe('checkbox');
         expect(localizable.name()).toBe('input');
     });
@@ -106,13 +108,7 @@ describe('Integration of complete Config form', function () {
     test('Remove property config', function () {
         const renderedView = renderView();
 
-        const newCodeField = renderedView.find('#new_config_code');
-        const newTypeField = renderedView.find('#new_config_type');
-        const appendButton = renderedView.find('#append_property_button');
-
-        newCodeField.simulate('change', { target: { value: 'foo' } });
-        newTypeField.simulate('change', { target: { value: 'text' } });
-        appendButton.simulate('click');
+        addNewConfig(renderedView);
 
         const closeButton = renderedView.find('svg').first();
         closeButton.simulate('click');
@@ -121,8 +117,60 @@ describe('Integration of complete Config form', function () {
         const otherInputs = renderedView.find('input');
         expect(otherInputs.length).toBe(1);
     });
+
+    test('Change property config', function () {
+        const renderedView = renderView();
+
+        addNewConfig(renderedView);
+
+        let labelDe = renderedView.find('#flagbit_id_foo_label_de_DE');
+        labelDe.simulate('change', { target: { value: 'new label de' } });
+
+        let labelUs = renderedView.find('#flagbit_id_foo_label_en_US');
+        labelUs.simulate('change', { target: { value: 'new label us' } });
+
+        let localizable = renderedView.find('#flagbit_id_foo_localizable');
+        localizable.simulate('change', { target: { checked: true } });
+
+        renderedView.update();
+        labelDe = renderedView.find('#flagbit_id_foo_label_de_DE');
+        labelUs = renderedView.find('#flagbit_id_foo_label_en_US');
+        localizable = renderedView.find('#flagbit_id_foo_localizable');
+
+        expect(labelDe.props().value).toBe('new label de');
+        expect(labelUs.props().value).toBe('new label us');
+        expect(localizable.props().checked).toBe(true);
+    });
+
+    test('Saving config', function () {
+        const renderedView = renderView();
+
+        addNewConfig(renderedView);
+
+        const labelDe = renderedView.find('#flagbit_id_foo_label_de_DE');
+        labelDe.simulate('change', { target: { value: 'new label de' } });
+
+        const labelUs = renderedView.find('#flagbit_id_foo_label_en_US');
+        labelUs.simulate('change', { target: { value: 'new label us' } });
+
+        const localizable = renderedView.find('#flagbit_id_foo_localizable');
+        localizable.simulate('change', { target: { checked: true } });
+
+        const saveButton = renderedView.find('button').first();
+        saveButton.simulate('click');
+    });
 });
 
 function renderView() {
-    return mount(<ConfigForm />, {});
+    return mount(<ConfigForm />);
+}
+
+function addNewConfig(wrapper): void {
+    const newCodeField = wrapper.find('#new_config_code');
+    const newTypeField = wrapper.find('#new_config_type');
+    const appendButton = wrapper.find('#append_property_button');
+
+    newCodeField.simulate('change', { target: { value: 'foo' } });
+    newTypeField.simulate('change', { target: { value: 'text' } });
+    appendButton.simulate('click');
 }

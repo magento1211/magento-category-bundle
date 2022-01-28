@@ -3,6 +3,7 @@ import { mount, shallow } from 'enzyme';
 import base from '../../../../src/Resources/public/js/property/type-config/base';
 import text from '../../../../src/Resources/public/js/property/type/text';
 import PropertyForm from '../../../../src/Resources/public/js/property/property-form';
+import { waitFor } from '@testing-library/react';
 
 const promiseConfig = new Promise((resolve) => {
     resolve({
@@ -25,6 +26,15 @@ const promiseConfig = new Promise((resolve) => {
                 config: {},
                 type: 'text',
             },
+            // Config with missing label and missing property entry
+            qux: {
+                isLocalizable: false,
+                labels: {
+                    de_DE: 'Qux de',
+                },
+                config: {},
+                type: 'text',
+            },
         },
     });
 });
@@ -40,10 +50,6 @@ const promiseProperty = new Promise((resolve) => {
                     locale: 'de_DE',
                     data: 'deutsch',
                 },
-                en_US: {
-                    locale: 'en_US',
-                    data: 'english',
-                },
             },
             bar: {
                 null: {
@@ -58,95 +64,110 @@ const propertyFetcher = {
     fetch: () => promiseProperty,
 };
 
-jest.mock(
-    'pim/fetcher-registry',
-    () => ({
-        getFetcher: jest.fn().mockImplementation((name: string) => {
-            if (name === 'flagbit-category-config') {
-                return configFetcher;
-            }
+jest.mock('pim/fetcher-registry', () => ({
+    getFetcher: jest.fn().mockImplementation((name: string) => {
+        if (name === 'flagbit-category-config') {
+            return configFetcher;
+        }
 
-            if (name === 'flagbit-category-property') {
-                return propertyFetcher;
-            }
-        }),
+        if (name === 'flagbit-category-property') {
+            return propertyFetcher;
+        }
     }),
-    { virtual: true }
-);
+}));
 
-jest.mock(
-    '../../../../src/Resources/public/js/property/locales',
-    () => {
-        const locales = {
-            getEnabledLocales: jest.fn().mockImplementation((isLocalizable: boolean) => (isLocalizable ? ['de_DE', 'en_US'] : ['null'])),
-        };
+jest.mock('../../../../src/Resources/public/js/property/locales', () => {
+    const locales = {
+        getEnabledLocales: jest.fn().mockImplementation((isLocalizable: boolean) => (isLocalizable ? ['de_DE', 'en_US'] : ['null'])),
+    };
 
-        return {
-            FlagbitLocales: {
-                locales: locales,
-                catalogLocale: 'en_US',
-            },
-        };
-    },
-    { virtual: true }
-);
-jest.mock(
-    '../../../../src/Resources/public/js/property/property-registry',
-    () => ({
-        getOptions: jest.fn().mockImplementation(() => ['text']),
-        createConfig: jest.fn().mockImplementation(() => base()),
-        createProperty: jest.fn().mockImplementation(() => text()),
-    }),
-    { virtual: true }
-);
+    return {
+        FlagbitLocales: {
+            locales: locales,
+            catalogLocale: 'en_US',
+        },
+    };
+});
+jest.mock('../../../../src/Resources/public/js/property/property-registry', () => ({
+    getOptions: jest.fn().mockImplementation(() => ['text']),
+    createConfig: jest.fn().mockImplementation(() => base()),
+    createProperty: jest.fn().mockImplementation(() => text()),
+}));
 
 describe('Integration of complete Property form', function () {
     test('Rendering hidden input field relevant for saving', async function () {
-        const renderedView = mount(<PropertyForm categoryCode={'foo_property_code'} />, {});
+        const renderedView = await waitFor(() => mount(<PropertyForm categoryCode={'foo_property_code'} />));
 
-        const contentInputField = renderedView.find('#flagbit_category_properties_json');
+        let contentInputField = renderedView.find('#flagbit_category_properties_json');
         expect(contentInputField.name()).toBe('input');
         expect(contentInputField.props().hidden).toBeTruthy();
 
-        const expected =
-            '<input id="flagbit_category_properties_json" name="flagbit_category_properties_json" hidden="" readonly="" value="{&quot;foo&quot;:{&quot;de_DE&quot;:{&quot;locale&quot;:&quot;de_DE&quot;,&quot;data&quot;:&quot;deutsch&quot;},&quot;en_US&quot;:{&quot;locale&quot;:&quot;en_US&quot;,&quot;data&quot;:&quot;english&quot;}},&quot;bar&quot;:{&quot;null&quot;:{&quot;locale&quot;:&quot;null&quot;,&quot;data&quot;:&quot;regular value&quot;}}}">';
-        await setImmediate(() => {
-            // Props don't update, but the changes are in the html visible
-            expect(contentInputField.html()).toBe(expected);
-        });
+        const expected = '{"foo":{"de_DE":{"locale":"de_DE","data":"deutsch"}},"bar":{"null":{"locale":"null","data":"regular value"}}}';
+
+        renderedView.update();
+
+        contentInputField = renderedView.find('#flagbit_category_properties_json');
+        expect(contentInputField.props().value).toBe(expected);
     });
 
     test('Rendering fields by config and properties', async function () {
-        const renderedView = shallow(<PropertyForm categoryCode={'foo_property_code'} />, {});
+        const renderedView = await waitFor(() => mount(<PropertyForm categoryCode={'foo_property_code'} />));
 
-        setImmediate(() => {
-            // Input fields
-            const inputFields = renderedView.find('input');
+        renderedView.update();
 
-            expect(inputFields.get(0).props.value).toBe('deutsch');
-            expect(inputFields.get(0).props.id).toBe('flagbit_id_foo_de_DE');
-            expect(inputFields.get(0).props.type).toBe('text');
+        // Input fields
+        const inputFields = renderedView.find('input');
 
-            expect(inputFields.get(1).props.value).toBe('english');
-            expect(inputFields.get(1).props.id).toBe('flagbit_id_foo_en_US');
-            expect(inputFields.get(1).props.type).toBe('text');
+        expect(inputFields.get(0).props.value).toBe('deutsch');
+        expect(inputFields.get(0).props.id).toBe('flagbit_id_foo_de_DE');
+        expect(inputFields.get(0).props.type).toBe('text');
 
-            expect(inputFields.get(2).props.value).toBe('regular value');
-            expect(inputFields.get(2).props.id).toBe('flagbit_id_bar_null');
-            expect(inputFields.get(2).props.type).toBe('text');
+        expect(inputFields.get(1).props.value).toBe('');
+        expect(inputFields.get(1).props.id).toBe('flagbit_id_foo_en_US');
+        expect(inputFields.get(1).props.type).toBe('text');
 
-            expect(inputFields.length).toBe(4);
+        expect(inputFields.get(2).props.value).toBe('regular value');
+        expect(inputFields.get(2).props.id).toBe('flagbit_id_bar_null');
+        expect(inputFields.get(2).props.type).toBe('text');
 
-            // Labels
-            const labels = renderedView.find('label');
+        // Renders the qux config where the property data was missing
+        expect(inputFields.get(3).props.value).toBe('');
+        expect(inputFields.get(3).props.id).toBe('flagbit_id_qux_null');
+        expect(inputFields.get(3).props.type).toBe('text');
 
-            expect(labels.at(0).text()).toBe('US foo');
-            expect(labels.at(1).text()).toBe('de_DE');
-            expect(labels.at(2).text()).toBe('en_US');
+        expect(inputFields.length).toBe(5);
 
-            expect(labels.at(3).text()).toBe('label bar us');
+        // Labels
+        const labels = renderedView.find('label');
 
-            expect(labels.length).toBe(4);
-        });
+        expect(labels.at(0).text()).toBe('US foo');
+        expect(labels.at(1).text()).toBe('de_DE');
+        expect(labels.at(2).text()).toBe('en_US');
+
+        expect(labels.at(3).text()).toBe('label bar us');
+
+        // Label text is missing. Use fallback
+        expect(labels.at(4).text()).toBe('[qux]');
+
+        expect(labels.length).toBe(5);
+    });
+
+    test('Updating fields of properties', async function () {
+        const renderedView = await waitFor(() => mount(<PropertyForm categoryCode={'foo_property_code'} />));
+
+        renderedView.update();
+        let inputFields = renderedView.find('input');
+
+        inputFields.at(0).simulate('change', { target: { value: 'german' } });
+        inputFields.at(2).simulate('change', { target: { value: 'reg val' } });
+        // Renders the qux config where the property data was missing
+        inputFields.at(3).simulate('change', { target: { value: 'quux' } });
+
+        renderedView.update();
+        inputFields = renderedView.find('input');
+
+        expect(inputFields.get(0).props.value).toBe('german');
+        expect(inputFields.get(2).props.value).toBe('reg val');
+        expect(inputFields.get(3).props.value).toBe('quux');
     });
 });
