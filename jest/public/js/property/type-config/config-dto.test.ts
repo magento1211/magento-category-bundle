@@ -17,7 +17,16 @@ describe('Property data transfer object', function () {
         expect(dto.type).toBe('text');
         expect(dto.isLocalizable).toBeTruthy();
         expect(dto.config).toEqual({});
-        expect(dto.labels).toEqual({ de_DE: 'label de', en_US: 'label us' });
+    });
+
+    test('getLabel', function () {
+        const config = createConfig();
+
+        const dto = new ConfigDto(config, 'code', jest.fn());
+
+        expect(dto.getLabel('de_DE')).toEqual('label de');
+        expect(dto.getLabel('en_US')).toEqual('label us');
+        expect(dto.getLabel('fr_FR')).toEqual('');
     });
 
     test('Create ID', function () {

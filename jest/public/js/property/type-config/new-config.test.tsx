@@ -73,7 +73,6 @@ describe('New Config', function () {
         const addButton = renderedView.find('button');
         addButton.simulate('click');
 
-        console.log(onChange.mock.calls);
         expect(onChange.mock.calls.length).toBe(0);
     });
 

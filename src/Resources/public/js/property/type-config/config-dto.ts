@@ -3,7 +3,7 @@ import { ChangeState, Labels, SingleConfig } from '../config-form';
 class ConfigDto {
     readonly config: any;
     readonly isLocalizable: boolean;
-    readonly labels: Labels;
+    private readonly labels: Labels;
     readonly type: string;
 
     constructor(private readonly configs: SingleConfig, readonly code: string, private readonly onChange: ChangeState) {
@@ -15,6 +15,10 @@ class ConfigDto {
 
     createId(): string {
         return 'flagbit_id_' + this.code;
+    }
+
+    getLabel(locale: string): string {
+        return this.labels[locale] || '';
     }
 
     updateConfig(config: any): void {

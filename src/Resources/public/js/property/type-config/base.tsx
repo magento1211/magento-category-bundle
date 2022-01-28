@@ -49,7 +49,7 @@ export class Base implements Config {
 
                 <div className={'AknFieldContainer'} key={baseId + '_labels_container'}>
                     {FlagbitLocales.locales.getEnabledLocales(true).map((locale) => {
-                        const label = config.labels[locale] || '';
+                        const label = config.getLabel(locale);
 
                         return (
                             <React.Fragment key={baseId + '_label_' + locale + '_container'}>

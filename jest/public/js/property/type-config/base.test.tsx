@@ -3,22 +3,18 @@ import { shallow } from 'enzyme';
 import base from '../../../../../src/Resources/public/js/property/type-config/base';
 import ConfigDto from '../../../../../src/Resources/public/js/property/type-config/config-dto';
 
-jest.mock(
-    '../../../../../src/Resources/public/js/property/locales',
-    () => {
-        const locales = {
-            getEnabledLocales: jest.fn().mockImplementation((isLocalizable: boolean) => (isLocalizable ? ['de_DE', 'en_US'] : ['null'])),
-        };
+jest.mock('../../../../../src/Resources/public/js/property/locales', () => {
+    const locales = {
+        getEnabledLocales: jest.fn().mockImplementation((isLocalizable: boolean) => (isLocalizable ? ['de_DE', 'en_US'] : ['null'])),
+    };
 
-        return {
-            FlagbitLocales: {
-                locales: locales,
-                catalogLocale: 'en_US',
-            },
-        };
-    },
-    { virtual: true }
-);
+    return {
+        FlagbitLocales: {
+            locales: locales,
+            catalogLocale: 'en_US',
+        },
+    };
+});
 
 const config = {
     isLocalizable: true,
