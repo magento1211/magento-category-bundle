@@ -1,4 +1,4 @@
-# Flagbit CategoryBundle
+# Flagbit CategoryBundle for Akeneo
 
 ## Installation
 
@@ -30,6 +30,11 @@ flagbit_category:
     resource: "@FlagbitCategoryBundle/Resources/config/routing.yml"
 ```
 
+## Compatibility
+
+This extension supports the latest Akeneo PIM CE/EE stable versions:
+
+* 5.0
 
 ## Overrides/Additions to Akeneo PIM
 
