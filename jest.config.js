@@ -17,4 +17,12 @@ module.exports = {
         `<rootDir>/vendor/akeneo/pim-community-dev/tests/front/unit/jest/enzyme.js`,
         `<rootDir>/jest/mock-fix.ts`,
     ],
+    collectCoverageFrom: [
+        "<rootDir>/src/"
+    ],
+    coveragePathIgnorePatterns: [
+        "<rootDir>/src/config-forms-renderer.tsx",
+        "<rootDir>/src/property-forms-renderer.tsx",
+    ],
+    coverageDirectory: "<rootDir>/build/",
 };

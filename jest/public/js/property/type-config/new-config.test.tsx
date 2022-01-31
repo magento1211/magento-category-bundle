@@ -1,47 +1,44 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import NewConfig from '../../../../../src/Resources/public/js/property/type-config/new-config';
-import base from '../../../../../src/Resources/public/js/property/type-config/base';
-import text from '../../../../../src/Resources/public/js/property/type/text';
 
-jest.mock(
-    '../../../../../src/Resources/public/js/property/locales',
-    () => {
-        const locales = {
-            getEnabledLocales: jest.fn().mockImplementation((isLocalizable: boolean) => (isLocalizable ? ['de_DE', 'en_US'] : ['null'])),
-        };
+jest.mock('../../../../../src/Resources/public/js/property/locales', () => {
+    const locales = {
+        getEnabledLocales: jest.fn().mockImplementation((isLocalizable: boolean) => (isLocalizable ? ['de_DE', 'en_US'] : ['null'])),
+    };
 
-        return {
-            FlagbitLocales: {
-                locales: locales,
-                catalogLocale: 'en_US',
-            },
-        };
-    },
-    { virtual: true }
-);
-jest.mock(
-    'pim/fetcher-registry',
-    () => ({
-        getFetcher: jest.fn(),
-    }),
-    { virtual: true }
-);
-jest.mock(
-    '../../../../../src/Resources/public/js/property/property-registry',
-    () => ({
-        getOptions: jest.fn().mockImplementation(() => ['text']),
-        createConfig: jest.fn().mockImplementation(() => base()),
-        createProperty: jest.fn().mockImplementation(() => text()),
-    }),
-    { virtual: true }
-);
+    return {
+        FlagbitLocales: {
+            locales: locales,
+            catalogLocale: 'en_US',
+            initialize: jest.fn(),
+        },
+    };
+});
+
+const localeConfig = new Promise((resolve) => {
+    resolve({});
+});
+const localeFetcher = {
+    fetchActivated: () => localeConfig,
+};
+
+jest.mock('pim/fetcher-registry', () => ({
+    getFetcher: () => localeFetcher,
+}));
+jest.mock('../../../../../src/Resources/public/js/property/property-registry', () => ({
+    getOptions: jest.fn().mockImplementation(() => ['text']),
+    createConfig: jest.fn().mockImplementation(() => (
+        <>
+            <div>TextType</div>
+        </>
+    )),
+}));
 
 describe('New Config', function () {
     test('Basic rendering', function () {
         const onChange = jest.fn();
 
-        // @ts-ignore
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
 
         const codeField = renderedView.find('input#new_config_code');
@@ -64,7 +61,6 @@ describe('New Config', function () {
     test('No type was selected', function () {
         const onChange = jest.fn();
 
-        // @ts-ignore
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
 
         const codeField = renderedView.find('input#new_config_code');
@@ -79,7 +75,6 @@ describe('New Config', function () {
     test('No code was added', function () {
         const onChange = jest.fn();
 
-        // @ts-ignore
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
 
         const codeField = renderedView.find('input#new_config_code');
@@ -97,7 +92,6 @@ describe('New Config', function () {
     test('Invalid code', function () {
         const onChange = jest.fn();
 
-        // @ts-ignore
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
 
         const codeField = renderedView.find('input#new_config_code');
@@ -115,7 +109,6 @@ describe('New Config', function () {
     test('Add new property config', function () {
         const onChange = jest.fn();
 
-        // @ts-ignore
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
 
         const codeField = renderedView.find('input#new_config_code');
