@@ -3,8 +3,8 @@ import { shallow } from 'enzyme';
 import text from '../../../../../src/Resources/public/js/property/type/text';
 import PropertyDto from '../../../../../src/Resources/public/js/property/type/property-dto';
 
-describe('Text property type', function () {
-    test('Rendering the value', function () {
+describe('Text property type', () => {
+    test('Rendering the value', () => {
         const onChange = jest.fn();
 
         const config = {
@@ -27,7 +27,7 @@ describe('Text property type', function () {
         expect(contentInputField.props().id).toBe('flagbit_id_code_');
     });
 
-    test('Changing the value', function () {
+    test('Changing the value', () => {
         const onChange = jest.fn();
 
         const config = {

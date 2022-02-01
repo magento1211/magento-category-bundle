@@ -7,8 +7,8 @@ const createConfig = () => ({
     type: 'text',
 });
 
-describe('Property data transfer object', function () {
-    test('Value properties', function () {
+describe('Property data transfer object', () => {
+    test('Value properties', () => {
         const config = createConfig();
 
         const dto = new ConfigDto(config, 'code', jest.fn());
@@ -19,7 +19,7 @@ describe('Property data transfer object', function () {
         expect(dto.config).toEqual({});
     });
 
-    test('getLabel', function () {
+    test('getLabel', () => {
         const config = createConfig();
 
         const dto = new ConfigDto(config, 'code', jest.fn());
@@ -29,7 +29,7 @@ describe('Property data transfer object', function () {
         expect(dto.getLabel('fr_FR')).toEqual('');
     });
 
-    test('Create ID', function () {
+    test('Create ID', () => {
         const config = createConfig();
 
         const dto = new ConfigDto(config, 'code', jest.fn());
@@ -37,7 +37,7 @@ describe('Property data transfer object', function () {
         expect(dto.createId()).toBe('flagbit_id_code');
     });
 
-    test('Update config', function () {
+    test('Update config', () => {
         const onChange = jest.fn();
 
         const config = createConfig();
@@ -53,7 +53,7 @@ describe('Property data transfer object', function () {
         expect(onChange.mock.calls[0][3]).toEqual({ foo: 'test' });
     });
 
-    test('Update Label', function () {
+    test('Update Label', () => {
         const onChange = jest.fn();
 
         const config = createConfig();
@@ -69,7 +69,7 @@ describe('Property data transfer object', function () {
         expect(onChange.mock.calls[0][3]).toEqual({});
     });
 
-    test('Update adds Label for new locale', function () {
+    test('Update adds Label for new locale', () => {
         const onChange = jest.fn();
 
         const config = createConfig();
@@ -85,7 +85,7 @@ describe('Property data transfer object', function () {
         expect(onChange.mock.calls[0][3]).toEqual({});
     });
 
-    test('Update localizable', function () {
+    test('Update localizable', () => {
         const onChange = jest.fn();
 
         const config = createConfig();

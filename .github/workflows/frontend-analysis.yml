@@ -34,7 +34,7 @@ jobs:
         run: "yarn ts-unused-exports tsconfig.json $(find src/Resources/public -name '*.ts*') --showLineNumber"
 
       - name: "Typescript linting"
-        run: "yarn tslint src/Resources/public/**/*{.ts,.tsx} src/Resources/public/**/**/*{.ts,.tsx}"
+        run: "yarn tslint src/Resources/public/**/*{.ts,.tsx} src/Resources/public/**/**/*{.ts,.tsx} jest/**/*{.ts,.tsx}"
 
       - name: "Coding Style"
         #  jest/**/*{.ts,.tsx}

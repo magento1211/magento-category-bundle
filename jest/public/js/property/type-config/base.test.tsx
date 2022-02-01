@@ -23,8 +23,8 @@ const config = {
     type: 'text',
 };
 
-describe('Base config', function () {
-    test('Basic rendering', function () {
+describe('Base config', () => {
+    test('Basic rendering', () => {
         const onChange = jest.fn();
 
         const baseInstance = base();
@@ -49,7 +49,7 @@ describe('Base config', function () {
         expect(code.text()).toBe('code');
     });
 
-    test('Change localizable', function () {
+    test('Change localizable', () => {
         const onChange = jest.fn();
 
         const baseInstance = base();
@@ -70,7 +70,7 @@ describe('Base config', function () {
         expect(onChange.mock.calls[0][3]).toEqual({});
     });
 
-    test('Changing the value of labels', function () {
+    test('Changing the value of labels', () => {
         const onChange = jest.fn();
 
         const baseInstance = base();

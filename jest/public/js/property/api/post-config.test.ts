@@ -12,8 +12,8 @@ jest.mock(
 );
 
 // TODO: This needs a better test case because post-config.ts is just glue code.
-describe('Config POST method', function () {
-    test('post config', function () {
+describe('Config POST method', () => {
+    test('post config', () => {
         postConfig.post({});
     });
 });

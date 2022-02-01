@@ -59,8 +59,8 @@ jest.mock('../../../../src/Resources/public/js/property/api/post-config', () => 
     },
 }));
 
-describe('Integration of complete Config form', function () {
-    test('Default empty rendering', function () {
+describe('Integration of complete Config form', () => {
+    test('Default empty rendering', () => {
         const renderedView = renderView();
 
         const newCodeField = renderedView.find('#new_config_code');
@@ -80,7 +80,7 @@ describe('Integration of complete Config form', function () {
         expect(otherInputs.length).toBe(1);
     });
 
-    test('Add new property config', function () {
+    test('Add new property config', () => {
         const renderedView = renderView();
 
         addNewConfig(renderedView);
@@ -105,7 +105,7 @@ describe('Integration of complete Config form', function () {
         expect(localizable.name()).toBe('input');
     });
 
-    test('Remove property config', function () {
+    test('Remove property config', () => {
         const renderedView = renderView();
 
         addNewConfig(renderedView);
@@ -118,7 +118,7 @@ describe('Integration of complete Config form', function () {
         expect(otherInputs.length).toBe(1);
     });
 
-    test('Change property config', function () {
+    test('Change property config', () => {
         const renderedView = renderView();
 
         addNewConfig(renderedView);
@@ -142,7 +142,7 @@ describe('Integration of complete Config form', function () {
         expect(localizable.props().checked).toBe(true);
     });
 
-    test('Saving config', function () {
+    test('Saving config', () => {
         const renderedView = renderView();
 
         addNewConfig(renderedView);

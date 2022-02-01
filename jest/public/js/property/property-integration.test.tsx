@@ -94,8 +94,8 @@ jest.mock('../../../../src/Resources/public/js/property/property-registry', () =
     createProperty: jest.fn().mockImplementation(() => text()),
 }));
 
-describe('Integration of complete Property form', function () {
-    test('Rendering hidden input field relevant for saving', async function () {
+describe('Integration of complete Property form', () => {
+    test('Rendering hidden input field relevant for saving', async () => {
         const renderedView = await waitFor(() => mount(<PropertyForm categoryCode={'foo_property_code'} />));
 
         let contentInputField = renderedView.find('#flagbit_category_properties_json');
@@ -110,7 +110,7 @@ describe('Integration of complete Property form', function () {
         expect(contentInputField.props().value).toBe(expected);
     });
 
-    test('Rendering fields by config and properties', async function () {
+    test('Rendering fields by config and properties', async () => {
         const renderedView = await waitFor(() => mount(<PropertyForm categoryCode={'foo_property_code'} />));
 
         renderedView.update();
@@ -152,7 +152,7 @@ describe('Integration of complete Property form', function () {
         expect(labels.length).toBe(5);
     });
 
-    test('Updating fields of properties', async function () {
+    test('Updating fields of properties', async () => {
         const renderedView = await waitFor(() => mount(<PropertyForm categoryCode={'foo_property_code'} />));
 
         renderedView.update();

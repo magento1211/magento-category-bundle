@@ -35,8 +35,8 @@ jest.mock('../../../../../src/Resources/public/js/property/property-registry', (
     )),
 }));
 
-describe('New Config', function () {
-    test('Basic rendering', function () {
+describe('New Config', () => {
+    test('Basic rendering', () => {
         const onChange = jest.fn();
 
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
@@ -58,7 +58,7 @@ describe('New Config', function () {
         expect(addButton.text()).toBe('flagbit_category.config.subjoin.button');
     });
 
-    test('No type was selected', function () {
+    test('No type was selected', () => {
         const onChange = jest.fn();
 
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
@@ -72,7 +72,7 @@ describe('New Config', function () {
         expect(onChange.mock.calls.length).toBe(0);
     });
 
-    test('No code was added', function () {
+    test('No code was added', () => {
         const onChange = jest.fn();
 
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
@@ -89,7 +89,7 @@ describe('New Config', function () {
         expect(onChange.mock.calls.length).toBe(0);
     });
 
-    test('Invalid code', function () {
+    test('Invalid code', () => {
         const onChange = jest.fn();
 
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
@@ -106,7 +106,7 @@ describe('New Config', function () {
         expect(onChange.mock.calls.length).toBe(0);
     });
 
-    test('Add new property config', function () {
+    test('Add new property config', () => {
         const onChange = jest.fn();
 
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);

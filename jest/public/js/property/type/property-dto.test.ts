@@ -7,8 +7,8 @@ const createConfig = () => ({
     type: 'text',
 });
 
-describe('Property data transfer object', function () {
-    test('Value properties', function () {
+describe('Property data transfer object', () => {
+    test('Value properties', () => {
         const config = createConfig();
 
         const dto = new PropertyDto('value', 'code', null, config, jest.fn());
@@ -23,7 +23,7 @@ describe('Property data transfer object', function () {
         expect(dto2.locale).toBe('de_DE');
     });
 
-    test('Create ID', function () {
+    test('Create ID', () => {
         const dto = new PropertyDto('value', 'code', 'de_DE', createConfig(), jest.fn());
 
         expect(dto.createId()).toBe('flagbit_id_code_de_DE');
@@ -33,7 +33,7 @@ describe('Property data transfer object', function () {
         expect(dto2.createId()).toBe('flagbit_id_code_');
     });
 
-    test('Update value', function () {
+    test('Update value', () => {
         const onChange = jest.fn();
 
         const dto = new PropertyDto('value', 'code', 'de_DE', createConfig(), onChange);
