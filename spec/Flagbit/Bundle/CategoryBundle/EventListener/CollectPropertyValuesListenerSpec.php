@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Flagbit\Bundle\CategoryBundle\EventListener;
 
 use Flagbit\Bundle\CategoryBundle\EventListener\CollectPropertyValuesListener;
@@ -28,7 +30,7 @@ class CollectPropertyValuesListenerSpec extends ObjectBehavior
         ParameterBag $requestBag,
         ParameterBag $attributesBag
     ): void {
-        $request->request = $requestBag;
+        $request->request    = $requestBag;
         $request->attributes = $attributesBag;
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 
@@ -37,9 +39,7 @@ class CollectPropertyValuesListenerSpec extends ObjectBehavior
         $requestBag->get('flagbit_category_properties_json')->willReturn('{"flagbit_category_properties_json": {"foo": "bar"}}');
 
         $expectedValue = [
-            'flagbit_category_properties_json' => [
-                'foo' => 'bar'
-            ]
+            'flagbit_category_properties_json' => ['foo' => 'bar'],
         ];
         $parameterBag->replace($expectedValue)->shouldBeCalledTimes(1);
 
@@ -55,7 +55,7 @@ class CollectPropertyValuesListenerSpec extends ObjectBehavior
         ParameterBag $requestBag,
         ParameterBag $attributesBag
     ): void {
-        $request->request = $requestBag;
+        $request->request    = $requestBag;
         $request->attributes = $attributesBag;
         $request->isMethod(Request::METHOD_POST)->willReturn(true);
 

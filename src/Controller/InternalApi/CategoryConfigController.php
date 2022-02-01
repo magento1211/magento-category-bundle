@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Flagbit\Bundle\CategoryBundle\Controller\InternalApi;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,6 +12,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
+use function json_decode;
 
 /**
  * @internal
@@ -26,8 +30,8 @@ class CategoryConfigController
         NormalizerInterface $normalizer
     ) {
         $this->entityManager = $entityManager;
-        $this->repository = $repository;
-        $this->normalizer = $normalizer;
+        $this->repository    = $repository;
+        $this->normalizer    = $normalizer;
     }
 
     public function get(int $identifier): Response
@@ -41,7 +45,7 @@ class CategoryConfigController
 
     public function post(Request $request, int $identifier): Response
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (! $request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
@@ -61,7 +65,7 @@ class CategoryConfigController
     {
         /** @phpstan-var CategoryConfig|null $categoryConfig */
         $categoryConfig = $this->repository->find($identifier);
-        if (null === $categoryConfig) {
+        if ($categoryConfig === null) {
             return new CategoryConfig([]);
         }
 

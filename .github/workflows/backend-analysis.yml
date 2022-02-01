@@ -30,7 +30,7 @@ jobs:
         run: "vendor/bin/phplint ./src"
 
       - name: "Code Sniffer"
-        run: "vendor/bin/phpcs -d memory_limit=-1 --standard=PSR12 --extensions=php ./src"
+        run: "vendor/bin/phpcs"
 
       - name: "PHPStan"
         run: "vendor/bin/phpstan analyse"

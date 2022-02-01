@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Flagbit\Bundle\CategoryBundle\EventListener;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
@@ -9,11 +11,11 @@ use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
+use function count;
+
 class SavePropertyListener
 {
-    /**
-     * @phpstan-var ParameterBag<mixed>
-     */
+    /** @phpstan-var ParameterBag<mixed> */
     private ParameterBag $propertyValuesBag;
     private CategoryPropertyRepository $repository;
     private EntityManagerInterface $entityManager;
@@ -27,8 +29,8 @@ class SavePropertyListener
         EntityManagerInterface $entityManager
     ) {
         $this->propertyValuesBag = $propertyValuesBag;
-        $this->repository = $repository;
-        $this->entityManager = $entityManager;
+        $this->repository        = $repository;
+        $this->entityManager     = $entityManager;
     }
 
     /**
@@ -58,7 +60,7 @@ class SavePropertyListener
     {
         /** @phpstan-var CategoryProperty|null $categoryProperty */
         $categoryProperty = $this->repository->findOneBy(['category' => $category]);
-        if (null === $categoryProperty) {
+        if ($categoryProperty === null) {
             $categoryProperty = new CategoryProperty($category);
         }
 

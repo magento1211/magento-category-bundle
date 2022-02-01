@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Flagbit\Bundle\CategoryBundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;

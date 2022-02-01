@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Flagbit\Bundle\CategoryBundle\Serializer\Normalizer;
 
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryConfig;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ObjectNormalizer implements NormalizerInterface
@@ -17,7 +20,7 @@ class ObjectNormalizer implements NormalizerInterface
 
     /**
      * @phpstan-param mixed $data
-     * @phpstan-param null|string  $format
+     * @phpstan-param string|null $format
      *
      * @phpstan-return bool
      */
@@ -28,12 +31,12 @@ class ObjectNormalizer implements NormalizerInterface
 
     /**
      * @phpstan-param CategoryConfig|CategoryProperty $object
-     * @phpstan-param null|string  $format
+     * @phpstan-param string|null $format
      * @phpstan-param array<string, mixed> $context
      *
      * @phpstan-return array<string, mixed>
      *
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {

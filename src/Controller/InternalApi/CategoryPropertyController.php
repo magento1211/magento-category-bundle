@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Flagbit\Bundle\CategoryBundle\Controller\InternalApi;
 
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,9 +26,9 @@ class CategoryPropertyController
         CategoryRepositoryInterface $categoryRepository,
         NormalizerInterface $normalizer
     ) {
-        $this->repository = $repository;
+        $this->repository         = $repository;
         $this->categoryRepository = $categoryRepository;
-        $this->normalizer = $normalizer;
+        $this->normalizer         = $normalizer;
     }
 
     public function get(string $identifier): Response
@@ -35,6 +36,7 @@ class CategoryPropertyController
         $categoryProperty = $this->findProperty($identifier);
 
         $context = [AbstractNormalizer::IGNORED_ATTRIBUTES => ['category']];
+
         return new JsonResponse(
             $this->normalizer->normalize($categoryProperty, 'internal_api', $context)
         );
@@ -46,7 +48,7 @@ class CategoryPropertyController
 
         /** @phpstan-var CategoryProperty|null $categoryProperty */
         $categoryProperty = $this->repository->findOneBy(['category' => $category]);
-        if (null === $categoryProperty) {
+        if ($categoryProperty === null) {
             $categoryProperty = new CategoryProperty($category);
         }
 

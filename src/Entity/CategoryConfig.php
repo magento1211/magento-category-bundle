@@ -8,9 +8,7 @@ class CategoryConfig
 {
     private ?int $id = null;
 
-    /**
-     * @var mixed[]
-     */
+    /** @var mixed[] */
     private array $config;
 
     /**

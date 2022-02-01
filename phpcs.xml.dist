@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset>
+    <arg name="basepath" value="."/>
+    <arg name="extensions" value="php"/>
+    <arg name="colors"/>
+    <arg value="nps"/>
+
+    <file>src</file>
+    <file>spec</file>
+
+    <rule ref="Doctrine"/>
+
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>spec/*</exclude-pattern>
+    </rule>
+</ruleset>

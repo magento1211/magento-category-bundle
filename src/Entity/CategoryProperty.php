@@ -10,9 +10,7 @@ class CategoryProperty
 {
     private ?int $id = null;
 
-    /**
-     * @var mixed[]
-     */
+    /** @var mixed[] */
     private array $properties = [];
 
     private CategoryInterface $category;
@@ -38,9 +36,6 @@ class CategoryProperty
         $this->properties = $properties;
     }
 
-    /**
-     * @return CategoryInterface
-     */
     public function getCategory(): CategoryInterface
     {
         return $this->category;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Flagbit\Bundle\CategoryBundle\Serializer\Normalizer;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
@@ -10,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ObjectNormalizerSpec extends ObjectBehavior
 {
-    public function let(NormalizerInterface $objectNormlizer)
+    public function let(NormalizerInterface $objectNormlizer): void
     {
         $this->beConstructedWith($objectNormlizer);
     }
@@ -34,7 +36,6 @@ class ObjectNormalizerSpec extends ObjectBehavior
         CategoryProperty $categoryProperty,
         NormalizerInterface $objectNormlizer
     ): void {
-
         $objectNormlizer->normalize($categoryProperty, null, [])->willReturn([]);
 
         $this->normalize($categoryProperty)->shouldReturn([]);

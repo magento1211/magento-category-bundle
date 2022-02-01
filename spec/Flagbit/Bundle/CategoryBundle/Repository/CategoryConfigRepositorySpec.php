@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Flagbit\Bundle\CategoryBundle\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;

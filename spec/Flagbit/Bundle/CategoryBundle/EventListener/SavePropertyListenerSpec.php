@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Flagbit\Bundle\CategoryBundle\EventListener;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
@@ -22,7 +24,7 @@ class SavePropertyListenerSpec extends ObjectBehavior
     ): void {
         $this->beConstructedWith($propertyValuesBag, $repository, $entityManager);
     }
-    
+
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(SavePropertyListener::class);

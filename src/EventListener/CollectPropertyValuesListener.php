@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Flagbit\Bundle\CategoryBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 
+use function json_decode;
+
 class CollectPropertyValuesListener
 {
-    /**
-     * @phpstan-var ParameterBag<mixed>
-     */
+    /** @phpstan-var ParameterBag<mixed> */
     private ParameterBag $propertyValuesBag;
 
     /**
