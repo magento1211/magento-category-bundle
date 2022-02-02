@@ -1,4 +1,5 @@
 import * as React from 'react';
+import $ from 'jquery';
 import { mount } from 'enzyme';
 import ConfigForm from '../../../../src/Resources/public/js/property/config-form';
 import base from '../../../../src/Resources/public/js/property/type-config/base';
@@ -56,6 +57,8 @@ jest.mock('../../../../src/Resources/public/js/property/api/post-config', () => 
         };
 
         expect(object).toEqual(expected);
+
+        return $.Deferred().resolve(expected);
     },
 }));
 
@@ -145,7 +148,11 @@ describe('Integration of complete Config form', () => {
     test('Saving config', () => {
         const renderedView = renderView();
 
+        expect(renderedView.find('#entity-updated').props().style.opacity).toBe(0);
+
         addNewConfig(renderedView);
+
+        expect(renderedView.find('#entity-updated').props().style.opacity).toBe(100);
 
         const labelDe = renderedView.find('#flagbit_id_foo_label_de_DE');
         labelDe.simulate('change', { target: { value: 'new label de' } });
@@ -158,6 +165,8 @@ describe('Integration of complete Config form', () => {
 
         const saveButton = renderedView.find('button').first();
         saveButton.simulate('click');
+
+        expect(renderedView.find('#entity-updated').props().style.opacity).toBe(0);
     });
 });
 

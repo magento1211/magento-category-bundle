@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ConfigRenderer from './type-config/config-renderer';
 import postConfig from './api/post-config';
+import _ from 'lodash';
 
 export type ChangeState = (code: string, isLocalizable: boolean, labels: Labels, config: any) => void;
 export type AddNewConfigToState = (code: string, type: string) => void;
@@ -30,6 +31,7 @@ class ConfigForm extends React.Component {
         configValues: {},
     };
 
+    initialConfig: ConfigValuesType = {};
     changed: boolean = false;
 
     componentDidMount?(): void {
@@ -37,8 +39,10 @@ class ConfigForm extends React.Component {
             .getFetcher('flagbit-category-config')
             .fetch(1)
             .then((response: Response) => {
+                this.initialConfig = Array.isArray(response.config) ? {} : response.config;
+
                 this.setState({
-                    configValues: Array.isArray(response.config) ? {} : response.config,
+                    configValues: _.cloneDeep(this.initialConfig),
                 });
             });
     }
@@ -57,7 +61,6 @@ class ConfigForm extends React.Component {
             state.configValues[code] = configData;
 
             this.setState(state);
-            this.changed = true;
         };
         onChange.bind(this);
 
@@ -90,7 +93,10 @@ class ConfigForm extends React.Component {
 
         const onClick = () => {
             const config = this.state.configValues;
-            postConfig.post(config);
+            postConfig.post(config).done(() => {
+                this.initialConfig = this.state.configValues;
+                this.forceUpdate();
+            });
         };
 
         const configRenderer = new ConfigRenderer(onChange, this.state.configValues, addNewConfig, deleteConfig);
@@ -136,7 +142,12 @@ class ConfigForm extends React.Component {
                                                     {__('flagbit_category.entity.category_config.plural_label')}
                                                 </div>
                                                 <div className="AknTitleContainer-state" data-drop-zone="state">
-                                                    <div id="entity-updated" style={{ opacity: this.changed ? 100 : 0 }}>
+                                                    <div
+                                                        id="entity-updated"
+                                                        style={{
+                                                            opacity: _.isEqual(this.initialConfig, this.state.configValues) ? 0 : 100,
+                                                        }}
+                                                    >
                                                         <span className="AknState">{__('pim_common.entity_updated')}</span>
                                                     </div>
                                                 </div>

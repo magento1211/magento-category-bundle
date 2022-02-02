@@ -1,3 +1,3 @@
 export default interface Post {
-    post(object: any): void;
+    post(object: any): JQuery.jqXHR;
 }
