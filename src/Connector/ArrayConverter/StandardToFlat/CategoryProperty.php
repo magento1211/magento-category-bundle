@@ -24,8 +24,8 @@ class CategoryProperty extends AbstractSimpleArrayConverter
     protected function convertProperty($property, $data, $convertedItem, $options): array
     {
         foreach ($data as $localizedProperty) {
-            $locale = $localizedProperty['locale'];
-            $data   = $localizedProperty['data'];
+            $locale = $localizedProperty['locale'] ?? '';
+            $data   = $localizedProperty['data'] ?? '';
 
             if (empty($locale) || $locale === 'null') {
                 $convertedItem[$property] = $data;
