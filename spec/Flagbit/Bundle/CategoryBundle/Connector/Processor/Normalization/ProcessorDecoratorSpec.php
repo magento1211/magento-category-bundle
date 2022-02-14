@@ -13,7 +13,6 @@ use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @method process($item)
@@ -22,11 +21,10 @@ class ProcessorDecoratorSpec extends ObjectBehavior
 {
     public function let(
         CategoryPropertyRepository $categoryPropertyRepository,
-        NormalizerInterface $normalizer,
         StandardToFlatConverter $standardToFlat,
         Processor $inner
     ): void {
-        $this->beConstructedWith($categoryPropertyRepository, $normalizer, $standardToFlat, $inner);
+        $this->beConstructedWith($categoryPropertyRepository, $standardToFlat, $inner);
     }
 
     public function it_is_initializable(): void

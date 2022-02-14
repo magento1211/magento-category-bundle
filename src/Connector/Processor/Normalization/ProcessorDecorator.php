@@ -10,7 +10,6 @@ use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Connector\Processor\Normalization\Processor;
 use Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\StandardToFlat\CategoryProperty as StandardToFlatConverter;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 use function array_merge;
 
@@ -25,19 +24,16 @@ use function array_merge;
  */
 class ProcessorDecorator implements ItemProcessorInterface
 {
-    protected NormalizerInterface $normalizer;
     protected CategoryPropertyRepository $categoryPropertyRepository;
     protected StandardToFlatConverter $standardToFlat;
     protected Processor $inner;
 
     public function __construct(
         CategoryPropertyRepository $categoryPropertyRepository,
-        NormalizerInterface $normalizer,
         StandardToFlatConverter $standardToFlat,
         Processor $inner
     ) {
         $this->categoryPropertyRepository = $categoryPropertyRepository;
-        $this->normalizer                 = $normalizer;
         $this->standardToFlat             = $standardToFlat;
         $this->inner                      = $inner;
     }

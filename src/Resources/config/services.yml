@@ -56,6 +56,5 @@ services:
     decoration_inner_name: 'flagbit.category.processor.normalization.category.inner'
     arguments:
       - '@flagbit.category.repository.category_property'
-      - '@pim_internal_api_serializer'
       - '@flagbit.category.converter.standard_to_flat.category_property'
       - '@flagbit.category.processor.normalization.category.inner'
