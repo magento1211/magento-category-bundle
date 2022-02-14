@@ -20,7 +20,7 @@ class CategoryPropertySpec extends ObjectBehavior
         $this->shouldHaveType(CategoryProperty::class);
     }
 
-    public function it_flattens_passed_data(): void
+    public function it_flattens_passed_not_localized_data(): void
     {
         $this->convert([
             'some_property' => [
@@ -29,19 +29,7 @@ class CategoryPropertySpec extends ObjectBehavior
                     'locale' => 'null',
                 ],
             ],
-        ])->shouldMatchArray(['some_property' => 'Some Data']);
-    }
-
-    public function it_handles_null_in_data(): void
-    {
-        $this->convert([
-            'some_property' => [
-                'null' => [
-                    'data' => null,
-                    'locale' => 'null',
-                ],
-            ],
-        ])->shouldMatchArray(['some_property' => '']);
+        ])->shouldBeLike(['some_property' => 'Some Data']);
     }
 
     public function it_flattens_passed_localized_data(): void
@@ -57,7 +45,7 @@ class CategoryPropertySpec extends ObjectBehavior
                     'locale' => 'en_EN',
                 ],
             ],
-        ])->shouldMatchArray([
+        ])->shouldBeLike([
             'some_property-de_DE' => 'Daten',
             'some_property-en_EN' => 'Some Data',
         ]);
@@ -82,22 +70,22 @@ class CategoryPropertySpec extends ObjectBehavior
                     'locale' => 'null',
                 ],
             ],
-        ])->shouldMatchArray([
+        ])->shouldBeLike([
             'some_property-de_DE' => 'Daten',
             'some_property-en_EN' => 'Some Data',
             'some_other_property' => 'Extra Property!',
         ]);
     }
 
-    /**
-     * @return Closure[]
-     */
-    public function getMatchers(): array
+    public function it_handles_null_in_data(): void
     {
-        return [
-            'matchArray' => static function ($subject, $value) {
-                return empty(array_diff($subject, $value));
-            },
-        ];
+        $this->convert([
+            'some_property' => [
+                'null' => [
+                    'data' => null,
+                    'locale' => 'null',
+                ],
+            ],
+        ])->shouldBeLike(['some_property' => '']);
     }
 }
