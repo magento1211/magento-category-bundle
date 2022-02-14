@@ -50,7 +50,6 @@ services:
   flagbit.category.converter.standard_to_flat.category_property:
     class: 'Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\StandardToFlat\CategoryProperty'
 
-  # Decorate normalizer of category export
   flagbit.category.processor.normalization.category:
     class: 'Flagbit\Bundle\CategoryBundle\Connector\Processor\Normalization\ProcessorDecorator'
     decorates: 'pim_connector.processor.normalization.category'

@@ -17,8 +17,8 @@ use function array_merge;
 /**
  * Decorator to add category properties during normalization.
  *
- * This decorator class can be used to decorate Akeneo's normalizer service
- * for the category export. It finds and adds the category properties
+ * This decorator class can be used to decorate Akeneo's processor service
+ * used to normalize data for the category export. It finds and adds the category properties
  * provided by this bundle to the exported category's data.
  *
  * @see Processor
