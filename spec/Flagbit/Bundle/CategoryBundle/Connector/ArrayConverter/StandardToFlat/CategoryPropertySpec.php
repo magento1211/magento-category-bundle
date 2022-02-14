@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\StandardToFlat;
 
-use Closure;
 use Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\StandardToFlat\CategoryProperty;
 use PhpSpec\ObjectBehavior;
-
-use function array_diff;
 
 /**
  * @method convert(array $item, array $options = [])
