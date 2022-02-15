@@ -14,13 +14,13 @@ use function sprintf;
 class CategoryProperty extends AbstractSimpleArrayConverter
 {
     /**
-     * @param array<string, mixed> $data
+     * {@inheritdoc}
+     *
      * @phpstan-param array<string, mixed> $convertedItem
      * @phpstan-param array<string, mixed> $options
      *
      * @return array<string, mixed>
      */
-    // phpcs:ignore
     protected function convertProperty($property, $data, $convertedItem, $options): array
     {
         foreach ($data as $localizedProperty) {
