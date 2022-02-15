@@ -52,7 +52,7 @@ class ProcessorDecoratorSpec extends ObjectBehavior
             ],
         ]);
 
-        $this->process($item)->shouldBeLike([
+        $this->process($item)->shouldReturn([
             'code' => 'test',
             'parent' => 'master',
             'label' => [
@@ -87,7 +87,7 @@ class ProcessorDecoratorSpec extends ObjectBehavior
             ],
         ]);
 
-        $this->process($item)->shouldBeLike([
+        $this->process($item)->shouldReturn([
             'code' => 'test',
             'parent' => 'master',
             'label' => [

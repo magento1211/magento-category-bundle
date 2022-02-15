@@ -26,7 +26,7 @@ class CategoryPropertySpec extends ObjectBehavior
                     'locale' => 'null',
                 ],
             ],
-        ])->shouldBeLike(['some_property' => 'Some Data']);
+        ])->shouldReturn(['some_property' => 'Some Data']);
     }
 
     public function it_flattens_passed_localized_data(): void
@@ -42,7 +42,7 @@ class CategoryPropertySpec extends ObjectBehavior
                     'locale' => 'en_EN',
                 ],
             ],
-        ])->shouldBeLike([
+        ])->shouldReturn([
             'some_property-de_DE' => 'Daten',
             'some_property-en_EN' => 'Some Data',
         ]);
@@ -67,7 +67,7 @@ class CategoryPropertySpec extends ObjectBehavior
                     'locale' => 'null',
                 ],
             ],
-        ])->shouldBeLike([
+        ])->shouldReturn([
             'some_property-de_DE' => 'Daten',
             'some_property-en_EN' => 'Some Data',
             'some_other_property' => 'Extra Property!',
@@ -83,6 +83,6 @@ class CategoryPropertySpec extends ObjectBehavior
                     'locale' => 'null',
                 ],
             ],
-        ])->shouldBeLike(['some_property' => '']);
+        ])->shouldReturn(['some_property' => '']);
     }
 }
