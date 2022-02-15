@@ -27,7 +27,7 @@ class CategoryProperty extends AbstractSimpleArrayConverter
             $locale = $localizedProperty['locale'] ?? '';
             $data   = $localizedProperty['data'] ?? '';
 
-            if (empty($locale) || $locale === 'null') {
+            if ($locale === '' || $locale === 'null') {
                 $convertedItem[$property] = $data;
 
                 continue;
