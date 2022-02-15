@@ -26,16 +26,16 @@ class ProcessorDecorator implements ItemProcessorInterface
 {
     protected CategoryPropertyRepository $categoryPropertyRepository;
     protected StandardToFlatConverter $standardToFlat;
-    protected Processor $inner;
+    protected ItemProcessorInterface $baseProcessor;
 
     public function __construct(
         CategoryPropertyRepository $categoryPropertyRepository,
         StandardToFlatConverter $standardToFlat,
-        Processor $inner
+        ItemProcessorInterface $baseProcessor
     ) {
         $this->categoryPropertyRepository = $categoryPropertyRepository;
         $this->standardToFlat             = $standardToFlat;
-        $this->inner                      = $inner;
+        $this->baseProcessor              = $baseProcessor;
     }
 
     /**
@@ -47,7 +47,7 @@ class ProcessorDecorator implements ItemProcessorInterface
      */
     public function process($item)
     {
-        $categoryData = $this->inner->process($item);
+        $categoryData = $this->baseProcessor->process($item);
 
         $categoryProperties = $this->categoryPropertyRepository->findByCategory($item);
         if ($categoryProperties !== null) {

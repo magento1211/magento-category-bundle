@@ -22,9 +22,9 @@ class ProcessorDecoratorSpec extends ObjectBehavior
     public function let(
         CategoryPropertyRepository $categoryPropertyRepository,
         StandardToFlatConverter $standardToFlat,
-        Processor $inner
+        Processor $baseProcessor
     ): void {
-        $this->beConstructedWith($categoryPropertyRepository, $standardToFlat, $inner);
+        $this->beConstructedWith($categoryPropertyRepository, $standardToFlat, $baseProcessor);
     }
 
     public function it_is_initializable(): void
@@ -39,11 +39,11 @@ class ProcessorDecoratorSpec extends ObjectBehavior
     public function it_should_not_merge_properties_if_missing(
         CategoryInterface $item,
         CategoryPropertyRepository $categoryPropertyRepository,
-        Processor $inner
+        Processor $baseProcessor
     ): void {
         $categoryPropertyRepository->findByCategory($item)->willReturn(null);
 
-        $inner->process($item)->willReturn([
+        $baseProcessor->process($item)->willReturn([
             'code' => 'test',
             'parent' => 'master',
             'label' => [
@@ -70,7 +70,7 @@ class ProcessorDecoratorSpec extends ObjectBehavior
         CategoryProperty $categoryProperty,
         CategoryPropertyRepository $categoryPropertyRepository,
         StandardToFlatConverter $standardToFlat,
-        Processor $inner
+        Processor $baseProcessor
     ): void {
         $categoryPropertyRepository->findByCategory($item)->willReturn($categoryProperty);
 
@@ -78,7 +78,7 @@ class ProcessorDecoratorSpec extends ObjectBehavior
 
         $standardToFlat->convert([])->willReturn(['some' => 'data']);
 
-        $inner->process($item)->willReturn([
+        $baseProcessor->process($item)->willReturn([
             'code' => 'test',
             'parent' => 'master',
             'label' => [
