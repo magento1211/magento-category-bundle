@@ -61,6 +61,13 @@ services:
       - '@flagbit.category.converter.standard_to_flat.category_property'
       - '@flagbit.category.processor.normalization.category.inner'
 
+  flagbit.category.array_converter.flat_to_standard.category:
+    class: 'Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\FlatToStandard\CategoryDecorator'
+    decorates: 'pim_connector.array_converter.flat_to_standard.category'
+    decoration_inner_name: 'flagbit.category.array_converter.flat_to_standard.category.inner'
+    arguments:
+      - '@flagbit.category.array_converter.flat_to_standard.category.inner'
+
   flagbit.category.schema.property_validator:
     class: 'Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator'
     arguments:
