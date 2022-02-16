@@ -11,7 +11,7 @@ export class Base implements Config {
 
         return (
             <React.Fragment>
-                <div className={'AknFieldContainer'} key={baseId + '_code_container'}>
+                <div className={'AknFieldContainer flagbit-category-config-boxes--small'} key={baseId + '_code_container'}>
                     <div className="AknFieldContainer-header">
                         <label htmlFor={baseId + '_code'}>{__('flagbit_category.config.code')}</label>
                     </div>
@@ -20,7 +20,7 @@ export class Base implements Config {
                     </div>
                 </div>
 
-                <div className={'AknFieldContainer'} key={baseId + '_type_container'}>
+                <div className={'AknFieldContainer flagbit-category-config-boxes--small'} key={baseId + '_type_container'}>
                     <div className="AknFieldContainer-header">
                         <label htmlFor={baseId + '_type'}>{__('flagbit_category.config.type')}</label>
                     </div>
@@ -29,7 +29,7 @@ export class Base implements Config {
                     </div>
                 </div>
 
-                <div className={'AknFieldContainer'} key={baseId + '_localizable_container'}>
+                <div className={'AknFieldContainer flagbit-category-config-boxes--small'} key={baseId + '_localizable_container'}>
                     <div className="AknFieldContainer-header">
                         <label htmlFor={baseId + '_localizable'}>{__('flagbit_category.config.localizable')}</label>
                     </div>
@@ -47,7 +47,7 @@ export class Base implements Config {
                     </div>
                 </div>
 
-                <div className={'AknFieldContainer'} key={baseId + '_labels_container'}>
+                <div className={'AknFieldContainer flagbit-category-config-boxes--clear'} key={baseId + '_labels_container'}>
                     {FlagbitLocales.locales.getEnabledLocales(true).map((locale) => {
                         const label = config.getLabel(locale);
 
