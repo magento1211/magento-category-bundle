@@ -39,7 +39,7 @@ jobs:
         uses: "actions/upload-artifact@v2"
         with:
           name: "jest.coverage"
-          path: "coverage/clover.xml"
+          path: "build/clover.xml"
 
   coverage-upload:
     name: "Upload coverage to Codecov"
