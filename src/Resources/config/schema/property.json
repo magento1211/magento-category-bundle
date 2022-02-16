@@ -1,0 +1,27 @@
+{
+  "name": "Category Property",
+  "type": "object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "[a-zA-Z0-9_]+": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z]{2}_[A-Z]{2}$|null": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["locale", "data"],
+          "properties": {
+            "locale": {
+              "type": "string",
+              "pattern": "^[a-z]{2}_[A-Z]{2}$|null"
+            },
+            "data": {
+              "type": ["object", "string", "boolean", "array", "null", "number"]
+            }
+          }
+        }
+      }
+    }
+  }
+}
