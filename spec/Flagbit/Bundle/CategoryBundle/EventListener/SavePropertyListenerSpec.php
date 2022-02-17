@@ -75,6 +75,8 @@ class SavePropertyListenerSpec extends ObjectBehavior
         $repository->findOneBy(['category' => $category])->willReturn(null);
 
         $propertyValuesBag->all()->willReturn(['foo' => []]);
+        $propertyValuesBag->keys()->willReturn(['foo']);
+        $propertyValuesBag->remove('foo')->shouldBeCalledOnce();
 
         $validator->validate(['foo' => []])->willReturn([]);
 
@@ -128,6 +130,8 @@ class SavePropertyListenerSpec extends ObjectBehavior
         $validator->validate(['foo' => []])->willReturn([]);
 
         $categoryProperty->setProperties(['foo' => []])->shouldBeCalled();
+        $propertyValuesBag->keys()->willReturn(['foo']);
+        $propertyValuesBag->remove('foo')->shouldBeCalledOnce();
 
         $entityManager->persist($categoryProperty)->ShouldBeCalledTimes(1);
         $entityManager->flush()->ShouldBeCalledTimes(1);
