@@ -60,9 +60,20 @@ class SavePropertyListener
         }
 
         $categoryProperty->setProperties($properties);
+        $this->cleanPropertyValuesBag();
 
         $this->entityManager->persist($categoryProperty);
         $this->entityManager->flush();
+    }
+
+    /**
+     * Remove all data from {@see SavePropertyListener::$propertyValuesBag} bag.
+     */
+    private function cleanPropertyValuesBag(): void
+    {
+        foreach ($this->propertyValuesBag->keys() as $key) {
+            $this->propertyValuesBag->remove($key);
+        }
     }
 
     private function findProperty(CategoryInterface $category): CategoryProperty

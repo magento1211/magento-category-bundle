@@ -33,11 +33,22 @@ services:
   flagbit.category.property_values_bag:
     class: 'Symfony\Component\HttpFoundation\ParameterBag'
 
+  flagbit.category.properties_bag:
+    class: 'Symfony\Component\DependencyInjection\ParameterBag\ParameterBag'
+
   flagbit.category.event_listener.collect_property_values:
     class: 'Flagbit\Bundle\CategoryBundle\EventListener\CollectPropertyValuesListener'
     arguments: [ '@flagbit.category.property_values_bag' ]
     tags:
       - { name: 'kernel.event_listener', event: 'kernel.controller_arguments' }
+
+  flagbit.category.event_listener.bulk_save_property:
+    class: 'Flagbit\Bundle\CategoryBundle\EventListener\BulkSavePropertyListener'
+    arguments:
+      - '@flagbit.category.properties_bag'
+      - '@flagbit.category.property_values_bag'
+    tags:
+      - { name: 'kernel.event_listener', event: 'akeneo.storage.post_save', method: 'onCategoryPostSave', priority: 20 }
 
   flagbit.category.event_listener.save_property:
     class: 'Flagbit\Bundle\CategoryBundle\EventListener\SavePropertyListener'
@@ -47,7 +58,7 @@ services:
       - '@doctrine.orm.entity_manager'
       - '@flagbit.category.schema.property_validator'
     tags:
-      - { name: 'kernel.event_listener', event: 'akeneo.storage.post_save', method: 'onCategoryPostSave' }
+      - { name: 'kernel.event_listener', event: 'akeneo.storage.post_save', method: 'onCategoryPostSave', priority: 10 }
 
   flagbit.category.converter.standard_to_flat.category_property:
     class: 'Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\StandardToFlat\CategoryProperty'
@@ -67,6 +78,7 @@ services:
     decoration_inner_name: 'flagbit.category.array_converter.flat_to_standard.category.inner'
     arguments:
       - '@flagbit.category.array_converter.flat_to_standard.category.inner'
+      - '@flagbit.category.properties_bag'
 
   flagbit.category.schema.property_validator:
     class: 'Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator'

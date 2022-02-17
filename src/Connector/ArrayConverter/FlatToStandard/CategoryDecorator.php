@@ -6,9 +6,9 @@ namespace Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard\Category;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-use function array_merge;
-use function dd;
 use function explode;
 use function in_array;
 
@@ -16,22 +16,23 @@ use function in_array;
  * Decorator for {@see Category} that cares about category properties.
  *
  * This decorator extends the original {@see Category} array converter and ensures
- * that the custom category property data is processed too. This is achieved by hooking
- * into the original {@see Category::convert()} function.
+ * that the custom category property data is processed too. The processed properties
+ * are stored in a {@see ParameterBagInterface} to allow retrieval in other places.
  *
- * The process is as follows:
- *   - Running the custom field conversion that covers category properties
- *   - Running the original {@see Category::convert()} function
- *   - Merging the original output with the custom output of this decorator
- *   - Return the merged array
+ * The modifications done by this decorator do not affect the converted result
+ * of the original {@see Category} in any way.
  */
 class CategoryDecorator implements ArrayConverterInterface
 {
     private Category $baseConverter;
+    private ParameterBagInterface $propertiesBag;
 
-    public function __construct(Category $baseConverter)
-    {
+    public function __construct(
+        Category $baseConverter,
+        ParameterBagInterface $propertiesBag
+    ) {
         $this->baseConverter = $baseConverter;
+        $this->propertiesBag = $propertiesBag;
     }
 
     /**
@@ -43,12 +44,32 @@ class CategoryDecorator implements ArrayConverterInterface
     public function convert(array $item, array $options = []): array
     {
         $originalResult = $this->baseConverter->convert($item, $options);
+        if (! isset($originalResult['code'])) {
+            return $originalResult;
+        }
 
+        $this->propertiesBag->set($item['code'], $this->extractCategoryProperties($item));
+
+        return $originalResult;
+    }
+
+    /**
+     * Extract the custom category properties from the supplied item.
+     *
+     * The array of properties returned by this function already has the proper
+     * format of {@see CategoryProperty::$properties} for further processing.
+     *
+     * @param array<string, mixed> $item
+     *
+     * @return array<string, mixed>
+     */
+    private function extractCategoryProperties(array $item): array
+    {
         $categoryProperties = [];
         $defaultProperties  = ['code', 'label', 'parent'];
 
         foreach ($item as $fieldName => $field) {
-            if ($field === '' || in_array(explode('-', $fieldName)[0], $defaultProperties, true)) {
+            if (in_array(explode('-', $fieldName)[0], $defaultProperties, true)) {
                 continue;
             }
 
@@ -58,7 +79,7 @@ class CategoryDecorator implements ArrayConverterInterface
             $categoryProperties[$propertyName][$value['locale']] = $value;
         }
 
-        return array_merge($originalResult, $categoryProperties);
+        return $categoryProperties;
     }
 
     /**
