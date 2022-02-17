@@ -3,6 +3,7 @@ import { ChangeState, ConfigValuesType, AddNewConfigToState, RemoveConfigFromSta
 import ConfigDto from './config-dto';
 import NewConfig from './new-config';
 import render from '../property-registry';
+import { FlagbitLocales } from '../locales';
 
 const Close = ({ color, ...props }: { color: string } & any = { color: '#67768A' }) => (
     <svg viewBox="0 0 24 24" width="24" height="24" {...props}>
@@ -30,9 +31,12 @@ class ConfigRenderer {
                     const configDto = new ConfigDto(configs, code, this.onChange);
 
                     return (
-                        <div style={{ borderBottom: '1px solid #E8EBEE' }} key={'div_' + code + '_container'}>
+                        <div key={'div_' + code + '_container'}>
                             <div style={{ float: 'right' }}>
                                 <Close onClick={() => this.deleteConfig(code)} color="#67768A" className="AknOptionEditor-remove" />
+                            </div>
+                            <div className="tabsection-title">
+                                {configDto.getLabel(FlagbitLocales.catalogLocale) || `[${configDto.code}]`}
                             </div>
                             <div className="AknFormContainer AknFormContainer--withPadding">
                                 {render.createConfig(configs.type).render(configDto)}
