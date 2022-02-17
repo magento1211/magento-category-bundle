@@ -20,6 +20,8 @@ export type ConfigValuesType = {
 };
 type StateType = {
     configValues: ConfigValuesType;
+    initialConfig: ConfigValuesType;
+    isSaving: boolean;
 };
 type Response = { config: ConfigValuesType };
 
@@ -29,21 +31,20 @@ const __ = require('oro/translator');
 class ConfigForm extends React.Component {
     state: StateType = {
         configValues: {},
+        initialConfig: {},
+        isSaving: false,
     };
-
-    initialConfig: ConfigValuesType = {};
-    changed: boolean = false;
 
     componentDidMount?(): void {
         fetcherRegistry
             .getFetcher('flagbit-category-config')
             .fetch(1)
             .then((response: Response) => {
-                this.initialConfig = Array.isArray(response.config) ? {} : response.config;
+                const state = this.state;
+                state.initialConfig = Array.isArray(response.config) ? {} : response.config;
+                state.configValues = _.cloneDeep(state.initialConfig);
 
-                this.setState({
-                    configValues: _.cloneDeep(this.initialConfig),
-                });
+                this.setState(state);
             });
     }
 
@@ -92,10 +93,13 @@ class ConfigForm extends React.Component {
         deleteConfig.bind(this);
 
         const onClick = () => {
-            const config = this.state.configValues;
-            postConfig.post(config).done(() => {
-                this.initialConfig = this.state.configValues;
-                this.forceUpdate();
+            const state = this.state;
+            state.isSaving = true;
+            this.setState(state);
+            postConfig.post(this.state.configValues).done(() => {
+                state.isSaving = false;
+                state.initialConfig = this.state.configValues;
+                this.setState(state);
             });
         };
 
@@ -103,7 +107,7 @@ class ConfigForm extends React.Component {
 
         return (
             <React.Fragment>
-                <div className="AknDefault-contentWithColumn" data-drop-zone="column">
+                <div className="AknDefault-contentWithColumn" data-drop-zone="column" style={{ opacity: this.state.isSaving ? 0.3 : 1 }}>
                     <div className="AknDefault-thirdColumnContainer">
                         <div className="AknDefault-thirdColumn" data-drop-zone="tree"></div>
                     </div>
@@ -145,7 +149,7 @@ class ConfigForm extends React.Component {
                                                     <div
                                                         id="entity-updated"
                                                         style={{
-                                                            opacity: _.isEqual(this.initialConfig, this.state.configValues) ? 0 : 100,
+                                                            opacity: _.isEqual(this.state.initialConfig, this.state.configValues) ? 0 : 100,
                                                         }}
                                                     >
                                                         <span className="AknState">{__('pim_common.entity_updated')}</span>
