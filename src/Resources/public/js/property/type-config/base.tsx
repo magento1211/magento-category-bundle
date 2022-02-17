@@ -53,7 +53,7 @@ export class Base implements Config {
 
                         return (
                             <React.Fragment key={baseId + '_label_' + locale + '_container'}>
-                                <div className="AknFieldContainer-header">
+                                <div className="AknFieldContainer-header AknFormContainer--withPadding">
                                     <label className="AknFieldContainer-label" htmlFor={baseId + '_label_' + locale}>
                                         {__('flagbit_category.config.label')} {locale}
                                     </label>
