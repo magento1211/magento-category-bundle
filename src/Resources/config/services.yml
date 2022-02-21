@@ -64,19 +64,9 @@ services:
   flagbit.category.schema.property_validator:
     class: 'Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator'
     arguments:
-      - '@flagbit.category.schema.property_schema_path'
+      - '../Resources/config/schema/property.json'
 
   flagbit.category.schema.config_validator:
     class: 'Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator'
     arguments:
-      - '@flagbit.category.schema.config_schema_path'
-
-  flagbit.category.schema.config_schema_path:
-    factory: ['@file_locator', 'locate']
-    arguments:
-      - '@CategoryBundle/Resources/config/schema/config.json'
-
-  flagbit.category.schema.property_schema_path:
-    factory: ['@file_locator', 'locate']
-    arguments:
-      - '@CategoryBundle/Resources/config/schema/property.json'
+      - '../Resources/config/schema/config.json'

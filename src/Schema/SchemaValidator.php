@@ -23,7 +23,7 @@ class SchemaValidator
 
     public function __construct(string $schemaPath)
     {
-        $realpath = realpath($schemaPath);
+        $realpath = realpath(sprintf('%s/%s', __DIR__, $schemaPath));
         if ($realpath === false) {
             throw new LogicException(sprintf('File %s not found', $schemaPath));
         }
@@ -51,6 +51,6 @@ class SchemaValidator
      */
     private function createObject(array $data): object
     {
-        return json_decode(json_encode($data, JSON_THROW_ON_ERROR));
+        return json_decode(json_encode($data, JSON_THROW_ON_ERROR), false);
     }
 }

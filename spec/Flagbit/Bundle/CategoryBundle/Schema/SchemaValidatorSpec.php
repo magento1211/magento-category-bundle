@@ -16,14 +16,14 @@ class SchemaValidatorSpec extends ObjectBehavior
 
     public function it_validates_config_schema(): void
     {
-        $this->beConstructedWith(__DIR__ . '/../../../../../src/Resources/config/schema/config.json');
+        $this->beConstructedWith('../Resources/config/schema/config.json');
 
         $this->validate($this->getValidConfig())->shouldReturn([]);
     }
 
     public function it_validates_invalid_config_schema(): void
     {
-        $this->beConstructedWith(__DIR__ . '/../../../../../src/Resources/config/schema/config.json');
+        $this->beConstructedWith('../Resources/config/schema/config.json');
 
         foreach ($this->getInvalidConfig() as $invalid) {
             $this->validate($invalid)->shouldNotReturn([]);
@@ -32,14 +32,14 @@ class SchemaValidatorSpec extends ObjectBehavior
 
     public function it_validates_property_schema(): void
     {
-        $this->beConstructedWith(__DIR__ . '/../../../../../src/Resources/config/schema/property.json');
+        $this->beConstructedWith('../Resources/config/schema/property.json');
 
         $this->validate($this->getValidProperties())->shouldReturn([]);
     }
 
     public function it_validates_invalid_property_schema(): void
     {
-        $this->beConstructedWith(__DIR__ . '/../../../../../src/Resources/config/schema/property.json');
+        $this->beConstructedWith('../Resources/config/schema/property.json');
 
         foreach ($this->getInvalidProperties() as $invalid) {
             $this->validate($invalid)->shouldNotReturn([]);
