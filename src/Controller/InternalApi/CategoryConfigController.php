@@ -53,15 +53,13 @@ class CategoryConfigController
             return new RedirectResponse('/');
         }
 
-        $categoryConfig = $this->findConfig($identifier);
-
         $config = json_decode($request->request->get('config'), true);
 
         if ($this->validator->validate($config) !== []) {
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
-        // TODO Do validation of the config
+        $categoryConfig = $this->findConfig($identifier);
         $categoryConfig->setConfig($config);
 
         $this->entityManager->persist($categoryConfig);

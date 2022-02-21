@@ -41,6 +41,8 @@ class CategoryConfigControllerSpec extends ObjectBehavior
     ): void {
         $repository->find(1)->willReturn(null);
 
+        $validator->validate([])->willReturn([]);
+
         $normalizer->normalize(Argument::type(CategoryConfig::class), 'internal_api')
             ->willReturn([]);
 
@@ -97,7 +99,6 @@ class CategoryConfigControllerSpec extends ObjectBehavior
     }
 
     public function it_is_invalid_config(
-        CategoryConfigRepository $repository,
         Request $request,
         ParameterBag $requestBag,
         SchemaValidator $validator
@@ -105,8 +106,6 @@ class CategoryConfigControllerSpec extends ObjectBehavior
         $requestBag->get('config')->willReturn('{}');
         $request->request = $requestBag;
         $request->isXmlHttpRequest()->willReturn(true);
-
-        $repository->find(1)->willReturn(null);
 
         $validator->validate(Argument::any())->shouldBeCalled()->willReturn(['error' => 'text']);
 
