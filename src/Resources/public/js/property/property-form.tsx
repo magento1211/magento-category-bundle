@@ -34,7 +34,7 @@ class PropertyForm extends React.Component<CategoryInfo> {
 
     componentDidMount?(): void {
         FetcherRegistry.getFetcher('flagbit-category-config')
-            .fetch(1)
+            .fetch(1, { cached: false })
             .then((response: ConfigResponse) => {
                 this.setState({
                     propertyValues: this.state.propertyValues,

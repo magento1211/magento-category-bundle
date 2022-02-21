@@ -38,7 +38,7 @@ class ConfigForm extends React.Component {
     componentDidMount?(): void {
         fetcherRegistry
             .getFetcher('flagbit-category-config')
-            .fetch(1)
+            .fetch(1, { cached: false })
             .then((response: Response) => {
                 const state = this.state;
                 state.initialConfig = Array.isArray(response.config) ? {} : response.config;
