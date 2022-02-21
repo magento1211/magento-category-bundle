@@ -3,7 +3,7 @@ import { AddNewConfigToState } from '../config-form';
 import registry from '../property-registry';
 const __ = require('oro/translator');
 
-const codeRegex = /^[a-z0-1_]+$/;
+const codeRegex = /^[a-z0-9_]+$/;
 const initState = {
     code: '',
     type: '',

@@ -112,7 +112,7 @@ describe('New Config', () => {
         const renderedView = shallow(<NewConfig addNewConfig={onChange} />);
 
         const codeField = renderedView.find('input#new_config_code');
-        codeField.simulate('change', { target: { value: 'my_code' } });
+        codeField.simulate('change', { target: { value: 'my_code019' } });
 
         const typeSelect = renderedView.find('select#new_config_type');
         typeSelect.simulate('change', { target: { value: 'text' } });
@@ -121,7 +121,7 @@ describe('New Config', () => {
         addButton.simulate('click');
 
         expect(onChange.mock.calls.length).toBe(1);
-        expect(onChange.mock.calls[0][0]).toBe('my_code');
+        expect(onChange.mock.calls[0][0]).toBe('my_code019');
         expect(onChange.mock.calls[0][1]).toBe('text');
     });
 });
