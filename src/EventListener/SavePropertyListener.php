@@ -8,6 +8,8 @@ use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
+use Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -19,6 +21,7 @@ class SavePropertyListener
     private ParameterBag $propertyValuesBag;
     private CategoryPropertyRepository $repository;
     private EntityManagerInterface $entityManager;
+    private SchemaValidator $validator;
 
     /**
      * @phpstan-param ParameterBag<mixed> $propertyValuesBag
@@ -26,11 +29,13 @@ class SavePropertyListener
     public function __construct(
         ParameterBag $propertyValuesBag,
         CategoryPropertyRepository $repository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        SchemaValidator $validator
     ) {
         $this->propertyValuesBag = $propertyValuesBag;
         $this->repository        = $repository;
         $this->entityManager     = $entityManager;
+        $this->validator         = $validator;
     }
 
     /**
@@ -48,6 +53,10 @@ class SavePropertyListener
         $properties = $this->propertyValuesBag->all();
         if (count($properties) === 0) {
             return;
+        }
+
+        if ($this->validator->validate($properties) !== []) {
+            throw new RuntimeException('Invalid properties format');
         }
 
         $categoryProperty->setProperties($properties);

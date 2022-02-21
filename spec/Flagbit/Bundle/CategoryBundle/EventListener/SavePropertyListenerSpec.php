@@ -10,8 +10,10 @@ use EmptyIterator;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
 use Flagbit\Bundle\CategoryBundle\EventListener\SavePropertyListener;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
+use Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -20,9 +22,10 @@ class SavePropertyListenerSpec extends ObjectBehavior
     public function let(
         ParameterBag $propertyValuesBag,
         CategoryPropertyRepository $repository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        SchemaValidator $validator
     ): void {
-        $this->beConstructedWith($propertyValuesBag, $repository, $entityManager);
+        $this->beConstructedWith($propertyValuesBag, $repository, $entityManager, $validator);
     }
 
     public function it_is_initializable(): void
@@ -64,13 +67,16 @@ class SavePropertyListenerSpec extends ObjectBehavior
         CategoryInterface $category,
         ParameterBag $propertyValuesBag,
         EntityManagerInterface $entityManager,
-        CategoryPropertyRepository $repository
+        CategoryPropertyRepository $repository,
+        SchemaValidator $validator
     ): void {
         $event->getSubject()->willReturn($category);
 
         $repository->findOneBy(['category' => $category])->willReturn(null);
 
         $propertyValuesBag->all()->willReturn(['foo' => []]);
+
+        $validator->validate(['foo' => []])->willReturn([]);
 
         $propertiesAreSet = static function (CategoryProperty $categoryProperty): bool {
             return $categoryProperty->getProperties() === ['foo' => []];
@@ -82,19 +88,44 @@ class SavePropertyListenerSpec extends ObjectBehavior
         $this->onCategoryPostSave($event);
     }
 
+    public function it_throws_exception_on_invalid_property_schema(
+        GenericEvent $event,
+        CategoryInterface $category,
+        CategoryProperty $categoryProperty,
+        ParameterBag $propertyValuesBag,
+        EntityManagerInterface $entityManager,
+        CategoryPropertyRepository $repository,
+        SchemaValidator $validator
+    ): void {
+        $event->getSubject()->willReturn($category);
+
+        $repository->findOneBy(['category' => $category])->willReturn(null);
+
+        $propertyValuesBag->all()->willReturn(['foo' => []]);
+
+        $validator->validate(['foo' => []])->willReturn(['error' => 'text']);
+
+        $entityManager->flush()->ShouldNotBeCalled();
+
+        $this->shouldThrow(RuntimeException::class)->during('onCategoryPostSave', [$event]);
+    }
+
     public function it_processes(
         GenericEvent $event,
         CategoryInterface $category,
         CategoryProperty $categoryProperty,
         ParameterBag $propertyValuesBag,
         EntityManagerInterface $entityManager,
-        CategoryPropertyRepository $repository
+        CategoryPropertyRepository $repository,
+        SchemaValidator $validator
     ): void {
         $event->getSubject()->willReturn($category);
 
         $repository->findOneBy(['category' => $category])->willReturn($categoryProperty);
 
         $propertyValuesBag->all()->willReturn(['foo' => []]);
+
+        $validator->validate(['foo' => []])->willReturn([]);
 
         $categoryProperty->setProperties(['foo' => []])->shouldBeCalled();
 
