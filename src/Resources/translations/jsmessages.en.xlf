@@ -61,6 +61,11 @@
                 <source>flagbit_category.config.label</source>
                 <target>Label</target>
             </trans-unit>
+
+            <trans-unit id="flagbit_category.config.subjoin.validation.error">
+                <source>flagbit_category.config.subjoin.validation.error</source>
+                <target>Please only use the following characters in the code: "a-z", "0-9", "_". Please also select one of the property types.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

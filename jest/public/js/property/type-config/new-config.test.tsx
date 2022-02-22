@@ -35,6 +35,9 @@ jest.mock('../../../../../src/Resources/public/js/property/property-registry', (
     )),
 }));
 
+const mockAlert = jest.fn().mockImplementation((text: string) => expect(text).toBe('flagbit_category.config.subjoin.validation.error'));
+global.alert = mockAlert;
+
 describe('New Config', () => {
     test('Basic rendering', () => {
         const onChange = jest.fn();

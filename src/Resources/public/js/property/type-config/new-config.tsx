@@ -78,6 +78,8 @@ class NewConfig extends React.Component<ConfigCreate> {
                             className={'AknButton'}
                             onClick={(): void => {
                                 if (!codeRegex.test(this.state.code) || this.state.type === '') {
+                                    alert(__('flagbit_category.config.subjoin.validation.error'));
+
                                     return;
                                 }
 
