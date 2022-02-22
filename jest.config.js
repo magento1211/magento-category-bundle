@@ -21,8 +21,8 @@ module.exports = {
         "<rootDir>/src/"
     ],
     coveragePathIgnorePatterns: [
-        "<rootDir>/src/config-forms-renderer.tsx",
-        "<rootDir>/src/property-forms-renderer.tsx",
+        "<rootDir>/src/Resources/public/js/property/config-forms-renderer.tsx",
+        "<rootDir>/src/Resources/public/js/property/property-forms-renderer.tsx",
     ],
     coverageDirectory: "<rootDir>/build/",
 };

@@ -3,7 +3,7 @@ import { AddNewConfigToState } from '../config-form';
 import registry from '../property-registry';
 const __ = require('oro/translator');
 
-const codeRegex = /^[a-z0-1_]+$/;
+const codeRegex = /^[a-z0-9_]+$/;
 const initState = {
     code: '',
     type: '',
@@ -78,6 +78,8 @@ class NewConfig extends React.Component<ConfigCreate> {
                             className={'AknButton'}
                             onClick={(): void => {
                                 if (!codeRegex.test(this.state.code) || this.state.type === '') {
+                                    alert(__('flagbit_category.config.subjoin.validation.error'));
+
                                     return;
                                 }
 
