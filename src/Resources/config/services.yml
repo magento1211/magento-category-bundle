@@ -48,7 +48,7 @@ services:
       - '@flagbit.category.properties_bag'
       - '@flagbit.category.property_values_bag'
     tags:
-      - { name: 'kernel.event_listener', event: 'akeneo.storage.post_save', method: 'onCategoryPostSave', priority: 20 }
+      - { name: 'kernel.event_listener', event: 'akeneo.storage.post_save', method: 'onCategoryPostSave' }
 
   flagbit.category.event_listener.save_property:
     class: 'Flagbit\Bundle\CategoryBundle\EventListener\SavePropertyListener'
@@ -58,7 +58,7 @@ services:
       - '@doctrine.orm.entity_manager'
       - '@flagbit.category.schema.property_validator'
     tags:
-      - { name: 'kernel.event_listener', event: 'akeneo.storage.post_save', method: 'onCategoryPostSave', priority: 10 }
+      - { name: 'kernel.event_listener', event: 'akeneo.storage.post_save', method: 'onCategoryPostSave' }
 
   flagbit.category.converter.standard_to_flat.category_property:
     class: 'Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\StandardToFlat\CategoryProperty'
