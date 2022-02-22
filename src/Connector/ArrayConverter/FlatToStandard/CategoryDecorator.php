@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\FlatToStandard;
 
-use Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard\Category;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -12,18 +11,18 @@ use function explode;
 use function in_array;
 
 /**
- * Decorator for {@see Category} that cares about category properties.
+ * Decorator for the category flat to standard array converter that cares about category properties.
  *
- * This decorator extends the original {@see Category} array converter and ensures
+ * This decorator extends the original category flat to standard array converter and ensures
  * that the custom category property data is processed too. The processed properties
- * are stored in a {@see ParameterBagInterface} to allow retrieval in other places.
+ * are stored in a {@see ParameterBag} to allow retrieval in other places.
  *
  * The modifications done by this decorator do not affect the converted result
- * of the original {@see Category} in any way.
+ * of the original category flat to standard array converter in any way.
  */
 class CategoryDecorator implements ArrayConverterInterface
 {
-    private Category $baseConverter;
+    private ArrayConverterInterface $baseConverter;
     /** @var ParameterBag<string, array<string, mixed>> */
     private ParameterBag $propertiesBag;
 
@@ -31,7 +30,7 @@ class CategoryDecorator implements ArrayConverterInterface
      * @phpstan-param ParameterBag<string, array<string, mixed>> $propertiesBag
      */
     public function __construct(
-        Category $baseConverter,
+        ArrayConverterInterface $baseConverter,
         ParameterBag $propertiesBag
     ) {
         $this->baseConverter = $baseConverter;
