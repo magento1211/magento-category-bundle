@@ -1,0 +1,2 @@
+imports:
+    - { resource: '../../../vendor/akeneo/pim-community-dev/config/packages/security.yml' }
