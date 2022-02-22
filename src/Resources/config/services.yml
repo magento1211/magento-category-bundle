@@ -46,9 +46,10 @@ services:
     class: 'Flagbit\Bundle\CategoryBundle\EventListener\BulkSavePropertyListener'
     arguments:
       - '@flagbit.category.properties_bag'
-      - '@flagbit.category.property_values_bag'
+      - '@flagbit.category.repository.category_property'
+      - '@doctrine.orm.entity_manager'
     tags:
-      - { name: 'kernel.event_listener', event: 'akeneo.storage.post_save', method: 'onCategoryPostSave' }
+      - { name: 'kernel.event_listener', event: 'akeneo.storage.post_save_all', method: 'onBulkCategoryPostSave' }
 
   flagbit.category.event_listener.save_property:
     class: 'Flagbit\Bundle\CategoryBundle\EventListener\SavePropertyListener'

@@ -5,8 +5,13 @@ declare(strict_types=1);
 namespace Flagbit\Bundle\CategoryBundle\EventListener;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
+use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\ParameterBag;
+
+use function count;
 
 /**
  * Category post save listener that handles bulk saves with properties.
@@ -15,43 +20,59 @@ class BulkSavePropertyListener
 {
     /** @var ParameterBag<string, array<string, mixed>> */
     private ParameterBag $propertiesBag;
-    /** @var ParameterBag<string, mixed> */
-    private ParameterBag $propertyValuesBag;
+    private CategoryPropertyRepository $repository;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @phpstan-param ParameterBag<string, array<string, mixed>> $propertiesBag
-     * @phpstan-param ParameterBag<mixed>                        $propertyValuesBag
      */
     public function __construct(
         ParameterBag $propertiesBag,
-        ParameterBag $propertyValuesBag
+        CategoryPropertyRepository $repository,
+        EntityManagerInterface $entityManager
     ) {
-        $this->propertiesBag     = $propertiesBag;
-        $this->propertyValuesBag = $propertyValuesBag;
+        $this->propertiesBag = $propertiesBag;
+        $this->repository    = $repository;
+        $this->entityManager = $entityManager;
     }
 
     /**
      * @phpstan-param GenericEvent<mixed> $event
      */
-    public function onCategoryPostSave(GenericEvent $event): void
+    public function onBulkCategoryPostSave(GenericEvent $event): void
     {
-        $category = $event->getSubject();
-        if (! $category instanceof CategoryInterface) {
-            return;
+        // Save category properties
+        foreach ($event->getSubject() as $category) {
+            if (! $category instanceof CategoryInterface) {
+                continue;
+            }
+
+            if (! $this->propertiesBag->has($category->getCode())) {
+                continue;
+            }
+
+            $categoryProperty = $this->findProperty($category);
+
+            $properties = $this->propertiesBag->get($category->getCode());
+            if (count($properties) === 0) {
+                return;
+            }
+
+            $categoryProperty->setProperties($properties);
+
+            $this->entityManager->persist($categoryProperty);
+            $this->entityManager->flush();
+        }
+    }
+
+    private function findProperty(CategoryInterface $category): CategoryProperty
+    {
+        /** @phpstan-var CategoryProperty|null $categoryProperty */
+        $categoryProperty = $this->repository->findOneBy(['category' => $category]);
+        if ($categoryProperty === null) {
+            $categoryProperty = new CategoryProperty($category);
         }
 
-        $code = $category->getCode();
-
-        // Never override existing data to prevent side effects
-        if ($this->propertyValuesBag->count() !== 0) {
-            return;
-        }
-
-        if (! $this->propertiesBag->has($code)) {
-            return;
-        }
-
-        $this->propertyValuesBag->replace($this->propertiesBag->get($code));
-        $this->propertiesBag->remove($code);
+        return $categoryProperty;
     }
 }
