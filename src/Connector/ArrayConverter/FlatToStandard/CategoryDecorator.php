@@ -6,8 +6,7 @@ namespace Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard\Category;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 use function explode;
 use function in_array;
@@ -25,11 +24,15 @@ use function in_array;
 class CategoryDecorator implements ArrayConverterInterface
 {
     private Category $baseConverter;
-    private ParameterBagInterface $propertiesBag;
+    /** @var ParameterBag<string, array<string, mixed>> */
+    private ParameterBag $propertiesBag;
 
+    /**
+     * @phpstan-param ParameterBag<string, array<string, mixed>> $propertiesBag
+     */
     public function __construct(
         Category $baseConverter,
-        ParameterBagInterface $propertiesBag
+        ParameterBag $propertiesBag
     ) {
         $this->baseConverter = $baseConverter;
         $this->propertiesBag = $propertiesBag;

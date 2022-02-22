@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Flagbit\Bundle\CategoryBundle\EventListener;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -14,15 +13,17 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  */
 class BulkSavePropertyListener
 {
-    private ParameterBagInterface $propertiesBag;
+    /** @var ParameterBag<string, array<string, mixed>> */
+    private ParameterBag $propertiesBag;
     /** @var ParameterBag<string, mixed> */
     private ParameterBag $propertyValuesBag;
 
     /**
-     * @phpstan-param ParameterBag<mixed> $propertyValuesBag
+     * @phpstan-param ParameterBag<string, array<string, mixed>> $propertiesBag
+     * @phpstan-param ParameterBag<mixed>                        $propertyValuesBag
      */
     public function __construct(
-        ParameterBagInterface $propertiesBag,
+        ParameterBag $propertiesBag,
         ParameterBag $propertyValuesBag
     ) {
         $this->propertiesBag     = $propertiesBag;

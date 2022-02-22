@@ -34,7 +34,7 @@ services:
     class: 'Symfony\Component\HttpFoundation\ParameterBag'
 
   flagbit.category.properties_bag:
-    class: 'Symfony\Component\DependencyInjection\ParameterBag\ParameterBag'
+    class: 'Symfony\Component\HttpFoundation\ParameterBag'
 
   flagbit.category.event_listener.collect_property_values:
     class: 'Flagbit\Bundle\CategoryBundle\EventListener\CollectPropertyValuesListener'
