@@ -9,6 +9,9 @@
 /config
 /.phpunit.result.cache
 
+# PHPLint
+/.phplint-cache
+
 # Build data
 /build/
 
