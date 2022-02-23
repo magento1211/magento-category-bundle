@@ -5,27 +5,27 @@ declare(strict_types=1);
 namespace spec\Flagbit\Bundle\CategoryBundle\EventListener;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use EmptyIterator;
+use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
 use Flagbit\Bundle\CategoryBundle\EventListener\BulkSavePropertyListener;
+use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
- * @method onCategoryPostSave(GenericEvent $event)
+ * @method onBulkCategoryPostSave(GenericEvent $event)
  */
 class BulkSavePropertyListenerSpec extends ObjectBehavior
 {
-    /**
-     * @param ParameterBag<string, mixed> $propertyValuesBag
-     */
     public function let(
-        ParameterBagInterface $propertiesBag,
-        ParameterBag $propertyValuesBag
+        ParameterBag $propertiesBag,
+        CategoryPropertyRepository $repository,
+        EntityManagerInterface $entityManager
     ): void {
-        $this->beConstructedWith($propertiesBag, $propertyValuesBag);
+        $this->beConstructedWith($propertiesBag, $repository, $entityManager);
     }
 
     public function it_is_initializable(): void
@@ -33,84 +33,128 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
         $this->shouldHaveType(BulkSavePropertyListener::class);
     }
 
-    /**
-     * @param ParameterBag<string, mixed> $propertyValuesBag
-     */
     public function it_ignores_entities_that_are_not_categories(
         GenericEvent $event,
-        ParameterBagInterface $propertiesBag,
-        ParameterBag $propertyValuesBag
+        ParameterBag $propertiesBag
     ): void {
-        $event->getSubject()->willReturn(new EmptyIterator());
+        $event->getSubject()->willReturn([new EmptyIterator(), new EmptyIterator()]);
 
-        $propertyValuesBag->count()->shouldNotBeCalled();
+        $propertiesBag->has(Argument::any())->shouldNotBeCalled();
 
-        $this->onCategoryPostSave($event);
+        $this->onBulkCategoryPostSave($event);
     }
 
-    /**
-     * @param ParameterBag<string, mixed> $propertyValuesBag
-     */
-    public function it_never_overwrites_existing_property_value_data(
+    public function it_ignores_categories_where_no_property_data_is_available(
         GenericEvent $event,
-        CategoryInterface $category,
-        ParameterBagInterface $propertiesBag,
-        ParameterBag $propertyValuesBag
+        ParameterBag $propertiesBag,
+        CategoryInterface $category1,
+        CategoryInterface $category2
     ): void {
-        $event->getSubject()->willReturn($category);
-        $category->getCode()->willReturn('master');
+        $event->getSubject()->willReturn([$category1, $category2]);
+        $category1->getCode()->willReturn('electronics');
+        $category2->getCode()->willReturn('clothes');
 
-        $propertyValuesBag->count()->willReturn(2);
+        $propertiesBag->has('electronics')->willReturn(false);
+        $propertiesBag->has('clothes')->willReturn(false);
 
-        $propertiesBag->has('master')->shouldNotBeCalled();
+        $propertiesBag->get('electronics')->shouldNotHaveBeenCalled();
+        $propertiesBag->get('clothes')->shouldNotHaveBeenCalled();
 
-        $this->onCategoryPostSave($event);
+        $this->onBulkCategoryPostSave($event);
     }
 
-    /**
-     * @param ParameterBag<string, mixed> $propertyValuesBag
-     */
-    public function it_does_nothing_if_no_properties_registered(
+    public function it_ignores_categories_where_property_data_is_empty(
         GenericEvent $event,
-        CategoryInterface $category,
-        ParameterBagInterface $propertiesBag,
-        ParameterBag $propertyValuesBag
+        ParameterBag $propertiesBag,
+        CategoryPropertyRepository $repository,
+        CategoryInterface $category1,
+        CategoryInterface $category2
     ): void {
-        $code = 'master';
+        $event->getSubject()->willReturn([$category1, $category2]);
+        $category1->getCode()->willReturn('electronics');
+        $category2->getCode()->willReturn('clothes');
 
-        $event->getSubject()->willReturn($category);
-        $category->getCode()->willReturn($code);
+        $propertiesBag->has('electronics')->willReturn(true);
+        $propertiesBag->has('clothes')->willReturn(true);
 
-        $propertyValuesBag->count()->willReturn(0);
-        $propertyValuesBag->replace(Argument::any())->shouldNotBeCalled();
+        $propertiesBag->get('electronics')->willReturn([]);
+        $propertiesBag->get('clothes')->willReturn([]);
 
-        $propertiesBag->has($code)->willReturn(false);
+        $repository->findOneBy(['category' => $category1])->shouldNotHaveBeenCalled();
+        $repository->findOneBy(['category' => $category2])->shouldNotHaveBeenCalled();
 
-        $this->onCategoryPostSave($event);
+        $this->onBulkCategoryPostSave($event);
     }
 
-    /**
-     * @param ParameterBag<string, mixed> $propertyValuesBag
-     */
-    public function it_updates_property_values_if_data_is_available(
+    public function it_saves_with_existing_properties(
         GenericEvent $event,
-        CategoryInterface $category,
-        ParameterBagInterface $propertiesBag,
-        ParameterBag $propertyValuesBag
+        ParameterBag $propertiesBag,
+        CategoryPropertyRepository $repository,
+        EntityManagerInterface $entityManager,
+        CategoryInterface $category1,
+        CategoryInterface $category2,
+        CategoryProperty $categoryProperty1,
+        CategoryProperty $categoryProperty2
     ): void {
-        $code = 'master';
-        $data = ['some' => 'data', 'in' => 'array'];
+        $event->getSubject()->willReturn([$category1, $category2]);
+        $category1->getCode()->willReturn('electronics');
+        $category2->getCode()->willReturn('clothes');
 
-        $event->getSubject()->willReturn($category);
-        $category->getCode()->willReturn($code);
+        $propertiesBag->has('electronics')->willReturn(true);
+        $propertiesBag->has('clothes')->willReturn(true);
 
-        $propertyValuesBag->count()->willReturn(0);
-        $propertyValuesBag->replace($data)->shouldBeCalledOnce();
+        $propertiesBag->get('electronics')->willReturn(['foo' => []]);
+        $propertiesBag->get('clothes')->willReturn(['faa' => []]);
 
-        $propertiesBag->has($code)->willReturn(true);
-        $propertiesBag->get($code)->willReturn($data);
-        $propertiesBag->remove($code)->shouldBeCalledOnce();
+        $repository->findOneBy(['category' => $category1])->willReturn($categoryProperty1);
+        $repository->findOneBy(['category' => $category2])->willReturn($categoryProperty2);
 
-        $this->onCategoryPostSave($event);
+        $categoryProperty1->setProperties(['foo' => []])->shouldBeCalledOnce();
+        $categoryProperty2->setProperties(['faa' => []])->shouldBeCalledOnce();
+
+        $entityManager->persist($categoryProperty1)->shouldBeCalledOnce();
+        $entityManager->persist($categoryProperty2)->shouldBeCalledOnce();
+
+        $entityManager->flush()->shouldBeCalledTimes(2);
+
+        $this->onBulkCategoryPostSave($event);
+    }
+
+    public function it_saves_without_existing_properties(
+        GenericEvent $event,
+        ParameterBag $propertiesBag,
+        CategoryPropertyRepository $repository,
+        EntityManagerInterface $entityManager,
+        CategoryInterface $category1,
+        CategoryInterface $category2,
+        CategoryProperty $categoryProperty1,
+        CategoryProperty $categoryProperty2
+    ): void {
+        $event->getSubject()->willReturn([$category1, $category2]);
+        $category1->getCode()->willReturn('electronics');
+        $category2->getCode()->willReturn('clothes');
+
+        $propertiesBag->has('electronics')->willReturn(true);
+        $propertiesBag->has('clothes')->willReturn(true);
+
+        $propertiesBag->get('electronics')->willReturn(['foo' => []]);
+        $propertiesBag->get('clothes')->willReturn(['faa' => []]);
+
+        $repository->findOneBy(['category' => $category1])->willReturn(null);
+        $repository->findOneBy(['category' => $category2])->willReturn(null);
+
+        $propertiesAreSetForCategory1 = static function (CategoryProperty $categoryProperty): bool {
+            return $categoryProperty->getProperties() === ['foo' => []];
+        };
+        $propertiesAreSetForCategory2 = static function (CategoryProperty $categoryProperty): bool {
+            return $categoryProperty->getProperties() === ['faa' => []];
+        };
+
+        $entityManager->persist(Argument::that($propertiesAreSetForCategory1))->shouldBeCalledOnce();
+        $entityManager->persist(Argument::that($propertiesAreSetForCategory2))->shouldBeCalledOnce();
+
+        $entityManager->flush()->shouldBeCalledTimes(2);
+
+        $this->onBulkCategoryPostSave($event);
     }
 }

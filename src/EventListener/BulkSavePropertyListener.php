@@ -51,13 +51,12 @@ class BulkSavePropertyListener
                 continue;
             }
 
-            $categoryProperty = $this->findProperty($category);
-
             $properties = $this->propertiesBag->get($category->getCode());
             if (count($properties) === 0) {
                 return;
             }
 
+            $categoryProperty = $this->findProperty($category);
             $categoryProperty->setProperties($properties);
 
             $this->entityManager->persist($categoryProperty);
