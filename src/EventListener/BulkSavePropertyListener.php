@@ -12,6 +12,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 use function count;
+use function is_array;
 
 /**
  * Category post save listener that handles bulk saves with properties.
@@ -57,7 +58,7 @@ class BulkSavePropertyListener
             }
 
             $categoryProperty = $this->findProperty($category);
-            $categoryProperty->setProperties($properties);
+            $categoryProperty->setProperties($this->mergeProperties($categoryProperty->getProperties(), $properties));
 
             $this->entityManager->persist($categoryProperty);
             $this->entityManager->flush();
@@ -73,5 +74,32 @@ class BulkSavePropertyListener
         }
 
         return $categoryProperty;
+    }
+
+    /**
+     * Merge original data with new data
+     *
+     * This function works like a recursive array merge,
+     * but does replace old values with new values instead of building a new array
+     * containing both values.
+     *
+     * @phpstan-param array<string, mixed> $oldData
+     * @phpstan-param array<string, mixed> $newData
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private function mergeProperties(array $oldData, array $newData): array
+    {
+        $mergedArray = $oldData;
+
+        foreach ($newData as $key => $value) {
+            if (is_array($value) && isset($mergedArray[$key]) && is_array($mergedArray[$key])) {
+                $mergedArray[$key] = $this->mergeProperties($mergedArray[$key], $value);
+            } else {
+                $mergedArray[$key] = $value;
+            }
+        }
+
+        return $mergedArray;
     }
 }
