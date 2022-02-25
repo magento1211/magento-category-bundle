@@ -71,11 +71,11 @@ class CategoryDecorator implements ArrayConverterInterface
         $defaultProperties  = ['code', 'label', 'parent'];
 
         foreach ($item as $fieldName => $field) {
-            if (in_array(explode('-', $fieldName)[0], $defaultProperties, true)) {
+            if (in_array($this->getPropertyCode($fieldName), $defaultProperties, true)) {
                 continue;
             }
 
-            $propertyName = $this->getPropertyName($fieldName);
+            $propertyName = $this->getPropertyCode($fieldName);
             $value        = $this->appendPropertyValue($fieldName, $field);
 
             $categoryProperties[$propertyName][$value['locale']] = $value;
@@ -99,7 +99,7 @@ class CategoryDecorator implements ArrayConverterInterface
     /**
      * Get the name of the supplied property without localization.
      */
-    private function getPropertyName(string $property): string
+    private function getPropertyCode(string $property): string
     {
         return explode('-', $property)[0];
     }
