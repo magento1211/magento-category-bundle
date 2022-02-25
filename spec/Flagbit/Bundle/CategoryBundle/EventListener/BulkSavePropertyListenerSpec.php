@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace spec\Flagbit\Bundle\CategoryBundle\EventListener;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use EmptyIterator;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
 use Flagbit\Bundle\CategoryBundle\EventListener\BulkSavePropertyListener;
+use Flagbit\Bundle\CategoryBundle\Exception\ValidationFailed;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
 use Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator;
 use PhpSpec\ObjectBehavior;
@@ -92,6 +94,7 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
         GenericEvent $event,
         ParameterBag $propertiesBag,
         CategoryPropertyRepository $repository,
+        EntityManager $entityManager,
         SchemaValidator $validator,
         CategoryInterface $category1,
         CategoryInterface $category2
@@ -109,21 +112,13 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
         $validator->validate(['foo' => []])->willReturn(['error' => 'text']);
         $validator->validate(['faa' => []])->willReturn([]);
 
-        $repository->findOneBy(['category' => $category1])->shouldNotHaveBeenCalled();
-        $repository->findOneBy(['category' => $category2])->shouldNotHaveBeenCalled();
+        $repository->findOneBy(Argument::any())->shouldNotHaveBeenCalled();
 
-        $categoryProperty1->getProperties()->willReturn([]);
-        $categoryProperty2->getProperties()->willReturn([]);
-
-        $categoryProperty1->setProperties(['foo' => []])->shouldBeCalledOnce();
-        $categoryProperty2->setProperties(['faa' => []])->shouldBeCalledOnce();
-
-        $entityManager->persist($categoryProperty1)->shouldBeCalledOnce();
-        $entityManager->persist($categoryProperty2)->shouldBeCalledOnce();
+        $entityManager->persist(Argument::any())->shouldNotHaveBeenCalled();
 
         $entityManager->flush()->shouldNotHaveBeenCalled();
 
-        $this->onBulkCategoryPostSave($event);
+        $this->shouldThrow(ValidationFailed::class)->during('onBulkCategoryPostSave', [$event]);
     }
 
     public function it_saves_with_existing_properties(
