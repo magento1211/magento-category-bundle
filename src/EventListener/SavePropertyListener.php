@@ -7,9 +7,9 @@ namespace Flagbit\Bundle\CategoryBundle\EventListener;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
+use Flagbit\Bundle\CategoryBundle\Exception\ValidationFailed;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
 use Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator;
-use RuntimeException;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -56,7 +56,7 @@ class SavePropertyListener
         }
 
         if ($this->validator->validate($properties) !== []) {
-            throw new RuntimeException('Invalid properties format');
+            throw ValidationFailed::invalidPropertyJsonFormat();
         }
 
         $categoryProperty->setProperties($properties);

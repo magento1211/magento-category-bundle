@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Flagbit\Bundle\CategoryBundle\Schema;
 
+use Flagbit\Bundle\CategoryBundle\Exception\InvalidFile;
 use JsonSchema\Validator;
-use LogicException;
 
 use function json_decode;
 use function json_encode;
@@ -25,7 +25,7 @@ class SchemaValidator
     {
         $realpath = realpath(sprintf('%s/%s', __DIR__, $schemaPath));
         if ($realpath === false) {
-            throw new LogicException(sprintf('File %s not found', $schemaPath));
+            throw InvalidFile::fileNotFound($schemaPath);
         }
 
         $this->schema = (object) ['$ref' => 'file://' . $realpath];

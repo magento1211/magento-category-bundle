@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace spec\Flagbit\Bundle\CategoryBundle\Schema;
 
-use LogicException;
+use Flagbit\Bundle\CategoryBundle\Exception\InvalidFile;
 use PhpSpec\ObjectBehavior;
 
 class SchemaValidatorSpec extends ObjectBehavior
 {
     public function it_throws_exception_on_invalid_file_path(): void
     {
-        $this->shouldThrow(LogicException::class)->during('__construct', ['config.json']);
+        $this->shouldThrow(InvalidFile::class)->during('__construct', ['config.json']);
     }
 
     public function it_validates_config_schema(): void

@@ -9,11 +9,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use EmptyIterator;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
 use Flagbit\Bundle\CategoryBundle\EventListener\SavePropertyListener;
+use Flagbit\Bundle\CategoryBundle\Exception\ValidationFailed;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
 use Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use RuntimeException;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -107,7 +107,7 @@ class SavePropertyListenerSpec extends ObjectBehavior
 
         $entityManager->flush()->ShouldNotBeCalled();
 
-        $this->shouldThrow(RuntimeException::class)->during('onCategoryPostSave', [$event]);
+        $this->shouldThrow(ValidationFailed::class)->during('onCategoryPostSave', [$event]);
     }
 
     public function it_processes(
