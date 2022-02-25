@@ -10,6 +10,7 @@ use EmptyIterator;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
 use Flagbit\Bundle\CategoryBundle\EventListener\BulkSavePropertyListener;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
+use Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -23,9 +24,10 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
     public function let(
         ParameterBag $propertiesBag,
         CategoryPropertyRepository $repository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        SchemaValidator $validator
     ): void {
-        $this->beConstructedWith($propertiesBag, $repository, $entityManager);
+        $this->beConstructedWith($propertiesBag, $repository, $entityManager, $validator);
     }
 
     public function it_is_initializable(): void
@@ -86,11 +88,50 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
         $this->onBulkCategoryPostSave($event);
     }
 
+    public function it_throws_exception_on_invalid_schema(
+        GenericEvent $event,
+        ParameterBag $propertiesBag,
+        CategoryPropertyRepository $repository,
+        SchemaValidator $validator,
+        CategoryInterface $category1,
+        CategoryInterface $category2
+    ): void {
+        $event->getSubject()->willReturn([$category1, $category2]);
+        $category1->getCode()->willReturn('electronics');
+        $category2->getCode()->willReturn('clothes');
+
+        $propertiesBag->has('electronics')->willReturn(true);
+        $propertiesBag->has('clothes')->willReturn(true);
+
+        $propertiesBag->get('electronics')->willReturn(['foo' => []]);
+        $propertiesBag->get('clothes')->willReturn(['faa' => []]);
+
+        $validator->validate(['foo' => []])->willReturn(['error' => 'text']);
+        $validator->validate(['faa' => []])->willReturn([]);
+
+        $repository->findOneBy(['category' => $category1])->shouldNotHaveBeenCalled();
+        $repository->findOneBy(['category' => $category2])->shouldNotHaveBeenCalled();
+
+        $categoryProperty1->getProperties()->willReturn([]);
+        $categoryProperty2->getProperties()->willReturn([]);
+
+        $categoryProperty1->setProperties(['foo' => []])->shouldBeCalledOnce();
+        $categoryProperty2->setProperties(['faa' => []])->shouldBeCalledOnce();
+
+        $entityManager->persist($categoryProperty1)->shouldBeCalledOnce();
+        $entityManager->persist($categoryProperty2)->shouldBeCalledOnce();
+
+        $entityManager->flush()->shouldNotHaveBeenCalled();
+
+        $this->onBulkCategoryPostSave($event);
+    }
+
     public function it_saves_with_existing_properties(
         GenericEvent $event,
         ParameterBag $propertiesBag,
         CategoryPropertyRepository $repository,
         EntityManagerInterface $entityManager,
+        SchemaValidator $validator,
         CategoryInterface $category1,
         CategoryInterface $category2,
         CategoryProperty $categoryProperty1,
@@ -105,6 +146,9 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
 
         $propertiesBag->get('electronics')->willReturn(['foo' => []]);
         $propertiesBag->get('clothes')->willReturn(['faa' => []]);
+
+        $validator->validate(['foo' => []])->willReturn([]);
+        $validator->validate(['faa' => []])->willReturn([]);
 
         $repository->findOneBy(['category' => $category1])->willReturn($categoryProperty1);
         $repository->findOneBy(['category' => $category2])->willReturn($categoryProperty2);
@@ -128,6 +172,7 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
         ParameterBag $propertiesBag,
         CategoryPropertyRepository $repository,
         EntityManagerInterface $entityManager,
+        SchemaValidator $validator,
         CategoryInterface $category1,
         CategoryInterface $category2,
         CategoryProperty $categoryProperty1,
@@ -142,6 +187,9 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
 
         $propertiesBag->get('electronics')->willReturn(['foo' => []]);
         $propertiesBag->get('clothes')->willReturn(['faa' => []]);
+
+        $validator->validate(['foo' => []])->willReturn([]);
+        $validator->validate(['faa' => []])->willReturn([]);
 
         $repository->findOneBy(['category' => $category1])->willReturn(null);
         $repository->findOneBy(['category' => $category2])->willReturn(null);

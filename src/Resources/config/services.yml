@@ -48,6 +48,7 @@ services:
       - '@flagbit.category.properties_bag'
       - '@flagbit.category.repository.category_property'
       - '@doctrine.orm.entity_manager'
+      - '@flagbit.category.schema.property_validator'
     tags:
       - { name: 'kernel.event_listener', event: 'akeneo.storage.post_save_all', method: 'onBulkCategoryPostSave' }
 
