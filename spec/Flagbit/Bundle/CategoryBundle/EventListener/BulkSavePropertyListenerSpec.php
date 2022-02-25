@@ -112,97 +112,13 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
         $categoryProperty1->getProperties()->willReturn([]);
         $categoryProperty2->getProperties()->willReturn([]);
 
-        $categoryProperty1->setProperties(['foo' => []])->shouldBeCalledOnce();
-        $categoryProperty2->setProperties(['faa' => []])->shouldBeCalledOnce();
+        $categoryProperty1->aggregate(['foo' => []])->shouldBeCalledOnce();
+        $categoryProperty2->aggregate(['faa' => []])->shouldBeCalledOnce();
 
         $entityManager->persist($categoryProperty1)->shouldBeCalledOnce();
         $entityManager->persist($categoryProperty2)->shouldBeCalledOnce();
 
         $entityManager->flush()->shouldBeCalledTimes(2);
-
-        $this->onBulkCategoryPostSave($event);
-    }
-
-    public function it_saves_with_existing_properties_when_merge_is_necessary(
-        GenericEvent $event,
-        ParameterBag $propertiesBag,
-        CategoryPropertyRepository $repository,
-        EntityManagerInterface $entityManager,
-        CategoryInterface $category,
-        CategoryProperty $categoryProperty
-    ): void {
-        $event->getSubject()->willReturn([$category]);
-        $category->getCode()->willReturn('electronics');
-
-        $propertiesBag->has('electronics')->willReturn(true);
-        $propertiesBag->has('clothes')->willReturn(true);
-
-        $propertiesBag->get('electronics')->willReturn([
-            'foo' => [
-                'en_US' => [
-                    'data' => 'new value',
-                    'locale' => 'en_US',
-                ],
-                'fr_FR' => [
-                    'data' => 'another value',
-                    'locale' => 'fr_FR',
-                ],
-            ],
-            'faa' => [
-                'null' => [
-                    'data' => 'more data',
-                    'locale' => 'null',
-                ],
-            ],
-        ]);
-
-        $repository->findOneBy(['category' => $category])->willReturn($categoryProperty);
-
-        $categoryProperty->getProperties()->willReturn([
-            'foo' => [
-                'de_DE' => [
-                    'data' => 'testen',
-                    'locale' => 'de_DE',
-                ],
-                'en_US' => [
-                    'data' => 'testing',
-                    'locale' => 'en_US',
-                ],
-            ],
-            'faa' => [
-                'null' => [
-                    'data' => 'more data',
-                    'locale' => 'null',
-                ],
-            ],
-        ]);
-
-        $categoryProperty->setProperties([
-            'foo' => [
-                'de_DE' => [
-                    'data' => 'testen',
-                    'locale' => 'de_DE',
-                ],
-                'en_US' => [
-                    'data' => 'new value',
-                    'locale' => 'en_US',
-                ],
-                'fr_FR' => [
-                    'data' => 'another value',
-                    'locale' => 'fr_FR',
-                ],
-            ],
-            'faa' => [
-                'null' => [
-                    'data' => 'more data',
-                    'locale' => 'null',
-                ],
-            ],
-        ])->shouldBeCalledOnce();
-
-        $entityManager->persist($categoryProperty)->shouldBeCalledOnce();
-
-        $entityManager->flush()->shouldBeCalledOnce();
 
         $this->onBulkCategoryPostSave($event);
     }
