@@ -34,6 +34,10 @@
         <env name="ASPELL_BINARY_PATH" value="aspell"/>
     </php>
 
+    <extensions>
+        <extension class="Flagbit\Bundle\CategoryBundle\Tests\Extension\AkeneoFileStructureExtension"/>
+    </extensions>
+
     <filter>
         <whitelist>
             <directory>src</directory>

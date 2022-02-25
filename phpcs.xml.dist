@@ -7,6 +7,9 @@
 
     <file>src</file>
     <file>spec</file>
+    <file>tests</file>
+    <exclude-pattern>tests/var/*</exclude-pattern>
+    <exclude-pattern>tests/TestKernel.php</exclude-pattern>
 
     <rule ref="Doctrine"/>
 
