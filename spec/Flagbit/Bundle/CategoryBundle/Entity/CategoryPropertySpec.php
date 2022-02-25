@@ -21,7 +21,8 @@ class CategoryPropertySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(CategoryProperty::class);
     }
 
-    public function it_allow_to_aggregate_old_and_new_data(): void {
+    public function it_allow_to_aggregate_old_and_new_data(): void
+    {
         $this->setProperties([
             'foo' => [
                 'en_US' => [

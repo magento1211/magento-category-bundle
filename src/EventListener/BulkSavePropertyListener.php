@@ -12,7 +12,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 use function count;
-use function is_array;
 
 /**
  * Category post save listener that handles bulk saves with properties.
