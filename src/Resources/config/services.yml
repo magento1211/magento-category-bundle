@@ -9,6 +9,7 @@ services:
       Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository: '@flagbit.category.repository.category_property'
       Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface: '@pim_catalog.repository.category'
       Symfony\Component\Serializer\Normalizer\NormalizerInterface: '@pim_internal_api_serializer'
+      Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator: '@flagbit.category.schema.config_validator'
     autowire: true
     tags: [ 'controller.service_arguments' ]
 
@@ -44,6 +45,7 @@ services:
       - '@flagbit.category.property_values_bag'
       - '@flagbit.category.repository.category_property'
       - '@doctrine.orm.entity_manager'
+      - '@flagbit.category.schema.property_validator'
     tags:
       - { name: 'kernel.event_listener', event: 'akeneo.storage.post_save', method: 'onCategoryPostSave' }
 
@@ -58,3 +60,13 @@ services:
       - '@flagbit.category.repository.category_property'
       - '@flagbit.category.converter.standard_to_flat.category_property'
       - '@flagbit.category.processor.normalization.category.inner'
+
+  flagbit.category.schema.property_validator:
+    class: 'Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator'
+    arguments:
+      - '../Resources/config/schema/property.json'
+
+  flagbit.category.schema.config_validator:
+    class: 'Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator'
+    arguments:
+      - '../Resources/config/schema/config.json'

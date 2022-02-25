@@ -7,6 +7,7 @@ namespace Flagbit\Bundle\CategoryBundle\Controller\InternalApi;
 use Doctrine\ORM\EntityManagerInterface;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryConfig;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryConfigRepository;
+use Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,15 +24,18 @@ class CategoryConfigController
     private EntityManagerInterface $entityManager;
     private CategoryConfigRepository $repository;
     private NormalizerInterface $normalizer;
+    private SchemaValidator $validator;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         CategoryConfigRepository $repository,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        SchemaValidator $validator
     ) {
         $this->entityManager = $entityManager;
         $this->repository    = $repository;
         $this->normalizer    = $normalizer;
+        $this->validator     = $validator;
     }
 
     public function get(int $identifier): Response
@@ -49,10 +53,13 @@ class CategoryConfigController
             return new RedirectResponse('/');
         }
 
-        $categoryConfig = $this->findConfig($identifier);
-
         $config = json_decode($request->request->get('config'), true);
-        // TODO Do validation of the config
+
+        if ($this->validator->validate($config) !== []) {
+            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
+        }
+
+        $categoryConfig = $this->findConfig($identifier);
         $categoryConfig->setConfig($config);
 
         $this->entityManager->persist($categoryConfig);
