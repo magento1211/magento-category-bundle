@@ -32,3 +32,6 @@ config:
       textarea:
         type: '@flagbitcategory/js/property/type/textarea.tsx'
         config: '@flagbitcategory/js/property/type-config/base.tsx'
+      checkbox:
+        type: '@flagbitcategory/js/property/type/checkbox.tsx'
+        config: '@flagbitcategory/js/property/type-config/base.tsx'
