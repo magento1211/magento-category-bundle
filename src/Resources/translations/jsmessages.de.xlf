@@ -37,6 +37,21 @@
                 <target>Text</target>
             </trans-unit>
 
+            <trans-unit id="flagbit_category.property_registry.option.textarea">
+                <source>flagbit_category.property_registry.option.textarea</source>
+                <target>Mehrzeiliger Text</target>
+            </trans-unit>
+
+            <trans-unit id="flagbit_category.property_registry.option.checkbox">
+                <source>flagbit_category.property_registry.option.checkbox</source>
+                <target>Checkbox</target>
+            </trans-unit>
+
+            <trans-unit id="flagbit_category.property_registry.option.date">
+                <source>flagbit_category.property_registry.option.date</source>
+                <target>Datum</target>
+            </trans-unit>
+
             <trans-unit id="pim_title.flagbit_category.entity.category_config">
                 <source>pim_title.flagbit_category.entity.category_config</source>
                 <target>Flagbit Kategorie Eigenschaften</target>
