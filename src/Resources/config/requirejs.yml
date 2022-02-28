@@ -29,3 +29,6 @@ config:
       text:
         type: '@flagbitcategory/js/property/type/text.tsx'
         config: '@flagbitcategory/js/property/type-config/base.tsx'
+      textarea:
+        type: '@flagbitcategory/js/property/type/textarea.tsx'
+        config: '@flagbitcategory/js/property/type-config/base.tsx'
