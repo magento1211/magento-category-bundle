@@ -35,3 +35,6 @@ config:
       checkbox:
         type: '@flagbitcategory/js/property/type/checkbox.tsx'
         config: '@flagbitcategory/js/property/type-config/base.tsx'
+      date:
+        type: '@flagbitcategory/js/property/type/date.tsx'
+        config: '@flagbitcategory/js/property/type-config/base.tsx'
