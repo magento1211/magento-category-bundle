@@ -57,7 +57,7 @@ class BulkSavePropertyListener
             }
 
             $categoryProperty = $this->findProperty($category);
-            $categoryProperty->aggregate($properties);
+            $categoryProperty->mergeProperties($properties);
 
             $this->entityManager->persist($categoryProperty);
             $this->entityManager->flush();

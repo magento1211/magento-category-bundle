@@ -76,7 +76,7 @@ class CategoryDecorator implements ArrayConverterInterface
             }
 
             $propertyName = $this->getPropertyCode($fieldName);
-            $value        = $this->appendPropertyValue($fieldName, $field);
+            $value        = $this->createPropertyValue($fieldName, $field);
 
             $categoryProperties[$propertyName][$value['locale']] = $value;
         }
@@ -89,7 +89,7 @@ class CategoryDecorator implements ArrayConverterInterface
      *
      * @return array<string, mixed>
      */
-    private function appendPropertyValue(string $fieldName, $value): array
+    private function createPropertyValue(string $fieldName, $value): array
     {
         $locale = explode('-', $fieldName)[1] ?? 'null';
 

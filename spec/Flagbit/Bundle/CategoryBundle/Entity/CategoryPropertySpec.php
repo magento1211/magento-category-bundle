@@ -42,7 +42,7 @@ class CategoryPropertySpec extends ObjectBehavior
             ],
         ]);
 
-        $this->aggregate([
+        $this->mergeProperties([
             'foo' => [
                 'de_DE' => [
                     'data' => 'testen',

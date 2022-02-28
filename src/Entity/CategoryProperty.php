@@ -37,7 +37,7 @@ class CategoryProperty
      *
      * @phpstan-param array<string, mixed> $newData
      */
-    public function aggregate(array $newData): void
+    public function mergeProperties(array $newData): void
     {
         $mergedArray = $this->properties;
 

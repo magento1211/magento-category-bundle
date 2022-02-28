@@ -112,8 +112,8 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
         $categoryProperty1->getProperties()->willReturn([]);
         $categoryProperty2->getProperties()->willReturn([]);
 
-        $categoryProperty1->aggregate(['foo' => []])->shouldBeCalledOnce();
-        $categoryProperty2->aggregate(['faa' => []])->shouldBeCalledOnce();
+        $categoryProperty1->mergeProperties(['foo' => []])->shouldBeCalledOnce();
+        $categoryProperty2->mergeProperties(['faa' => []])->shouldBeCalledOnce();
 
         $entityManager->persist($categoryProperty1)->shouldBeCalledOnce();
         $entityManager->persist($categoryProperty2)->shouldBeCalledOnce();
