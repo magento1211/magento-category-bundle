@@ -29,6 +29,26 @@ class CategoryProperty
     }
 
     /**
+     * Merge original data with new data to prevent dropping existing property data.
+     *
+     * The passed new data will be written into the {@see CategoryProperty::$properties} array.
+     * Using this function ensures that existing properties won't be dropped, like it would happen
+     * if just {@see CategoryProperty::getProperties()} is used.
+     *
+     * @phpstan-param array<string, mixed> $newData
+     */
+    public function mergeProperties(array $newData): void
+    {
+        $mergedArray = $this->properties;
+
+        foreach ($newData as $key => $value) {
+            $mergedArray[$key] = $value;
+        }
+
+        $this->properties = $mergedArray;
+    }
+
+    /**
      * @param mixed[] $properties
      */
     public function setProperties(array $properties): void
