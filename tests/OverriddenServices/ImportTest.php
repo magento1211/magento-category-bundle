@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Flagbit\Bundle\CategoryBundle\Tests;
+namespace Flagbit\Bundle\CategoryBundle\Tests\OverriddenServices;
 
 use Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\FlatToStandard\CategoryDecorator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

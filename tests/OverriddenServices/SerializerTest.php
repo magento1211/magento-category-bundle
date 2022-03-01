@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Flagbit\Bundle\CategoryBundle\Tests;
+namespace Flagbit\Bundle\CategoryBundle\Tests\OverriddenServices;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryConfig;
