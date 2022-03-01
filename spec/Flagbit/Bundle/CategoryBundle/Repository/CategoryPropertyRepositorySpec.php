@@ -40,4 +40,33 @@ class CategoryPropertyRepositorySpec extends ObjectBehavior
 
         $this->findByCategory($category)->shouldReturn($categoryProperty);
     }
+
+    public function it_finds_instead_of_create_by_category(
+        CategoryInterface $category,
+        CategoryProperty $categoryProperty,
+        EntityManagerInterface $em,
+        UnitOfWork $unitOfWork,
+        EntityPersister $entityPersister
+    ): void {
+        $entityPersister->load(['category' => $category], null, null, [], null, 1, null)
+            ->willReturn($categoryProperty);
+        $unitOfWork->getEntityPersister(Argument::any())->willReturn($entityPersister);
+        $em->getUnitOfWork()->willReturn($unitOfWork);
+
+        $this->findOrCreateByCategory($category)->shouldReturn($categoryProperty);
+    }
+
+    public function it_creates_instead_of_find_by_category(
+        CategoryInterface $category,
+        EntityManagerInterface $em,
+        UnitOfWork $unitOfWork,
+        EntityPersister $entityPersister
+    ): void {
+        $entityPersister->load(['category' => $category], null, null, [], null, 1, null)
+            ->willReturn(null);
+        $unitOfWork->getEntityPersister(Argument::any())->willReturn($entityPersister);
+        $em->getUnitOfWork()->willReturn($unitOfWork);
+
+        $this->findOrCreateByCategory($category)->shouldBeAnInstanceOf(CategoryProperty::class);
+    }
 }

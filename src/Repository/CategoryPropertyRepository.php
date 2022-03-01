@@ -20,4 +20,15 @@ class CategoryPropertyRepository extends EntityRepository
 
         return $categoryProperty;
     }
+
+    public function findOrCreateByCategory(CategoryInterface $category): CategoryProperty
+    {
+        /** @phpstan-var CategoryProperty|null $categoryProperty */
+        $categoryProperty = $this->findByCategory($category);
+        if ($categoryProperty === null) {
+            $categoryProperty = new CategoryProperty($category);
+        }
+
+        return $categoryProperty;
+    }
 }
