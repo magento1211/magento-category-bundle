@@ -6,7 +6,6 @@ namespace Flagbit\Bundle\CategoryBundle\EventListener;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
 use Flagbit\Bundle\CategoryBundle\Exception\ValidationFailed;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
 use Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator;
@@ -67,22 +66,12 @@ class BulkSavePropertyListener
                 throw ValidationFailed::invalidPropertyJsonFormat();
             }
 
-            $categoryProperty = $this->findProperty($category);
+            $categoryProperty = $this->repository->findOrCreateByCategory($category);
+
             $categoryProperty->mergeProperties($properties);
 
             $this->entityManager->persist($categoryProperty);
             $this->entityManager->flush();
         }
-    }
-
-    private function findProperty(CategoryInterface $category): CategoryProperty
-    {
-        /** @phpstan-var CategoryProperty|null $categoryProperty */
-        $categoryProperty = $this->repository->findOneBy(['category' => $category]);
-        if ($categoryProperty === null) {
-            $categoryProperty = new CategoryProperty($category);
-        }
-
-        return $categoryProperty;
     }
 }

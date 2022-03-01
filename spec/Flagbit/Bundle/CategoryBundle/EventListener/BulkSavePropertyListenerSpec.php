@@ -84,8 +84,7 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
         $propertiesBag->get('electronics')->willReturn([]);
         $propertiesBag->get('clothes')->willReturn([]);
 
-        $repository->findOneBy(['category' => $category1])->shouldNotHaveBeenCalled();
-        $repository->findOneBy(['category' => $category2])->shouldNotHaveBeenCalled();
+        $repository->findOrCreateByCategory(Argument::any())->shouldNotHaveBeenCalled();
 
         $this->onBulkCategoryPostSave($event);
     }
@@ -112,7 +111,7 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
         $validator->validate(['foo' => []])->willReturn(['error' => 'text']);
         $validator->validate(['faa' => []])->willReturn([]);
 
-        $repository->findOneBy(Argument::any())->shouldNotHaveBeenCalled();
+        $repository->findOrCreateByCategory(Argument::any())->shouldNotHaveBeenCalled();
 
         $entityManager->persist(Argument::any())->shouldNotHaveBeenCalled();
 
@@ -145,8 +144,8 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
         $validator->validate(['foo' => []])->willReturn([]);
         $validator->validate(['faa' => []])->willReturn([]);
 
-        $repository->findOneBy(['category' => $category1])->willReturn($categoryProperty1);
-        $repository->findOneBy(['category' => $category2])->willReturn($categoryProperty2);
+        $repository->findOrCreateByCategory($category1)->willReturn($categoryProperty1);
+        $repository->findOrCreateByCategory($category2)->willReturn($categoryProperty2);
 
         $categoryProperty1->getProperties()->willReturn([]);
         $categoryProperty2->getProperties()->willReturn([]);
@@ -156,51 +155,6 @@ class BulkSavePropertyListenerSpec extends ObjectBehavior
 
         $entityManager->persist($categoryProperty1)->shouldBeCalledOnce();
         $entityManager->persist($categoryProperty2)->shouldBeCalledOnce();
-
-        $entityManager->flush()->shouldBeCalledTimes(2);
-
-        $this->onBulkCategoryPostSave($event);
-    }
-
-    public function it_saves_without_existing_properties(
-        GenericEvent $event,
-        ParameterBag $propertiesBag,
-        CategoryPropertyRepository $repository,
-        EntityManagerInterface $entityManager,
-        SchemaValidator $validator,
-        CategoryInterface $category1,
-        CategoryInterface $category2,
-        CategoryProperty $categoryProperty1,
-        CategoryProperty $categoryProperty2
-    ): void {
-        $event->getSubject()->willReturn([$category1, $category2]);
-        $category1->getCode()->willReturn('electronics');
-        $category2->getCode()->willReturn('clothes');
-
-        $propertiesBag->has('electronics')->willReturn(true);
-        $propertiesBag->has('clothes')->willReturn(true);
-
-        $propertiesBag->get('electronics')->willReturn(['foo' => []]);
-        $propertiesBag->get('clothes')->willReturn(['faa' => []]);
-
-        $validator->validate(['foo' => []])->willReturn([]);
-        $validator->validate(['faa' => []])->willReturn([]);
-
-        $repository->findOneBy(['category' => $category1])->willReturn(null);
-        $repository->findOneBy(['category' => $category2])->willReturn(null);
-
-        $categoryProperty1->getProperties()->willReturn([]);
-        $categoryProperty2->getProperties()->willReturn([]);
-
-        $propertiesAreSetForCategory1 = static function (CategoryProperty $categoryProperty): bool {
-            return $categoryProperty->getProperties() === ['foo' => []];
-        };
-        $propertiesAreSetForCategory2 = static function (CategoryProperty $categoryProperty): bool {
-            return $categoryProperty->getProperties() === ['faa' => []];
-        };
-
-        $entityManager->persist(Argument::that($propertiesAreSetForCategory1))->shouldBeCalledOnce();
-        $entityManager->persist(Argument::that($propertiesAreSetForCategory2))->shouldBeCalledOnce();
 
         $entityManager->flush()->shouldBeCalledTimes(2);
 
