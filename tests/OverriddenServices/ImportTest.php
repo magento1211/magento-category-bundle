@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Flagbit\Bundle\CategoryBundle\Tests\ImportExport;
+namespace Flagbit\Bundle\CategoryBundle\Tests;
 
 use Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\FlatToStandard\CategoryDecorator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class CategoryImportTest extends KernelTestCase
+class ImportTest extends KernelTestCase
 {
     public function testCategoryImport(): void
     {
-        $arrayConverter = static::$container->get('pim_connector.array_converter.flat_to_standard.category');
-        $parameterBag   = static::$container->get('flagbit.category.properties_bag');
+        $arrayConverter = self::$container->get('pim_connector.array_converter.flat_to_standard.category');
+        $parameterBag   = self::$container->get('flagbit.category.properties_bag');
 
         self::assertInstanceOf(CategoryDecorator::class, $arrayConverter);
         self::assertInstanceOf(ParameterBag::class, $parameterBag);
