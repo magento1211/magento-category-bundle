@@ -7,7 +7,9 @@ namespace Flagbit\Bundle\CategoryBundle\EventListener;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
+use Flagbit\Bundle\CategoryBundle\Exception\ValidationFailed;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
+use Flagbit\Bundle\CategoryBundle\Schema\SchemaValidator;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -22,6 +24,7 @@ class BulkSavePropertyListener
     private ParameterBag $propertiesBag;
     private CategoryPropertyRepository $repository;
     private EntityManagerInterface $entityManager;
+    private SchemaValidator $validator;
 
     /**
      * @phpstan-param ParameterBag<string, array<string, mixed>> $propertiesBag
@@ -29,15 +32,19 @@ class BulkSavePropertyListener
     public function __construct(
         ParameterBag $propertiesBag,
         CategoryPropertyRepository $repository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        SchemaValidator $validator
     ) {
         $this->propertiesBag = $propertiesBag;
         $this->repository    = $repository;
         $this->entityManager = $entityManager;
+        $this->validator     = $validator;
     }
 
     /**
      * @phpstan-param GenericEvent<mixed> $event
+     *
+     * @throws ValidationFailed
      */
     public function onBulkCategoryPostSave(GenericEvent $event): void
     {
@@ -54,6 +61,10 @@ class BulkSavePropertyListener
             $properties = $this->propertiesBag->get($category->getCode());
             if (count($properties) === 0) {
                 return;
+            }
+
+            if ($this->validator->validate($properties) !== []) {
+                throw ValidationFailed::invalidPropertyJsonFormat();
             }
 
             $categoryProperty = $this->findProperty($category);
