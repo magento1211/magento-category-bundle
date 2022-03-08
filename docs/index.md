@@ -9,7 +9,7 @@ supported languages.
 * Export
 * Import
 * Multiple property types like text, checkbox, date
-* Can be extended with your own property types
+* Can be extended with your own [custom property types](custom-types.md)
 
 [![Screenshot](category-bundle.png)](category-bundle.png)
 
