@@ -1,37 +1,52 @@
-## Welcome to GitHub Pages
+## Category Bundle
 
-You can use the [editor on GitHub](https://github.com/flagbit/category-bundle/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+The Flagbit Akeneo Category Bundle allows you to add new category properties like text-fields, checkboxes, date-fields and
+many more to enhance your categories with the data your shop needs. You can also localize the each category property for your
+supported languages.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### A short list of features
 
-### Markdown
+* Export
+* Import
+* Multiple property types like text, checkbox, date
+* Can be extended with your own property types
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+[![Screenshot](category-bundle.png)](category-bundle.png)
 
-```markdown
-Syntax highlighted code block
+### Installation
 
-# Header 1
-## Header 2
-### Header 3
+Install the package with Composer and the following command:
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+``` bash
+composer require flagbit/category_bundle
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+#### Enable the bundle
 
-### Jekyll Themes
+Enable the bundle in the kernel:
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/flagbit/category-bundle/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+``` php
+<?php
+// config/bundles.php
 
-### Support or Contact
+return [
+    // ...
+    Flagbit\Bundle\CategoryBundle\FlagbitCategoryBundle::class => ['all' => true],
+];
+```
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+#### Import the routing
+
+``` yml
+# config/routes/flagbit_category.yml
+flagbit_category:
+    resource: "@FlagbitCategoryBundle/Resources/config/routing.yml"
+```
+
+#### Create the needed database tables
+
+``` bash
+bin/console doctrine:schema:update
+```
+
+Clear the cache and you're ready to go.
