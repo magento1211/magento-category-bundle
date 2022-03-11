@@ -1,8 +1,6 @@
 ## Create custom property types
 
-While the Category Bundle comes with many build-in property types, your project might need one that is too specific to
-your use case than it could be added to the Category Bundle. Don't worry, it allows you to create your own property type
-that can be used in your project without contributing to the Bundle.
+While the Category Bundle comes with many build-in property types, your project might need one that is very specific to your use case. Adding such a specific type to the official bundle might not make sense. Don't worry, the bundle allows you to create your own property type that can be used in your project without contributing to the Bundle.
 
 ### Frontend
 
