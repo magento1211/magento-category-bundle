@@ -1,7 +1,7 @@
 ## Category Bundle
 
 The Flagbit Akeneo Category Bundle allows you to add new category properties like text-fields, checkboxes, date-fields and
-many more to enhance your categories with the data your shop needs. You can also localize the each category property for your
+many more to enhance your categories with the data your shop needs. You can also localize each category property for your
 supported languages.
 
 ### A short list of features
