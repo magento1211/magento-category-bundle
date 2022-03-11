@@ -39,8 +39,8 @@ const factory: PropertyFactory = (): Property => new MyProperty();
 export default factory;
 ```
 
-The implemented `render()` will get an instance of `PropertyDto` which also contains a method to register changes that
-occur when you do changes in your custom property on the category page. You can also access:
+The implemented `render()` method will get an instance of `PropertyDto` injected. The `PropertyDto` contains a method to 
+apply changes from your custom property on the category page. You can also access:
 
 | Accessor                      | Description                                   |
 |-------------------------------|-----------------------------------------------|
