@@ -23,8 +23,6 @@ composer require flagbit/category_bundle
 
 #### Enable the bundle
 
-Enable the bundle in the kernel:
-
 ``` php
 <?php
 // config/bundles.php
